@@ -18,11 +18,12 @@ import sys
 sys.path.append('.')
 import pretrainedmodels
 models.__dict__['fbresnet152'] = pretrainedmodels.__dict__['fbresnet152']
+models.__dict__['resnext101_32x4d'] = pretrainedmodels.__dict__['resnext101_32x4d']
+models.__dict__['resnext101_64x4d'] = pretrainedmodels.__dict__['resnext101_64x4d']
 
 model_names = sorted(name for name in models.__dict__
-    if name.islower() and not name.startswith("__")
+    if not name.startswith("__")
     and callable(models.__dict__[name]))
-
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 parser.add_argument('data', metavar='DIR',

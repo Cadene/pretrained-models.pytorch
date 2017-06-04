@@ -216,12 +216,15 @@ def resnet152(pretrained=False, **kwargs):
     return model
 
 import torchfile
+from torch.utils.serialization import load_lua
 import torch
 netparams = torchfile.load('data/resnet152/netparams.t7')
+#netparams2 = load_lua('data/resnet152/netparams.t7')
+#import ipdb; ipdb.set_trace()
 netoutputs = []
 for i in range(1, 12):
     path = 'data/resnet152/output{}.t7'.format(i)
-    out = torch.from_numpy(torchfile.load(path))
+    out = load_lua(path)
     #print(out.size())
     if out.dim()==4:
         pass#out.transpose_(2, 3)
@@ -245,25 +248,25 @@ for key in state_dict.keys():
 net.load_state_dict(s)
 
 net.conv1.register_forward_hook(lambda self, input, output: \
-    print(torch.dist(output.data, netoutputs[0])))
+    print('conv1', torch.dist(output.data, netoutputs[0])))
 net.bn1.register_forward_hook(lambda self, input, output: \
-    print(torch.dist(output.data, netoutputs[1])))
+    print('bn1', torch.dist(output.data, netoutputs[1])))
 net.relu.register_forward_hook(lambda self, input, output: \
-    print(torch.dist(output.data, netoutputs[2])))
+    print('relu', torch.dist(output.data, netoutputs[2])))
 net.maxpool.register_forward_hook(lambda self, input, output: \
-    print(torch.dist(output.data, netoutputs[3])))
+    print('maxpool', torch.dist(output.data, netoutputs[3])))
 net.layer1.register_forward_hook(lambda self, input, output: \
-    print(torch.dist(output.data, netoutputs[4])))
+    print('layer1', torch.dist(output.data, netoutputs[4])))
 net.layer2.register_forward_hook(lambda self, input, output: \
-    print(torch.dist(output.data, netoutputs[5])))
+    print('layer2', torch.dist(output.data, netoutputs[5])))
 net.layer3.register_forward_hook(lambda self, input, output: \
-    print(torch.dist(output.data, netoutputs[6])))
+    print('layer3', torch.dist(output.data, netoutputs[6])))
 net.layer4.register_forward_hook(lambda self, input, output: \
-    print(torch.dist(output.data, netoutputs[7])))
+    print('layer4', torch.dist(output.data, netoutputs[7])))
 net.avgpool.register_forward_hook(lambda self, input, output: \
-    print(torch.dist(output.data, netoutputs[8])))
+    print('avgpool', torch.dist(output.data, netoutputs[8])))
 net.fc.register_forward_hook(lambda self, input, output: \
-    print(torch.dist(output.data, netoutputs[10])))
+    print('fc', torch.dist(output.data, netoutputs[10])))
 
 net.eval()
 input_data = torch.ones(1,3,224,224)
@@ -271,7 +274,7 @@ input_data[0][0][0][0] = -1
 from PIL import Image
 import torchvision.transforms as transforms
 input_data[0] = transforms.ToTensor()(Image.open('data/lena_224.png'))
-print(input_data.sum())
+print('lena sum', input_data.sum())
 input = torch.autograd.Variable(input_data)
 output = net.forward(input)
 
