@@ -5,7 +5,65 @@ The goal of this repo is:
 - to help to reproduce research papers results (transfer learning setups),
 - to access pretrained ConvNets with a unique interface/API inspired by torchvision.
 
-## Accuracy on the validation set of imagenet
+
+## Installation
+
+1. [python3 with anaconda](https://www.continuum.io/downloads)
+2. [pytorch with/out CUDA](http://pytorch.org)
+3. `git clone https://github.com/Cadene/pretrained-models.pytorch.git`
+
+
+## Toy Example
+
+```python
+from PIL import Image
+import torch
+import torchvision.transforms as transforms
+
+import sys
+sys.path.append('yourdir/pretrained-models.pytorch') # if needed
+import pretrainedmodels
+
+# Load Model
+model_name = 'fbresnet152'
+model = pretrainedmodels.__dict__[model_name](num_classes=1000, pretrained='imagenet')
+
+# Load One Input Image
+path_img = 'data/lena.jpg'
+with open(path_img, 'rb') as f:
+    with Image.open(f) as img:
+        input_data = img.convert(model.input_space)
+
+tf = transforms.Compose([
+    transforms.Scale(round(max(model.input_size)*1.143)),
+    transforms.CenterCrop(max(model.input_size)),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=model.mean,
+                         std=model.std)
+])
+
+input_data = tf(input_data)          # 3x400x225 -> 3x299x299
+input_data = input_data.unsqueeze(0) # 3x299x299 -> 1x3x299x299
+input = torch.autograd.Variable(input_data)
+
+# Load Imagenet Synsets
+with open('data/imagenet_synsets.txt', 'rb') as f:
+    synsets = f.readlines()
+
+synsets = [x.strip() for x in synsets] # len(synsets)==1001
+
+# Make predictions
+output = model(input)
+max, argmax = output.data.squeeze().max(0)
+print(path_img, 'is a', synsets[argmax[0]+1])
+```
+
+See also [test/imagenet.py](https://github.com/Cadene/pretrained-models.pytorch/blob/master/test/imagenet.py)
+
+
+## Evaluation on imagenet
+
+### Accuracy on validation set
 
 Model | Version | Prec@1 | Prec@5
 --- | --- | --- | ---
@@ -25,12 +83,13 @@ Note: the Pytorch version of ResNet152 is not a porting of the Torch7 but has be
 
 Beware, the accuracy reported here is not always representative of the transferable capacity of the network on other tasks and datasets. You must try them all! :P
 
+### Reproducing results
 
-## Installation
+Download the ImageNet dataset and move validation images to labeled subfolders
 
-1. [python3 with anaconda](https://www.continuum.io/downloads)
-2. [pytorch with/out CUDA](http://pytorch.org)
-3. `git clone https://github.com/Cadene/pretrained-models.pytorch.git`
+```
+python test/imagenet.py /local/data/imagenet_2012/images --arch resnext101_32x4d -e --pretrained
+```
 
 
 ## Documentation
@@ -65,7 +124,7 @@ Source: [ResNeXt repo of FaceBook](https://github.com/facebookresearch/ResNeXt)
 
 Once a pretrained model has been loaded, you can use it that way.
 
-*Important note*: All image must be loaded using `PIL` which scales the pixel values between 0 and 1.
+**Important note**: All image must be loaded using `PIL` which scales the pixel values between 0 and 1.
 
 #### `model.input_size`
 
@@ -120,7 +179,8 @@ output = model.features(input_448)
 # print(output.size())             # (1,2048,7,7)
 ```
 
-#### `model.classif`
+
+#### `model.classif`
 
 Attribut of type `nn.Module` which is used to classify the features from the image.
 
@@ -138,7 +198,7 @@ print(output.size())               # (1,1000)
 
 Method used to call `model.features` and `model.classif`. It can be overwritten as desired.
 
-*Important note*: A good practice is to use `model.__call__` as your function of choice to forward an input to your model. See the example bellow.
+**Important note**: A good practice is to use `model.__call__` as your function of choice to forward an input to your model. See the example bellow.
 
 ```python
 # Without model.__call__
@@ -151,64 +211,6 @@ print(output.size())      # (1,1000)
 ```
 
 
-
-
-## Toy Example
-
-```python
-from PIL import Image
-import torch
-import torchvision.transforms as transforms
-
-import sys
-sys.path.append('yourdir/pretrained-models.pytorch') # if needed
-import pretrainedmodels
-
-# Load Model
-model_name = 'fbresnet152'
-model = pretrainedmodels.__dict__[model_name](num_classes=1000, pretrained='imagenet')
-
-# Load One Input Image
-path_img = 'data/lena.jpg'
-with open(path_img, 'rb') as f:
-    with Image.open(f) as img:
-        input_data = img.convert(model.input_space)
-
-tf = transforms.Compose([
-    transforms.Scale(round(max(model.input_size)*1.143)),
-    transforms.CenterCrop(max(model.input_size)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=model.mean,
-                         std=model.std)
-])
-
-input_data = tf(input_data)          # 3x400x225 -> 3x299x299
-input_data = input_data.unsqueeze(0) # 3x299x299 -> 1x3x299x299
-input = torch.autograd.Variable(input_data)
-
-# Load Imagenet Synsets
-with open('data/imagenet_synsets.txt', 'rb') as f:
-    synsets = f.readlines()
-
-synsets = [x.strip() for x in synsets] # len(synsets)==1001
-
-# Make predictions
-output = model(input)
-max, argmax = output.data.squeeze().max(0)
-print(path_img, 'is a', synsets[argmax[0]+1])
-```
-
-See also [test/imagenet.py](https://github.com/Cadene/pretrained-models.pytorch/blob/master/test/imagenet.py)
-
-
-## Evaluation on imagenet
-
-
-Download the ImageNet dataset and move validation images to labeled subfolders
-
-```
-python test/imagenet.py /local/data/imagenet_2012/images --arch resnext101_32x4d -e --pretrained
-```
 
 
 ## Reproducing
@@ -225,3 +227,6 @@ python pretrainedmodels/fbresnet/resnet152_load.py
 
 https://github.com/clcarwin/convert_torch_to_pytorch
 
+### Hand porting of InceptionV4 and InceptionResNetV2
+
+https://github.com/Cadene/tensorflow-model-zoo.torch
