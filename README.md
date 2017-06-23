@@ -5,6 +5,32 @@ The goal of this repo is:
 - to help to reproduce research papers results (transfer learning setups),
 - to access pretrained ConvNets with a unique interface/API inspired by torchvision.
 
+## Summary
+
+- [Installation](https://github.com/Cadene/pretrained-models.pytorch#installation)
+- [Toy example](https://github.com/Cadene/pretrained-models.pytorch#toy-example)
+- [Evaluation on ImageNet](https://github.com/Cadene/pretrained-models.pytorch#evaluation-on-imagenet)
+    - [Accuracy on valset](https://github.com/Cadene/pretrained-models.pytorch#accuracy-on-validation-set)
+    - [Reproducing results](https://github.com/Cadene/pretrained-models.pytorch#reproducing-results)
+- [Documentation](https://github.com/Cadene/pretrained-models.pytorch#documentation)
+    - [Available models](https://github.com/Cadene/pretrained-models.pytorch#available-models)
+        - [InceptionV4](https://github.com/Cadene/pretrained-models.pytorch#inception)
+        - [InceptionResNetV2](https://github.com/Cadene/pretrained-models.pytorch#inception)
+        - [ResNeXt101_64x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext)
+        - [ResNeXt101_32x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext)
+        - [FBResNet152](https://github.com/Cadene/pretrained-models.pytorch#facebook-resnet)
+    - [Model API](https://github.com/Cadene/pretrained-models.pytorch#model-api)
+        - [model.input_size](https://github.com/Cadene/pretrained-models.pytorch#modelinput_size)
+        - [model.color_space](https://github.com/Cadene/pretrained-models.pytorch#modelcolor_space)
+        - [model.mean](https://github.com/Cadene/pretrained-models.pytorch#modelmean)
+        - [model.std](https://github.com/Cadene/pretrained-models.pytorch#modelstd)
+        - [model.features](https://github.com/Cadene/pretrained-models.pytorch#modelfeatures)
+        - [model.classif](https://github.com/Cadene/pretrained-models.pytorch#modelclassif)
+        - [model.forward](https://github.com/Cadene/pretrained-models.pytorch#modelforward)
+- [Reproducing porting](https://github.com/Cadene/pretrained-models.pytorch#reproducing)
+    - [ResNet*](https://github.com/Cadene/pretrained-models.pytorch#hand-porting-of-resnet152)
+    - [ResNeXt*](https://github.com/Cadene/pretrained-models.pytorch#automatic-porting-of-resnext)
+    - [Inception*](https://github.com/Cadene/pretrained-models.pytorch#hand-porting-of-inceptionv4-and-inceptionresnetv2)
 
 ## Installation
 
@@ -13,7 +39,7 @@ The goal of this repo is:
 3. `git clone https://github.com/Cadene/pretrained-models.pytorch.git`
 
 
-## Toy Example
+## Toy example
 
 ```python
 from PIL import Image
@@ -154,7 +180,7 @@ Example:
 - `[0.5, 0.5, 0.5]` for inception* networks,
 - `[0.485, 0.456, 0.406]` for resnet* networks.
 
-#### `model.std`
+#### `model.std`
 
 Attribut of type `list` composed of 3 numbers which are used to normalize the input image (divide "color-channel-wise").
 
