@@ -6,13 +6,16 @@ import torch.utils.model_zoo as model_zoo
 __all__ = ['FBResNet', 'fbresnet18', 'fbresnet34', 'fbresnet50', 'fbresnet101',
            'fbresnet152']
 
-
-model_urls = {
-    # 'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
-    # 'resnet34': 'https://download.pytorch.org/models/resnet34-333f7ec4.pth',
-    # 'resnet50': 'https://download.pytorch.org/models/resnet50-19c8e357.pth',
-    # 'resnet101': 'https://download.pytorch.org/models/resnet101-5d3b4d8f.pth',
-    'resnet152': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/resnet152-c11d722e.pth'
+pretrained_settings = {
+    'fbresnet152': {
+        'imagenet': {
+            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/resnet152-c11d722e.pth',
+            'input_space': 'RGB',
+            'input_size': [3, 224, 224],
+            'mean': [0.485, 0.456, 0.406],
+            'std': [0.229, 0.224, 0.225]
+        }
+    }
 }
 
 
@@ -92,13 +95,17 @@ class Bottleneck(nn.Module):
 
         return out
 
-from torch.legacy import nn as nnl
-
 class FBResNet(nn.Module):
 
     def __init__(self, block, layers, num_classes=1000):
         self.inplanes = 64
+        # Special attributs
+        self.input_space = None
+        self.input_size = (299, 299, 3)
+        self.mean = None
+        self.std = None
         super(FBResNet, self).__init__()
+        # Modules
         self.conv1 = nn.Conv2d(3, 64, kernel_size=7, stride=2, padding=3,
                                 bias=True)
         self.bn1 = nn.BatchNorm2d(64)
@@ -155,63 +162,60 @@ class FBResNet(nn.Module):
         return x
 
 
-def fbresnet18(pretrained=False, **kwargs):
+def fbresnet18(num_classes=1000):
     """Constructs a ResNet-18 model.
 
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
-    model = FBResNet(BasicBlock, [2, 2, 2, 2], **kwargs)
-    if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['resnet18']))
+    model = FBResNet(BasicBlock, [2, 2, 2, 2], num_classes=num_classes)
     return model
 
 
-def fbresnet34(pretrained=False, **kwargs):
+def fbresnet34(num_classes=1000):
     """Constructs a ResNet-34 model.
 
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
-    model = FBResNet(BasicBlock, [3, 4, 6, 3], **kwargs)
-    if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['resnet34']))
+    model = FBResNet(BasicBlock, [3, 4, 6, 3], num_classes=num_classes)
     return model
 
 
-def fbresnet50(pretrained=False, **kwargs):
+def fbresnet50(num_classes=1000):
     """Constructs a ResNet-50 model.
 
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
-    model = FBResNet(Bottleneck, [3, 4, 6, 3], **kwargs)
-    if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['resnet50']))
+    model = FBResNet(Bottleneck, [3, 4, 6, 3], num_classes=num_classes)
     return model
 
 
-def fbresnet101(pretrained=False, **kwargs):
+def fbresnet101(num_classes=1000):
     """Constructs a ResNet-101 model.
 
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
-    model = FBResNet(Bottleneck, [3, 4, 23, 3], **kwargs)
-    if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['resnet101']))
+    model = FBResNet(Bottleneck, [3, 4, 23, 3], num_classes=num_classes)
     return model
 
 
-def fbresnet152(pretrained=False, **kwargs):
+def fbresnet152(num_classes=1000, pretrained='imagenet'):
     """Constructs a ResNet-152 model.
 
     Args:
         pretrained (bool): If True, returns a model pre-trained on ImageNet
     """
-    model = FBResNet(Bottleneck, [3, 8, 36, 3], **kwargs)
-    if pretrained:
-        model.load_state_dict(model_zoo.load_url(model_urls['resnet152']))
+    model = FBResNet(Bottleneck, [3, 8, 36, 3], num_classes=num_classes)
+    if pretrained is not None:
+        settings = pretrained_settings['fbresnet152'][pretrained]
+        model.load_state_dict(model_zoo.load_url(settings['url']))
+        model.input_space = settings['input_space']
+        model.input_size = settings['input_size']
+        model.mean = settings['mean']
+        model.std = settings['std']
     return model
 
 

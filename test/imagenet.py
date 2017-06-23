@@ -12,14 +12,14 @@ import torch.utils.data
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
-import torchvision.models as models
+#import torchvision.models as models
 
 import sys
 sys.path.append('.')
-import pretrainedmodels
-models.__dict__['fbresnet152'] = pretrainedmodels.__dict__['fbresnet152']
-models.__dict__['resnext101_32x4d'] = pretrainedmodels.__dict__['resnext101_32x4d']
-models.__dict__['resnext101_64x4d'] = pretrainedmodels.__dict__['resnext101_64x4d']
+import pretrainedmodels as models
+# models.__dict__['fbresnet152'] = pretrainedmodels.__dict__['fbresnet152']
+# models.__dict__['resnext101_32x4d'] = pretrainedmodels.__dict__['resnext101_32x4d']
+# models.__dict__['resnext101_64x4d'] = pretrainedmodels.__dict__['resnext101_64x4d']
 
 model_names = sorted(name for name in models.__dict__
     if not name.startswith("__")
@@ -28,11 +28,11 @@ model_names = sorted(name for name in models.__dict__
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 parser.add_argument('data', metavar='DIR',
                     help='path to dataset')
-parser.add_argument('--arch', '-a', metavar='ARCH', default='resnet18',
+parser.add_argument('--arch', '-a', metavar='ARCH', default='fbresnet152',
                     choices=model_names,
                     help='model architecture: ' +
                         ' | '.join(model_names) +
-                        ' (default: resnet18)')
+                        ' (default: fbresnet152)')
 parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
                     help='number of data loading workers (default: 4)')
 parser.add_argument('--epochs', default=90, type=int, metavar='N',
@@ -66,16 +66,15 @@ def main():
     # create model
     if args.pretrained:
         print("=> using pre-trained model '{}'".format(args.arch))
-        model = models.__dict__[args.arch](pretrained=True)
+        model = models.__dict__[args.arch](pretrained='imagenet')
     else:
         print("=> creating model '{}'".format(args.arch))
         model = models.__dict__[args.arch]()
 
-    if args.arch.startswith('alexnet') or args.arch.startswith('vgg'):
-        model.features = torch.nn.DataParallel(model.features)
-        model.cuda()
-    else:
-        model = torch.nn.DataParallel(model).cuda()
+    # if args.arch.startswith('alexnet') or args.arch.startswith('vgg'):
+    #     model.features = torch.nn.DataParallel(model.features)
+    #     model.cuda()
+    # else:
 
     # optionally resume from a checkpoint
     if args.resume:
@@ -95,12 +94,12 @@ def main():
     # Data loading code
     traindir = os.path.join(args.data, 'train')
     valdir = os.path.join(args.data, 'val')
-    normalize = transforms.Normalize(mean=[0.485, 0.456, 0.406],
-                                     std=[0.229, 0.224, 0.225])
+    normalize = transforms.Normalize(mean=model.mean,
+                                     std=model.std)
 
     train_loader = torch.utils.data.DataLoader(
         datasets.ImageFolder(traindir, transforms.Compose([
-            transforms.RandomSizedCrop(224),
+            transforms.RandomSizedCrop(max(model.input_size)),
             transforms.RandomHorizontalFlip(),
             transforms.ToTensor(),
             normalize,
@@ -108,10 +107,12 @@ def main():
         batch_size=args.batch_size, shuffle=True,
         num_workers=args.workers, pin_memory=True)
 
+    print(round(max(model.input_size)*1.143))
+
     val_loader = torch.utils.data.DataLoader(
         datasets.ImageFolder(valdir, transforms.Compose([
-            transforms.Scale(256),
-            transforms.CenterCrop(224),
+            transforms.Scale(round(max(model.input_size)*1.143)),
+            transforms.CenterCrop(max(model.input_size)),
             transforms.ToTensor(),
             normalize,
         ])),
@@ -124,6 +125,8 @@ def main():
     optimizer = torch.optim.SGD(model.parameters(), args.lr,
                                 momentum=args.momentum,
                                 weight_decay=args.weight_decay)
+
+    model = torch.nn.DataParallel(model).cuda()
 
     if args.evaluate:
         validate(val_loader, model, criterion)
