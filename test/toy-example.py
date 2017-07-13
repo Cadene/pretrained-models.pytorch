@@ -3,12 +3,13 @@ import torch
 import torchvision.transforms as transforms
 
 import sys
-sys.path.append('yourdir/pretrained-models.pytorch') # if needed
+sys.path.append('../pretrained-models.pytorch')
 import pretrainedmodels
 
 # Load Model
 model_name = 'inceptionresnetv2'#'fbresnet152'
-model = pretrainedmodels.__dict__[model_name](num_classes=1001, pretrained='imagenet')
+model = pretrainedmodels.__dict__[model_name](num_classes=1000,
+                                              pretrained='imagenet')
 
 # Load One Input Image
 path_img = 'data/lena.jpg'
