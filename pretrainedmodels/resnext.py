@@ -10,9 +10,27 @@ from .resnext_features import resnext101_64x4d_features
 __all__ = ['ResNeXt101_32x4d', 'resnext101_32x4d',
            'ResNeXt101_64x4d', 'resnext101_64x4d']
 
-model_urls = {
-    'resnext101_32x4d': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/resnext101_32x4d.pth',
-    'resnext101_64x4d': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/resnext101_64x4d.pth'
+pretrained_settings = {
+    'resnext101_32x4d': {
+        'imagenet': {
+            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/resnext101_32x4d.pth',
+            'input_space': 'RGB',
+            'input_size': [3, 224, 224],
+            'mean': [0.485, 0.456, 0.406],
+            'std': [0.229, 0.224, 0.225],
+            'num_classes': 1000
+        }
+    },
+    'resnext101_64x4d': {
+        'imagenet': {
+            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/resnext101_64x4d.pth',
+            'input_space': 'RGB',
+            'input_size': [3, 224, 224],
+            'mean': [0.485, 0.456, 0.406],
+            'std': [0.229, 0.224, 0.225],
+            'num_classes': 1000
+        }
+    }
 }
 
 class ResNeXt101_32x4d(nn.Module):
@@ -47,14 +65,18 @@ class ResNeXt101_64x4d(nn.Module):
         return x
 
 
-def resnext101_32x4d(pretrained=True):
+def resnext101_32x4d(num_classes=1000, pretrained='imagenet'):
     model = ResNeXt101_32x4d()
     if pretrained:
+        settings = pretrained_settings['resnext101_32x4d'][pretrained]
+        assert num_classes == settings['num_classes'], \
+            "num_classes should be {}, but is {}".format(settings['num_classes'], num_classes)
+       
         dir_models = os.path.join(expanduser("~"), '.torch/resnext')
         path_pth = os.path.join(dir_models, 'resnext101_32x4d.pth')
         if not os.path.isfile(path_pth):
             os.system('mkdir -p ' + dir_models)
-            os.system('wget {} {}'.format(model_urls['resnext101_32x4d'], path_pth))
+            os.system('wget {} {}'.format(settings['url'], path_pth))
         state_dict_features = torch.load(path_pth)
         state_dict_fc = collections.OrderedDict()
         state_dict_fc['weight'] = state_dict_features['10.1.weight']
@@ -64,16 +86,25 @@ def resnext101_32x4d(pretrained=True):
         model.features.load_state_dict(state_dict_features)
         model.fc.load_state_dict(state_dict_fc)
 
+        model.input_space = settings['input_space']
+        model.input_size = settings['input_size']
+        model.mean = settings['mean']
+        model.std = settings['std']
+
     return model
 
-def resnext101_64x4d(pretrained=True):
+def resnext101_64x4d(num_classes=1000, pretrained='imagenet'):
     model = ResNeXt101_64x4d()
     if pretrained:
+        settings = pretrained_settings['resnext101_64x4d'][pretrained]
+        assert num_classes == settings['num_classes'], \
+            "num_classes should be {}, but is {}".format(settings['num_classes'], num_classes)
+       
         dir_models = os.path.join(expanduser("~"), '.torch/resnext')
         path_pth = os.path.join(dir_models, 'resnext101_64x4d.pth')
         if not os.path.isfile(path_pth):
             os.system('mkdir -p ' + dir_models)
-            os.system('wget {} {}'.format(model_urls['resnext101_64x4d'], path_pth))
+            os.system('wget {} {}'.format(settings['url'], path_pth))
         state_dict_features = torch.load(path_pth)
         state_dict_fc = collections.OrderedDict()
         state_dict_fc['weight'] = state_dict_features['10.1.weight']
@@ -82,5 +113,10 @@ def resnext101_64x4d(pretrained=True):
         del state_dict_features['10.1.bias']
         model.features.load_state_dict(state_dict_features)
         model.fc.load_state_dict(state_dict_fc)
+
+        model.input_space = settings['input_space']
+        model.input_size = settings['input_size']
+        model.mean = settings['mean']
+        model.std = settings['std']
 
     return model
