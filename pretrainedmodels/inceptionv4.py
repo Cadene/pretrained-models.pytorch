@@ -297,18 +297,46 @@ class InceptionV4(nn.Module):
 
 
 def inceptionv4(num_classes=1001, pretrained='imagenet'):
-    model = InceptionV4(num_classes=num_classes)
-    if pretrained is not None:
+    if pretrained:
         settings = pretrained_settings['inceptionv4'][pretrained]
+        assert num_classes == settings['num_classes'], \
+            "num_classes should be {}, but is {}".format(settings['num_classes'], num_classes)
+
+        # both 'imagenet'&'imagenet+background' are loaded from same parameters
+        model = InceptionV4(num_classes=1001)
         model.load_state_dict(model_zoo.load_url(settings['url']))
+        
         if pretrained == 'imagenet':
             new_classif = nn.Linear(1536, 1000)
             new_classif.weight.data = model.classif.weight.data[1:]
             new_classif.bias.data = model.classif.bias.data[1:]
             model.classif = new_classif
+        
         model.input_space = settings['input_space']
         model.input_size = settings['input_size']
         model.mean = settings['mean']
         model.std = settings['std']
+    else:
+        model = InceptionV4(num_classes=num_classes)
     return model
 
+
+'''
+TEST
+Run this code with:
+```
+cd $HOME/pretrained-models.pytorch
+python -m pretrainedmodels.inceptionv4
+```
+'''
+if __name__ == '__main__':
+
+    assert inceptionv4(num_classes=10, pretrained=None)
+    print('success')
+    assert inceptionv4(num_classes=1000, pretrained='imagenet')
+    print('success')
+    assert inceptionv4(num_classes=1001, pretrained='imagenet+background')
+    print('success')
+
+    # fail
+    assert inceptionv4(num_classes=1001, pretrained='imagenet')

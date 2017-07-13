@@ -66,7 +66,7 @@ def main():
     # create model
     if args.pretrained:
         print("=> using pre-trained model '{}'".format(args.arch))
-        model = models.__dict__[args.arch](pretrained='imagenet')
+        model = models.__dict__[args.arch](num_classes=1000, pretrained='imagenet')
     else:
         print("=> creating model '{}'".format(args.arch))
         model = models.__dict__[args.arch]()
