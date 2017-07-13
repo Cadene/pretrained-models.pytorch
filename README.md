@@ -41,6 +41,8 @@ The goal of this repo is:
 
 ## Toy example
 
+See [test/toy-example.py](https://github.com/Cadene/pretrained-models.pytorch/blob/master/test/toy-example.py)
+
 ```python
 from PIL import Image
 import torch
@@ -51,7 +53,7 @@ sys.path.append('yourdir/pretrained-models.pytorch') # if needed
 import pretrainedmodels
 
 # Load Model
-model_name = 'fbresnet152'
+model_name = 'inceptionresnetv4' #fbresnet152
 model = pretrainedmodels.__dict__[model_name](num_classes=1000, pretrained='imagenet')
 
 # Load One Input Image
@@ -108,7 +110,7 @@ ResNet152 | Our porting | 77.386 | 93.594
 Note: the Pytorch version of ResNet152 is not a porting of the Torch7 but has been retrained by facebook.
 
 Beware, the accuracy reported here is not always representative of the transferable capacity of the network on other tasks and datasets. You must try them all! :P
-
+    
 ### Reproducing results
 
 Download the ImageNet dataset and move validation images to labeled subfolders
