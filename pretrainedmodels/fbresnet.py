@@ -3,7 +3,8 @@ import math
 import torch.utils.model_zoo as model_zoo
 
 
-__all__ = ['FBResNet', 'fbresnet18', 'fbresnet34', 'fbresnet50', 'fbresnet101',
+__all__ = ['FBResNet',
+           'fbresnet18', 'fbresnet34', 'fbresnet50', 'fbresnet101',
            'fbresnet152']
 
 pretrained_settings = {
@@ -13,7 +14,8 @@ pretrained_settings = {
             'input_space': 'RGB',
             'input_size': [3, 224, 224],
             'mean': [0.485, 0.456, 0.406],
-            'std': [0.229, 0.224, 0.225]
+            'std': [0.229, 0.224, 0.225],
+            'num_classes': 1000
         }
     }
 }
@@ -211,6 +213,8 @@ def fbresnet152(num_classes=1000, pretrained='imagenet'):
     model = FBResNet(Bottleneck, [3, 8, 36, 3], num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['fbresnet152'][pretrained]
+        assert num_classes == settings['num_classes'], \
+            "num_classes should be {}, but is {}".format(settings['num_classes'], num_classes)
         model.load_state_dict(model_zoo.load_url(settings['url']))
         model.input_space = settings['input_space']
         model.input_size = settings['input_size']
