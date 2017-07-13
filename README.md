@@ -61,7 +61,7 @@ model = pretrainedmodels.__dict__[model_name](num_classes=1000, pretrained='imag
 model.eval()
 
 # Load One Input Image
-path_img = 'data/lena.jpg'
+path_img = 'data/cat.jpg'
 with open(path_img, 'rb') as f:
     with Image.open(f) as img:
         input_data = img.convert(model.input_space)
@@ -70,8 +70,7 @@ tf = transforms.Compose([
     transforms.Scale(round(max(model.input_size)*1.143)),
     transforms.CenterCrop(max(model.input_size)),
     transforms.ToTensor(),
-    transforms.Normalize(mean=model.mean,
-                         std=model.std)
+    transforms.Normalize(mean=model.mean, std=model.std)
 ])
 
 input_data = tf(input_data)          # 3x400x225 -> 3x299x299
@@ -79,15 +78,28 @@ input_data = input_data.unsqueeze(0) # 3x299x299 -> 1x3x299x299
 input = torch.autograd.Variable(input_data)
 
 # Load Imagenet Synsets
-with open('data/imagenet_synsets.txt', 'rb') as f:
+with open('data/imagenet_synsets.txt', 'r') as f:
     synsets = f.readlines()
 
-synsets = [x.strip() for x in synsets] # len(synsets)==1001
+# len(synsets)==1001
+# sysnets[0] == background
+synsets = [x.strip() for x in synsets]
+splits = [line.split(' ') for line in synsets]
+key_to_classname = {spl[0]:' '.join(spl[1:]) for spl in splits}
 
-# Make predictions
-output = model(input)
+with open('data/imagenet_classes.txt', 'r') as f:
+    class_id_to_key = f.readlines()
+
+class_id_to_key = [x.strip() for x in class_id_to_key]
+
+# Make predictions
+output = model(input) # size(1, 1000)
 max, argmax = output.data.squeeze().max(0)
-print(path_img, 'is a', synsets[argmax[0]+1])
+class_id = argmax[0]
+class_key = class_id_to_key[class_id]
+classname = key_to_classname[class_key]
+
+print(path_img, 'is a', classname) 
 ```
 
 - See also [test/imagenet.py](https://github.com/Cadene/pretrained-models.pytorch/blob/master/test/imagenet.py) to evaluate pretrained models on imagenet.
