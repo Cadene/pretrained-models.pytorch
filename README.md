@@ -41,7 +41,10 @@ The goal of this repo is:
 
 ## Toy example
 
-See [test/toy-example.py](https://github.com/Cadene/pretrained-models.pytorch/blob/master/test/toy-example.py)
+
+- See [test/toy-example.py](https://github.com/Cadene/pretrained-models.pytorch/blob/master/test/toy-example.py) to compute logits of classes appearance with pretrained models on imagenet.
+
+`python test/toy-example.py -a fbresnet152`
 
 ```python
 from PIL import Image
@@ -55,6 +58,7 @@ import pretrainedmodels
 # Load Model
 model_name = 'inceptionresnetv4' #fbresnet152
 model = pretrainedmodels.__dict__[model_name](num_classes=1000, pretrained='imagenet')
+model.eval()
 
 # Load One Input Image
 path_img = 'data/lena.jpg'
@@ -86,7 +90,7 @@ max, argmax = output.data.squeeze().max(0)
 print(path_img, 'is a', synsets[argmax[0]+1])
 ```
 
-See also [test/imagenet.py](https://github.com/Cadene/pretrained-models.pytorch/blob/master/test/imagenet.py)
+- See also [test/imagenet.py](https://github.com/Cadene/pretrained-models.pytorch/blob/master/test/imagenet.py) to evaluate pretrained models on imagenet.
 
 
 ## Evaluation on imagenet

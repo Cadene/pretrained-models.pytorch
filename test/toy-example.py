@@ -1,3 +1,5 @@
+import argparse
+
 from PIL import Image
 import torch
 import torchvision.transforms as transforms
@@ -6,10 +8,22 @@ import sys
 sys.path.append('../pretrained-models.pytorch')
 import pretrainedmodels
 
+model_names = sorted(name for name in pretrainedmodels.__dict__
+    if not name.startswith("__")
+    and callable(pretrainedmodels.__dict__[name]))
+
+parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
+parser.add_argument('--arch', '-a', metavar='ARCH', default='fbresnet152',
+                    choices=model_names,
+                    help='model architecture: ' +
+                        ' | '.join(model_names) +
+                        ' (default: fbresnet152)')
+args = parser.parse_args()
+
 # Load Model
-model_name = 'inceptionresnetv2'#'fbresnet152'
-model = pretrainedmodels.__dict__[model_name](num_classes=1000,
-                                              pretrained='imagenet')
+model = pretrainedmodels.__dict__[args.arch](num_classes=1000,
+                                             pretrained='imagenet')
+model.eval()
 
 # Load One Input Image
 path_img = 'data/lena.jpg'
@@ -36,6 +50,6 @@ with open('data/imagenet_synsets.txt', 'rb') as f:
 synsets = [x.strip() for x in synsets] # len(synsets)==1001
 
 # Make predictions
-output = model(input)
+output = model(input) # size(1, 1000)
 max, argmax = output.data.squeeze().max(0)
-print(path_img, 'is a', synsets[argmax[0]+1])
+print(path_img, 'is a', synsets[argmax[0]+1]) # sysnets[0] == background
