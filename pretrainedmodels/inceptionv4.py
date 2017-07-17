@@ -12,6 +12,7 @@ pretrained_settings = {
             'url': 'http://webia.lip6.fr/~cadene/Downloads/inceptionv4-97ef9c30.pth',
             'input_space': 'RGB',
             'input_size': [3, 299, 299],
+            'input_range': [0, 1],
             'mean': [0.5, 0.5, 0.5],
             'std': [0.5, 0.5, 0.5],
             'num_classes': 1000
@@ -20,6 +21,7 @@ pretrained_settings = {
             'url': 'http://webia.lip6.fr/~cadene/Downloads/inceptionv4-97ef9c30.pth',
             'input_space': 'RGB',
             'input_size': [3, 299, 299],
+            'input_range': [0, 1],
             'mean': [0.5, 0.5, 0.5],
             'std': [0.5, 0.5, 0.5],
             'num_classes': 1001
@@ -314,6 +316,7 @@ def inceptionv4(num_classes=1001, pretrained='imagenet'):
         
         model.input_space = settings['input_space']
         model.input_size = settings['input_size']
+        model.input_range = settings['input_range']
         model.mean = settings['mean']
         model.std = settings['std']
     else:

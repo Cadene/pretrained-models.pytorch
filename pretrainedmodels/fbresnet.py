@@ -13,6 +13,7 @@ pretrained_settings = {
             'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/resnet152-c11d722e.pth',
             'input_space': 'RGB',
             'input_size': [3, 224, 224],
+            'input_range': [0, 1],
             'mean': [0.485, 0.456, 0.406],
             'std': [0.229, 0.224, 0.225],
             'num_classes': 1000
@@ -218,6 +219,7 @@ def fbresnet152(num_classes=1000, pretrained='imagenet'):
         model.load_state_dict(model_zoo.load_url(settings['url']))
         model.input_space = settings['input_space']
         model.input_size = settings['input_size']
+        model.input_range = settings['input_range']
         model.mean = settings['mean']
         model.std = settings['std']
     return model

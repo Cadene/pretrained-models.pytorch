@@ -17,6 +17,7 @@ import torchvision.datasets as datasets
 import sys
 sys.path.append('.')
 import pretrainedmodels as models
+
 # models.__dict__['fbresnet152'] = pretrainedmodels.__dict__['fbresnet152']
 # models.__dict__['resnext101_32x4d'] = pretrainedmodels.__dict__['resnext101_32x4d']
 # models.__dict__['resnext101_64x4d'] = pretrainedmodels.__dict__['resnext101_64x4d']
@@ -59,6 +60,29 @@ parser.add_argument('--pretrained', dest='pretrained', action='store_true',
 best_prec1 = 0
 
 
+class ToSpaceBGR(object):
+
+    def __init__(self, is_bgr):
+        self.is_bgr = is_bgr
+
+    def __call__(self, tensor):
+        if self.is_bgr:
+            new_tensor = tensor.clone()
+            new_tensor[0] = tensor[2]
+            new_tensor[2] = tensor[0]
+            tensor = new_tensor
+        return tensor
+
+class ToRange255(object):
+
+    def __init__(self, is_255):
+        self.is_255 = is_255
+
+    def __call__(self, tensor):
+        if self.is_255:
+            tensor.mul_(255)
+        return tensor
+
 def main():
     global args, best_prec1
     args = parser.parse_args()
@@ -97,15 +121,15 @@ def main():
     normalize = transforms.Normalize(mean=model.mean,
                                      std=model.std)
 
-    train_loader = torch.utils.data.DataLoader(
-        datasets.ImageFolder(traindir, transforms.Compose([
-            transforms.RandomSizedCrop(max(model.input_size)),
-            transforms.RandomHorizontalFlip(),
-            transforms.ToTensor(),
-            normalize,
-        ])),
-        batch_size=args.batch_size, shuffle=True,
-        num_workers=args.workers, pin_memory=True)
+    # train_loader = torch.utils.data.DataLoader(
+    #     datasets.ImageFolder(traindir, transforms.Compose([
+    #         transforms.RandomSizedCrop(max(model.input_size)),
+    #         transforms.RandomHorizontalFlip(),
+    #         transforms.ToTensor(),
+    #         normalize,
+    #     ])),
+    #     batch_size=args.batch_size, shuffle=True,
+    #     num_workers=args.workers, pin_memory=True)
 
     print(round(max(model.input_size)*1.143))
 
@@ -114,6 +138,8 @@ def main():
             transforms.Scale(round(max(model.input_size)*1.143)),
             transforms.CenterCrop(max(model.input_size)),
             transforms.ToTensor(),
+            ToSpaceBGR(model.input_space=='BGR'),
+            ToRange255(max(model.input_range)==255),
             normalize,
         ])),
         batch_size=args.batch_size, shuffle=False,

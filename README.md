@@ -2,8 +2,13 @@
 
 The goal of this repo is:
 
-- to help to reproduce research papers results (transfer learning setups),
+- to help to reproduce research papers results (transfer learning setups for instance),
 - to access pretrained ConvNets with a unique interface/API inspired by torchvision.
+
+News:
+
+- model.input_range attribut (added on 17/07/2017)
+- BNInception pretrained on ImageNet (added on 17/07/2017)
 
 ## Summary
 
@@ -16,12 +21,14 @@ The goal of this repo is:
     - [Available models](https://github.com/Cadene/pretrained-models.pytorch#available-models)
         - [InceptionV4](https://github.com/Cadene/pretrained-models.pytorch#inception)
         - [InceptionResNetV2](https://github.com/Cadene/pretrained-models.pytorch#inception)
+        - [BNInception](https://github.com/Cadene/pretrained-models.pytorch#bninception)
         - [ResNeXt101_64x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext)
         - [ResNeXt101_32x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext)
         - [FBResNet152](https://github.com/Cadene/pretrained-models.pytorch#facebook-resnet)
     - [Model API](https://github.com/Cadene/pretrained-models.pytorch#model-api)
         - [model.input_size](https://github.com/Cadene/pretrained-models.pytorch#modelinput_size)
-        - [model.color_space](https://github.com/Cadene/pretrained-models.pytorch#modelcolor_space)
+        - [model.input_space](https://github.com/Cadene/pretrained-models.pytorch#modelinput_space)
+        - [model.input_range](https://github.com/Cadene/pretrained-models.pytorch#modelinput_range)
         - [model.mean](https://github.com/Cadene/pretrained-models.pytorch#modelmean)
         - [model.std](https://github.com/Cadene/pretrained-models.pytorch#modelstd)
         - [model.features](https://github.com/Cadene/pretrained-models.pytorch#modelfeatures)
@@ -122,6 +129,7 @@ ResNet152 | [Pytorch](https://github.com/pytorch/vision#models) | 78.312 | 94.04
 ResNeXt101_32x4d | Our porting | 78.188 | 93.886
 ResNet152 | [Torch7](https://github.com/facebook/fb.resnet.torch) | 77.84 | 93.84
 ResNet152 | Our porting | 77.386 | 93.594
+BNInception | Our porting | 73.522 | 91.560
 
 Note: the Pytorch version of ResNet152 is not a porting of the Torch7 but has been retrained by facebook.
 
@@ -157,6 +165,12 @@ Source: [TensorFlow Slim repo](https://github.com/tensorflow/models/tree/master/
 - `inceptionresnetv2(num_classes=1000, pretrained='imagenet')`
 - `inceptionresnetv2(num_classes=1001, pretrained='imagenet+background')`
 
+#### BNInception
+
+Source: [Trained with Caffe](https://github.com/Cadene/tensorflow-model-zoo.torch/pull/2) by [Xiong Yuanjun](http://yjxiong.me)
+
+- `bninception(num_classes=1000, pretrained='imagenet')`
+
 #### ResNeXt*
 
 Source: [ResNeXt repo of FaceBook](https://github.com/facebookresearch/ResNeXt)
@@ -184,9 +198,22 @@ Example:
 - `[3, 224, 224]` for resnet* networks.
 
 
-#### `model.color_space`
+#### `model.input_space`
 
 Attribut of type `str` representating the color space of the image. Can be `RGB` or `BGR`.
+
+
+#### `model.input_range`
+
+Attribut of type `list` composed of 2 numbers:
+
+- min pixel value,
+- max pixel value.
+
+Example:
+
+- `[0, 1]` for resnet* and inception* networks,
+- `[0, 255]` for bninception network.
 
 
 #### `model.mean`
@@ -198,6 +225,7 @@ Example:
 - `[0.5, 0.5, 0.5]` for inception* networks,
 - `[0.485, 0.456, 0.406]` for resnet* networks.
 
+
 #### `model.std`
 
 Attribut of type `list` composed of 3 numbers which are used to normalize the input image (divide "color-channel-wise").
@@ -207,9 +235,10 @@ Example:
 - `[0.5, 0.5, 0.5]` for inception* networks,
 - `[0.229, 0.224, 0.225]` for resnet* networks.
 
+
 #### `model.features`
 
-Attribut of type `nn.Module` which is used to extract the features from the image.
+Method which is used to extract the features from the image.
 
 Example when the model is loaded using `fbresnet152`:
 
@@ -226,7 +255,7 @@ output = model.features(input_448)
 
 #### `model.classif`
 
-Attribut of type `nn.Module` which is used to classify the features from the image.
+Method which is used to classify the features from the image.
 
 Example when the model is loaded using `fbresnet152`:
 
