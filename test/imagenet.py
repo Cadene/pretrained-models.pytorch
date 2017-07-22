@@ -54,8 +54,7 @@ parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
 parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
                     help='evaluate model on validation set')
-parser.add_argument('--pretrained', dest='pretrained', action='store_true',
-                    help='use pre-trained model')
+parser.add_argument('--pretrained', default='imagenet', help='use pre-trained model')
 
 best_prec1 = 0
 
@@ -88,11 +87,11 @@ def main():
     args = parser.parse_args()
 
     # create model
-    if args.pretrained:
-        print("=> using pre-trained model '{}'".format(args.arch))
-        model = models.__dict__[args.arch](num_classes=1000, pretrained='imagenet')
+    print("=> creating model '{}'".format(args.arch))
+    if args.pretrained.lower() not in ['false', 'none', 'not', 'no', '0']:
+        print("=> using pre-trained parameters '{}'".format(args.pretrained))
+        model = models.__dict__[args.arch](num_classes=1000, pretrained=args.pretrained)
     else:
-        print("=> creating model '{}'".format(args.arch))
         model = models.__dict__[args.arch]()
 
     # if args.arch.startswith('alexnet') or args.arch.startswith('vgg'):
@@ -131,11 +130,13 @@ def main():
     #     batch_size=args.batch_size, shuffle=True,
     #     num_workers=args.workers, pin_memory=True)
 
-    print(round(max(model.input_size)*1.143))
+    print('Images transformed from size {} to {}'.format(
+        round(max(model.input_size)*1.050),
+        model.input_size))
 
     val_loader = torch.utils.data.DataLoader(
         datasets.ImageFolder(valdir, transforms.Compose([
-            transforms.Scale(round(max(model.input_size)*1.143)),
+            transforms.Scale(round(max(model.input_size)*1.050)),
             transforms.CenterCrop(max(model.input_size)),
             transforms.ToTensor(),
             ToSpaceBGR(model.input_space=='BGR'),

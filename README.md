@@ -7,8 +7,10 @@ The goal of this repo is:
 
 News:
 
-- model.input_range attribut (added on 17/07/2017)
-- BNInception pretrained on ImageNet (added on 17/07/2017)
+- 22/07/2017: torchvision pretrained models
+- 22/07/2017: momentum in inceptionv4 and inceptionresnetv2 to 0.1
+- 17/07/2017: model.input_range attribut
+- 17/07/2017: BNInception pretrained on ImageNet
 
 ## Summary
 
@@ -19,12 +21,33 @@ News:
     - [Reproducing results](https://github.com/Cadene/pretrained-models.pytorch#reproducing-results)
 - [Documentation](https://github.com/Cadene/pretrained-models.pytorch#documentation)
     - [Available models](https://github.com/Cadene/pretrained-models.pytorch#available-models)
+        - [BNInception](https://github.com/Cadene/pretrained-models.pytorch#bninception)
+        - [InceptionV3](https://github.com/Cadene/pretrained-models.pytorch#inception)
         - [InceptionV4](https://github.com/Cadene/pretrained-models.pytorch#inception)
         - [InceptionResNetV2](https://github.com/Cadene/pretrained-models.pytorch#inception)
-        - [BNInception](https://github.com/Cadene/pretrained-models.pytorch#bninception)
         - [ResNeXt101_64x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext)
         - [ResNeXt101_32x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext)
+        - [ResNet18](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [ResNet34](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [ResNet50](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [ResNet101](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [ResNet152](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [FBResNet152](https://github.com/Cadene/pretrained-models.pytorch#facebook-resnet)
+        - [DenseNet121](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [DenseNet161](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [DenseNet169](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [DenseNet201](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [SqueezeNet1_0](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [SqueezeNet1_1](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [AlexNet](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [VGG11](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [VGG13](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [VGG16](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [VGG19](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [VGG11_BN](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [VGG13_BN](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [VGG16_BN](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [VGG19_BN](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
     - [Model API](https://github.com/Cadene/pretrained-models.pytorch#model-api)
         - [model.input_size](https://github.com/Cadene/pretrained-models.pytorch#modelinput_size)
         - [model.input_space](https://github.com/Cadene/pretrained-models.pytorch#modelinput_space)
@@ -116,7 +139,7 @@ print(path_img, 'is a', classname)
 
 ### Accuracy on validation set
 
-Model | Version | Prec@1 | Prec@5
+Model | Version | Acc@1 | Acc@5
 --- | --- | --- | ---
 InceptionResNetV2 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.4 | 95.3
 InceptionV4 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.2 | 95.3
@@ -125,11 +148,37 @@ InceptionV4 | Our porting | 80.062 | 94.926
 ResNeXt101_64x4d | [Torch7](https://github.com/facebookresearch/ResNeXt) | 79.6 | 94.7
 ResNeXt101_64x4d | Our porting | 78.956 | 94.252
 ResNeXt101_32x4d | [Torch7](https://github.com/facebookresearch/ResNeXt) | 78.8 | 94.4
-ResNet152 | [Pytorch](https://github.com/pytorch/vision#models) | 78.312 | 94.046
+ResNet152 | [Pytorch](https://github.com/pytorch/vision#models) | 78.428 | 94.110
 ResNeXt101_32x4d | Our porting | 78.188 | 93.886
-ResNet152 | [Torch7](https://github.com/facebook/fb.resnet.torch) | 77.84 | 93.84
-ResNet152 | Our porting | 77.386 | 93.594
-BNInception | Our porting | 73.522 | 91.560
+FBResNet152 | [Torch7](https://github.com/facebook/fb.resnet.torch) | 77.84 | 93.84
+DenseNet161 | [Pytorch](https://github.com/pytorch/vision#models) | 77.560 | 93.798
+FBResNet152 | Our porting | 77.386 | 93.594
+InceptionV3 | [Pytorch](https://github.com/pytorch/vision#models) | 77.294 | 93.454
+DenseNet201 | [Pytorch](https://github.com/pytorch/vision#models) | 77.152 | 93.548
+ResNet101 | [Pytorch](https://github.com/pytorch/vision#models) | 77.438 | 93.672
+DenseNet169 | [Pytorch](https://github.com/pytorch/vision#models) | 76.026 | 92.992
+ResNet50 | [Pytorch](https://github.com/pytorch/vision#models) | 76.002 | 92.980
+DenseNet121 | [Pytorch](https://github.com/pytorch/vision#models) | 74.646 | 92.136
+VGG19_BN | [Pytorch](https://github.com/pytorch/vision#models) | 74.266 | 92.066
+ResNet34 | [Pytorch](https://github.com/pytorch/vision#models) | 73.554 | 91.456
+BNInception | [Caffe](https://github.com/Cadene/tensorflow-model-zoo.torch/pull/2) | 73.522 | 91.560
+VGG16_BN | [Pytorch](https://github.com/pytorch/vision#models) | 73.518 | 91.608
+VGG19 | [Pytorch](https://github.com/pytorch/vision#models) | 72.080 | 90.822
+VGG16 | [Pytorch](https://github.com/pytorch/vision#models) | 71.636 | 90.354
+VGG13_BN | [Pytorch](https://github.com/pytorch/vision#models) | 71.508 | 90.494
+VGG11_BN | [Pytorch](https://github.com/pytorch/vision#models) | 70.452 | 89.818
+ResNet18 | [Pytorch](https://github.com/pytorch/vision#models) | 70.142 | 89.274
+VGG13 | [Pytorch](https://github.com/pytorch/vision#models) | 69.662 | 89.264
+VGG11 | [Pytorch](https://github.com/pytorch/vision#models) | 68.970 | 88.746
+SqueezeNet1_1 | [Pytorch](https://github.com/pytorch/vision#models) | 58.250 | 80.800
+SqueezeNet1_0 | [Pytorch](https://github.com/pytorch/vision#models) | 58.108 | 80.428
+Alexnet | [Pytorch](https://github.com/pytorch/vision#models) | 56.432 | 79.194
+
+
+
+
+
+
 
 Note: the Pytorch version of ResNet152 is not a porting of the Torch7 but has been retrained by facebook.
 
@@ -140,7 +189,7 @@ Beware, the accuracy reported here is not always representative of the transfera
 Download the ImageNet dataset and move validation images to labeled subfolders
 
 ```
-python test/imagenet.py /local/data/imagenet_2012/images --arch resnext101_32x4d -e --pretrained
+python test/imagenet.py /local/data/imagenet_2012/images --arch resnext101_32x4d -e
 ```
 
 
@@ -158,12 +207,13 @@ There are a bit different from the ResNet* of torchvision. ResNet152 is currentl
 
 #### Inception*
 
-Source: [TensorFlow Slim repo](https://github.com/tensorflow/models/tree/master/slim)
+Source: [TensorFlow Slim repo](https://github.com/tensorflow/models/tree/master/slim) and [Pytorch/Vision repo](https://github.com/pytorch/vision/tree/master/torchvision) for `inceptionv3`
 
-- `inceptionv4(num_classes=1000, pretrained='imagenet')`
-- `inceptionv4(num_classes=1001, pretrained='imagenet+background')`
 - `inceptionresnetv2(num_classes=1000, pretrained='imagenet')`
 - `inceptionresnetv2(num_classes=1001, pretrained='imagenet+background')`
+- `inceptionv4(num_classes=1000, pretrained='imagenet')`
+- `inceptionv4(num_classes=1001, pretrained='imagenet+background')`
+- `inceptionv3(num_classes=1000, pretrained='imagenet')`
 
 #### BNInception
 
@@ -177,6 +227,33 @@ Source: [ResNeXt repo of FaceBook](https://github.com/facebookresearch/ResNeXt)
 
 - `resnext101_32x4d(num_classes=1000, pretrained='imagenet')`
 - `resnext101_62x4d(num_classes=1000, pretrained='imagenet')`
+
+#### TorchVision
+Source: [Pytorch/Vision repo](https://github.com/pytorch/vision/tree/master/torchvision)
+
+(`inceptionv3` included in [Inception*](https://github.com/Cadene/pretrained-models.pytorch#inception))
+
+- `resnet18(num_classes=1000, pretrained='imagenet')`
+- `resnet34(num_classes=1000, pretrained='imagenet')`
+- `resnet50(num_classes=1000, pretrained='imagenet')`
+- `resnet101(num_classes=1000, pretrained='imagenet')`
+- `resnet152(num_classes=1000, pretrained='imagenet')`
+- `densenet121(num_classes=1000, pretrained='imagenet')`
+- `densenet161(num_classes=1000, pretrained='imagenet')`
+- `densenet169(num_classes=1000, pretrained='imagenet')`
+- `densenet201(num_classes=1000, pretrained='imagenet')`
+- `squeezenet1_0(num_classes=1000, pretrained='imagenet')`
+- `squeezenet1_1(num_classes=1000, pretrained='imagenet')`
+- `alexnet(num_classes=1000, pretrained='imagenet')`
+- `vgg11(num_classes=1000, pretrained='imagenet')`
+- `vgg13(num_classes=1000, pretrained='imagenet')`
+- `vgg16(num_classes=1000, pretrained='imagenet')`
+- `vgg19(num_classes=1000, pretrained='imagenet')`
+- `vgg11_bn(num_classes=1000, pretrained='imagenet')`
+- `vgg13_bn(num_classes=1000, pretrained='imagenet')`
+- `vgg16_bn(num_classes=1000, pretrained='imagenet')`
+- `vgg19_bn(num_classes=1000, pretrained='imagenet')`
+
 
 ### Model API
 
@@ -238,6 +315,8 @@ Example:
 
 #### `model.features`
 
+/!\ work in progress (may not be available)
+
 Method which is used to extract the features from the image.
 
 Example when the model is loaded using `fbresnet152`:
@@ -254,6 +333,8 @@ output = model.features(input_448)
 
 
 #### `model.classif`
+
+/!\ work in progress (may not be available)
 
 Method which is used to classify the features from the image.
 
@@ -284,8 +365,6 @@ print(output.size())      # (1,1000)
 ```
 
 
-
-
 ## Reproducing
 
 
@@ -303,3 +382,8 @@ https://github.com/clcarwin/convert_torch_to_pytorch
 ### Hand porting of InceptionV4 and InceptionResNetV2
 
 https://github.com/Cadene/tensorflow-model-zoo.torch
+
+
+## Acknowledgement
+
+Thanks to the deep learning community and especially to the contributers of the pytorch ecosystem.
