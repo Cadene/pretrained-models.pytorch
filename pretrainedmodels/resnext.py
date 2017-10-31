@@ -1,6 +1,6 @@
 import os
 from os.path import expanduser
-import collections 
+import collections
 import torch
 import torch.nn as nn
 from torch.autograd import Variable
@@ -73,12 +73,12 @@ def resnext101_32x4d(num_classes=1000, pretrained='imagenet'):
         settings = pretrained_settings['resnext101_32x4d'][pretrained]
         assert num_classes == settings['num_classes'], \
             "num_classes should be {}, but is {}".format(settings['num_classes'], num_classes)
-       
+
         dir_models = os.path.join(expanduser("~"), '.torch/resnext')
         path_pth = os.path.join(dir_models, 'resnext101_32x4d.pth')
         if not os.path.isfile(path_pth):
             os.system('mkdir -p ' + dir_models)
-            os.system('wget {} {}'.format(settings['url'], path_pth))
+            os.system('wget {} -O {}'.format(settings['url'], path_pth))
         state_dict_features = torch.load(path_pth)
         state_dict_fc = collections.OrderedDict()
         state_dict_fc['weight'] = state_dict_features['10.1.weight']
@@ -101,12 +101,12 @@ def resnext101_64x4d(num_classes=1000, pretrained='imagenet'):
         settings = pretrained_settings['resnext101_64x4d'][pretrained]
         assert num_classes == settings['num_classes'], \
             "num_classes should be {}, but is {}".format(settings['num_classes'], num_classes)
-       
+
         dir_models = os.path.join(expanduser("~"), '.torch/resnext')
         path_pth = os.path.join(dir_models, 'resnext101_64x4d.pth')
         if not os.path.isfile(path_pth):
             os.system('mkdir -p ' + dir_models)
-            os.system('wget {} {}'.format(settings['url'], path_pth))
+            os.system('wget {} -O {}'.format(settings['url'], path_pth))
         state_dict_features = torch.load(path_pth)
         state_dict_fc = collections.OrderedDict()
         state_dict_fc['weight'] = state_dict_features['10.1.weight']
