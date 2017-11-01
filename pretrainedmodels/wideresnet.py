@@ -32,7 +32,7 @@ def define_model(params):
                 o += x
             o = F.relu(o)
         return o
-    
+
     # determine network size by parameters
     blocks = [sum([re.match('group%d.block\d+.conv0.weight'%j, k) is not None
                    for k in params.keys()]) for j in range(4)]
@@ -60,7 +60,7 @@ class WideResNet(nn.Module):
         super(WideResNet, self).__init__()
         self.pooling = pooling
         self.params = params
-        
+
     def forward(self, x):
         x = f(x, self.params, self.pooling)
         return x
@@ -77,7 +77,7 @@ def wideresnet50(pooling):
             params[k] = Variable(torch.from_numpy(v), requires_grad=True)
     else:
         os.system('mkdir -p ' + dir_models)
-        os.system('wget {} {}'.format(model_urls['wideresnet50'], path_hkl))
+        os.system('wget {} -O {}'.format(model_urls['wideresnet50'], path_hkl))
     f = define_model(params)
     model = WideResNet(pooling)
     return model
