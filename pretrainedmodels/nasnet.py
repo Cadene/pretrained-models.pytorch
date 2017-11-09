@@ -31,12 +31,12 @@ class TwoSeparables(nn.Module):
     def __init__(self, in_channels, out_channels, dw_kernel, dw_stride, dw_padding, bias=False):
         super(TwoSeparables, self).__init__()
         if _PYTORCH_MASTER:
-            self.separable_0 = nn.Conv2d(in_channels, in_channels*out_channels, dw_kernel, dw_stride, dw_padding, bias=bias, groups=in_channels)
+            self.separable_0 = nn.Conv2d(in_channels, out_channels, dw_kernel, dw_stride, dw_padding, bias=bias, groups=in_channels)
         else:
             self.separable_0 = SeparableConv2d(in_channels, in_channels, dw_kernel, dw_stride, dw_padding, bias=bias)
         self.bn_0 = nn.BatchNorm2d(in_channels, eps=0.001, momentum=0.1, affine=True)
         if _PYTORCH_MASTER:
-            self.separable_1 = nn.Conv2d(in_channels, in_channels*out_channels, dw_kernel, 1, dw_padding, bias=bias, groups=in_channels)
+            self.separable_1 = nn.Conv2d(in_channels, out_channels, dw_kernel, 1, dw_padding, bias=bias, groups=in_channels)
         else:
             self.separable_1 = SeparableConv2d(in_channels, out_channels, dw_kernel, 1, dw_padding, bias=bias)
         self.bn_1 = nn.BatchNorm2d(out_channels, eps=0.001, momentum=0.1, affine=True)
