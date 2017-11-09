@@ -3,6 +3,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch.autograd import Variable
 
+# Faster implementation of the separable convolution
+# Won't work if you don't have the last version of pytorch (from master)
+# https://github.com/pytorch/vision/issues/321#issuecomment-342207053
+# https://github.com/pytorch/pytorch/pull/3057
+_PYTORCH_MASTER = False
+
 class SeparableConv2d(nn.Module):
 
     def __init__(self, in_channels, out_channels, dw_kernel, dw_stride, dw_padding, bias=False):
@@ -24,9 +30,15 @@ class TwoSeparables(nn.Module):
 
     def __init__(self, in_channels, out_channels, dw_kernel, dw_stride, dw_padding, bias=False):
         super(TwoSeparables, self).__init__()
-        self.separable_0 = SeparableConv2d(in_channels, in_channels, dw_kernel, dw_stride, dw_padding, bias=bias)
+        if _PYTORCH_MASTER:
+            self.separable_0 = nn.Conv2d(in_channels, in_channels*out_channels, dw_kernel, dw_stride, dw_padding, bias=bias, groups=in_channels)
+        else:
+            self.separable_0 = SeparableConv2d(in_channels, in_channels, dw_kernel, dw_stride, dw_padding, bias=bias)
         self.bn_0 = nn.BatchNorm2d(in_channels, eps=0.001, momentum=0.1, affine=True)
-        self.separable_1 = SeparableConv2d(in_channels, out_channels, dw_kernel, 1, dw_padding, bias=bias)
+        if _PYTORCH_MASTER:
+            self.separable_1 = nn.Conv2d(in_channels, in_channels*out_channels, dw_kernel, 1, dw_padding, bias=bias, groups=in_channels)
+        else:
+            self.separable_1 = SeparableConv2d(in_channels, out_channels, dw_kernel, 1, dw_padding, bias=bias)
         self.bn_1 = nn.BatchNorm2d(out_channels, eps=0.001, momentum=0.1, affine=True)
 
     def forward(self, x):
