@@ -50,6 +50,24 @@ class TwoSeparables(nn.Module):
         x = self.bn_1(x)
         return x
 
+class TwoSeparablesReduction(nn.Module):
+
+    def __init__(self, in_channels, out_channels, dw_kernel, dw_stride, dw_padding, bias=False):
+        super(TwoSeparablesReduction, self).__init__()
+        self.separable_0 = SeparableConv2d(in_channels, in_channels, dw_kernel, dw_stride, dw_padding, bias=bias)
+        self.bn_0 = nn.BatchNorm2d(in_channels, eps=0.001, momentum=0.1, affine=True)
+        self.separable_1 = SeparableConv2d(in_channels, out_channels, dw_kernel, 1, dw_padding, bias=bias)
+        self.bn_1 = nn.BatchNorm2d(out_channels, eps=0.001, momentum=0.1, affine=True)
+
+    def forward(self, x):
+        x = F.relu(x)
+        x = self.separable_0(x)
+        x = self.bn_0(x)
+        x = F.relu(x)
+        x = self.separable_1(x)
+        x = self.bn_1(x)
+        return x
+
 
 class CellStem0(nn.Module):
 
@@ -59,13 +77,13 @@ class CellStem0(nn.Module):
         self.bn_0 = nn.BatchNorm2d(42, eps=0.001, momentum=0.1, affine=True)
 
         self.comb_iter_0_left = TwoSeparables(42, 42, 5, 2, 2, bias=False)
-        self.comb_iter_0_right = TwoSeparables(96, 42, 7, 2, 3, bias=False)
+        self.comb_iter_0_right = TwoSeparablesReduction(96, 42, 7, 2, 3, bias=False)
 
         self.comb_iter_1_left = nn.AvgPool2d(3, stride=2, padding=1)
-        self.comb_iter_1_right = TwoSeparables(96, 42, 7, 2, 3, bias=False)
+        self.comb_iter_1_right = TwoSeparablesReduction(96, 42, 7, 2, 3, bias=False)
 
         self.comb_iter_2_left = nn.MaxPool2d(3, stride=2, padding=1)
-        self.comb_iter_2_right = TwoSeparables(96, 42, 5, 2, 2, bias=False)
+        self.comb_iter_2_right = TwoSeparablesReduction(96, 42, 5, 2, 2, bias=False)
 
         self.comb_iter_3_right = nn.AvgPool2d(3, stride=1, padding=1)
 
