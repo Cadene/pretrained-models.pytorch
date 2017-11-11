@@ -49,10 +49,10 @@ class CellStem0(nn.Module):
         self.comb_iter_0_left = TwoSeparables(42, 42, 5, 2, 2, bias=False)
         self.comb_iter_0_right = TwoSeparables(96, 42, 7, 2, 3, bias=False)
 
-        self.comb_iter_1_left = nn.AvgPool2d(3, stride=2, padding=1)
+        self.comb_iter_1_left = nn.MaxPool2d(3, stride=2, padding=1)
         self.comb_iter_1_right = TwoSeparables(96, 42, 7, 2, 3, bias=False)
 
-        self.comb_iter_2_left = nn.MaxPool2d(3, stride=2, padding=1)
+        self.comb_iter_2_left = nn.AvgPool2d(3, stride=2, padding=1)
         self.comb_iter_2_right = TwoSeparables(96, 42, 5, 2, 2, bias=False)
 
         self.comb_iter_3_right = nn.AvgPool2d(3, stride=1, padding=1)
