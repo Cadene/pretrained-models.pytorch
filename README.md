@@ -21,6 +21,7 @@ News:
     - [Reproducing results](https://github.com/Cadene/pretrained-models.pytorch#reproducing-results)
 - [Documentation](https://github.com/Cadene/pretrained-models.pytorch#documentation)
     - [Available models](https://github.com/Cadene/pretrained-models.pytorch#available-models)
+        - [NasNetLarge](https://github.com/Cadene/pretrained-models.pytorch#nasnet)
         - [BNInception](https://github.com/Cadene/pretrained-models.pytorch#bninception)
         - [InceptionV3](https://github.com/Cadene/pretrained-models.pytorch#inception)
         - [InceptionV4](https://github.com/Cadene/pretrained-models.pytorch#inception)
@@ -141,6 +142,8 @@ print(path_img, 'is a', classname)
 
 Model | Version | Acc@1 | Acc@5
 --- | --- | --- | ---
+nasnetLarge | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 82.693 | 96.163
+NasNetLarge | Our porting | 82.566 | 96.086
 InceptionResNetV2 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.4 | 95.3
 InceptionV4 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.2 | 95.3
 InceptionResNetV2 | Our porting | 80.170 | 95.234
@@ -196,6 +199,13 @@ python test/imagenet.py /local/data/imagenet_2012/images --arch resnext101_32x4d
 ## Documentation
 
 ### Available models
+
+#### NasNet*
+
+Source: [TensorFlow Slim repo](https://github.com/tensorflow/models/tree/master/slim)
+
+- `nasnetlarge(num_classes=1000, pretrained='imagenet')`
+- `nasnetlarge(num_classes=1001, pretrained='imagenet+background')`
 
 #### FaceBook ResNet*
 
