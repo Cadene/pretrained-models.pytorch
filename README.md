@@ -7,10 +7,11 @@ The goal of this repo is:
 
 News:
 
+- 16/11/2017: nasnet-a-large pretrained model ported by T. Durand and R. Cadene
 - 22/07/2017: torchvision pretrained models
 - 22/07/2017: momentum in inceptionv4 and inceptionresnetv2 to 0.1
 - 17/07/2017: model.input_range attribut
-- 17/07/2017: BNInception pretrained on ImageNet
+- 17/07/2017: BNInception pretrained on Imagenet
 
 ## Summary
 
@@ -138,12 +139,12 @@ print(path_img, 'is a', classname)
 
 ## Evaluation on imagenet
 
-### Accuracy on validation set
+### Accuracy on validation set (single model)
 
 Model | Version | Acc@1 | Acc@5
 --- | --- | --- | ---
-nasnetLarge | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 82.693 | 96.163
-NasNetLarge | Our porting | 82.566 | 96.086
+NASNet-A-Large | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 82.693 | 96.163
+NASNet-A-Large | Our porting | 82.566 | 96.086
 InceptionResNetV2 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.4 | 95.3
 InceptionV4 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.2 | 95.3
 InceptionResNetV2 | Our porting | 80.170 | 95.234
@@ -200,7 +201,7 @@ python test/imagenet.py /local/data/imagenet_2012/images --arch resnext101_32x4d
 
 ### Available models
 
-#### NasNet*
+#### NASNet*
 
 Source: [TensorFlow Slim repo](https://github.com/tensorflow/models/tree/master/slim)
 
@@ -377,7 +378,6 @@ print(output.size())      # (1,1000)
 
 ## Reproducing
 
-
 ### Hand porting of ResNet152
 
 ```
@@ -389,7 +389,7 @@ python pretrainedmodels/fbresnet/resnet152_load.py
 
 https://github.com/clcarwin/convert_torch_to_pytorch
 
-### Hand porting of InceptionV4 and InceptionResNetV2
+### Hand porting of NASNet, InceptionV4 and InceptionResNetV2
 
 https://github.com/Cadene/tensorflow-model-zoo.torch
 

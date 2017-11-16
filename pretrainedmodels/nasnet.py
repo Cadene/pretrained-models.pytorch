@@ -1,23 +1,24 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import torch.utils.model_zoo as model_zoo
 from torch.autograd import Variable
 
 pretrained_settings = {
     'nasnetalarge': {
         'imagenet': {
-            'url': 'http://webia.lip6.fr/~cadene/Downloads/nasnetalarge-431029df.pth',
+            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/nasnetalarge-dc8c1432.pth',
             'input_space': 'RGB',
-            'input_size': [3, 331, 331],
+            'input_size': [3, 331, 331], # resize 354
             'input_range': [0, 1],
             'mean': [0.5, 0.5, 0.5],
             'std': [0.5, 0.5, 0.5],
             'num_classes': 1000
         },
         'imagenet+background': {
-            'url': 'http://webia.lip6.fr/~cadene/Downloads/nasnetalarge-431029df.pth',
+            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/nasnetalarge-dc8c1432.pth',
             'input_space': 'RGB',
-            'input_size': [3, 331, 331],
+            'input_size': [3, 331, 331], # resize 354
             'input_range': [0, 1],
             'mean': [0.5, 0.5, 0.5],
             'std': [0.5, 0.5, 0.5],
@@ -27,7 +28,7 @@ pretrained_settings = {
 }
 
 class MaxPoolPad(nn.Module):
-    
+
     def __init__(self):
         super(MaxPoolPad, self).__init__()
         self.pad = nn.ZeroPad2d((1, 0, 1, 0))
@@ -41,7 +42,7 @@ class MaxPoolPad(nn.Module):
 
 
 class AvgPoolPad(nn.Module):
-   
+
     def __init__(self, stride=2, padding=1):
         super(AvgPoolPad, self).__init__()
         self.pad = nn.ZeroPad2d((1, 0, 1, 0))
@@ -55,7 +56,7 @@ class AvgPoolPad(nn.Module):
 
 
 class SeparableConv2d(nn.Module):
-    
+
     def __init__(self, in_channels, out_channels, dw_kernel, dw_stride, dw_padding, bias=False):
         super(SeparableConv2d, self).__init__()
         self.depthwise_conv2d = nn.Conv2d(in_channels, in_channels, dw_kernel,
@@ -72,7 +73,7 @@ class SeparableConv2d(nn.Module):
 
 
 class BranchSeparables(nn.Module):
-    
+
     def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=False):
         super(BranchSeparables, self).__init__()
         self.relu = nn.ReLU()
@@ -93,7 +94,7 @@ class BranchSeparables(nn.Module):
 
 
 class BranchSeparablesStem(nn.Module):
-    
+
     def __init__(self, in_channels, out_channels, kernel_size, stride, padding, bias=False):
         super(BranchSeparablesStem, self).__init__()
         self.relu = nn.ReLU()
@@ -114,7 +115,7 @@ class BranchSeparablesStem(nn.Module):
 
 
 class BranchSeparablesReduction(BranchSeparables):
-    
+
     def __init__(self, in_channels, out_channels, kernel_size, stride, padding, z_padding=1, bias=False):
         BranchSeparables.__init__(self, in_channels, out_channels, kernel_size, stride, padding, bias)
         self.padding = nn.ZeroPad2d((z_padding, 0, z_padding, 0))
@@ -123,7 +124,7 @@ class BranchSeparablesReduction(BranchSeparables):
         x = self.relu(x)
         x = self.padding(x)
         x = self.separable_1(x)
-        x = x[:, :, 1:, 1:]
+        x = x[:, :, 1:, 1:].contiguous()
         x = self.bn_sep_1(x)
         x = self.relu1(x)
         x = self.separable_2(x)
@@ -132,7 +133,7 @@ class BranchSeparablesReduction(BranchSeparables):
 
 
 class CellStem0(nn.Module):
-    
+
     def __init__(self):
         super(CellStem0, self).__init__()
         self.conv_1x1 = nn.Sequential()
@@ -181,7 +182,7 @@ class CellStem0(nn.Module):
 
 
 class CellStem1(nn.Module):
-    
+
     def __init__(self):
         super(CellStem1, self).__init__()
         self.conv_1x1 = nn.Sequential()
@@ -252,7 +253,7 @@ class CellStem1(nn.Module):
 
 
 class FirstCell(nn.Module):
-    
+
     def __init__(self, in_channels_left, out_channels_left, in_channels_right, out_channels_right):
         super(FirstCell, self).__init__()
         self.conv_1x1 = nn.Sequential()
@@ -321,7 +322,7 @@ class FirstCell(nn.Module):
 
 
 class NormalCell(nn.Module):
-    
+
     def __init__(self, in_channels_left, out_channels_left, in_channels_right, out_channels_right):
         super(NormalCell, self).__init__()
         self.conv_prev_1x1 = nn.Sequential()
@@ -374,7 +375,7 @@ class NormalCell(nn.Module):
 
 
 class ReductionCell0(nn.Module):
-    
+
     def __init__(self, in_channels_left, out_channels_left, in_channels_right, out_channels_right):
         super(ReductionCell0, self).__init__() 
         self.conv_prev_1x1 = nn.Sequential()
@@ -429,7 +430,7 @@ class ReductionCell0(nn.Module):
 
 
 class ReductionCell1(nn.Module):
-    
+
     def __init__(self, in_channels_left, out_channels_left, in_channels_right, out_channels_right):
         super(ReductionCell1, self).__init__()
         self.conv_prev_1x1 = nn.Sequential()
@@ -484,12 +485,10 @@ class ReductionCell1(nn.Module):
 
 
 class NASNetALarge(nn.Module):
-    
+
     def __init__(self, num_classes=1001):
         super(NASNetALarge, self).__init__()
         self.num_classes = num_classes
-        self.aux_logits = aux_logits
-        self.transform_input = transform_input
 
         self.conv0 = nn.Sequential()
         self.conv0.add_module('conv', nn.Conv2d(in_channels=3, out_channels=96, kernel_size=3, padding=0, stride=2,
@@ -532,7 +531,7 @@ class NASNetALarge(nn.Module):
                                                in_channels_right=2016, out_channels_right=672)
 
         self.cell_12 = FirstCell(in_channels_left=2016, out_channels_left=336,
-                                 in_channels_right=2688, outt_channels_right=672)
+                                 in_channels_right=2688, out_channels_right=672)
         self.cell_13 = NormalCell(in_channels_left=2688, out_channels_left=672,
                                   in_channels_right=4032, out_channels_right=672)
         self.cell_14 = NormalCell(in_channels_left=4032, out_channels_left=672,
@@ -607,17 +606,17 @@ def nasnetalarge(num_classes=1001, pretrained='imagenet'):
         # both 'imagenet'&'imagenet+background' are loaded from same parameters
         model = NASNetALarge(num_classes=1001)
         model.load_state_dict(model_zoo.load_url(settings['url']))
-        
+
         if pretrained == 'imagenet':
-            new_classif = nn.Linear(model.linear.in_features, 1000)
-            new_classif.weight.data = model.classif.weight.data[1:]
-            new_classif.bias.data = model.classif.bias.data[1:]
-            model.classif = new_classif
-        
+            new_linear = nn.Linear(model.linear.in_features, 1000)
+            new_linear.weight.data = model.linear.weight.data[1:]
+            new_linear.bias.data = model.linear.bias.data[1:]
+            model.linear = new_linear
+
         model.input_space = settings['input_space']
         model.input_size = settings['input_size']
         model.input_range = settings['input_range']
-        
+
         model.mean = settings['mean']
         model.std = settings['std']
     else:
