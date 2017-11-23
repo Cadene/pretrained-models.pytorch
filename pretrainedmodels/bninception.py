@@ -10,7 +10,7 @@ pretrained_settings = {
     'bninception': {
         'imagenet': {
             # Was ported using python2 (may trigger warning)
-            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/bn_inception-9f5701afb96c8044.pth',
+            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/bn_inception-a0936f59.pth',
             # 'url': 'http://yjxiong.me/others/bn_inception-9f5701afb96c8044.pth',
             'input_space': 'BGR',
             'input_size': [3, 224, 224],
