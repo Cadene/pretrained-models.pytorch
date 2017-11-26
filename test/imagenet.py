@@ -131,12 +131,12 @@ def main():
     #     num_workers=args.workers, pin_memory=True)
 
     print('Images transformed from size {} to {}'.format(
-        round(max(model.input_size)*1.050),
+        int(round(max(model.input_size)*1.050)),
         model.input_size))
 
     val_loader = torch.utils.data.DataLoader(
         datasets.ImageFolder(valdir, transforms.Compose([
-            transforms.Scale(round(max(model.input_size)*1.050)),
+            transforms.Scale(int(round(max(model.input_size)*1.050))),
             transforms.CenterCrop(max(model.input_size)),
             transforms.ToTensor(),
             ToSpaceBGR(model.input_space=='BGR'),
