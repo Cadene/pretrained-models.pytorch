@@ -99,7 +99,7 @@ with open(path_img, 'rb') as f:
         input_data = img.convert(model.input_space)
 
 tf = transforms.Compose([
-    transforms.Scale(round(max(model.input_size)*1.143)),
+    transforms.Scale(int(round(max(model.input_size)*1.143))),
     transforms.CenterCrop(max(model.input_size)),
     transforms.ToTensor(),
     transforms.Normalize(mean=model.mean, std=model.std)
