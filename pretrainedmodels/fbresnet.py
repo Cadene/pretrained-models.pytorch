@@ -146,9 +146,8 @@ class FBResNet(nn.Module):
 
         return nn.Sequential(*layers)
 
-    def forward(self, x):
-        x = self.conv1(x)
-        self.conv1_input = x.clone()
+    def features(self, input):
+        x = self.conv1(input)
         x = self.bn1(x)
         x = self.relu(x)
         x = self.maxpool(x)
@@ -157,13 +156,18 @@ class FBResNet(nn.Module):
         x = self.layer2(x)
         x = self.layer3(x)
         x = self.layer4(x)
-
-        x = self.avgpool(x)
-        x = x.view(x.size(0), -1)
-        x = self.fc(x)
-
         return x
 
+    def classifier(self, features):
+        x = self.avgpool(features)
+        x = x.view(x.size(0), -1)
+        x = self.fc(x)
+        return x
+
+    def forward(self, input):
+        x = self.features(input)
+        x = self.classifier(x)
+        return x
 
 def fbresnet18(num_classes=1000):
     """Constructs a ResNet-18 model.

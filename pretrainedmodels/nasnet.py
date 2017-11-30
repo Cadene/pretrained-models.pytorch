@@ -580,8 +580,8 @@ class NASNetALarge(nn.Module):
 
         return x_cell_17
 
-    def classifier(self, x):
-        x = self.relu(x)
+    def classifier(self, features):
+        x = self.relu(features)
         x = self.avgpool(x)
         x = x.view(x.size(0), -1)
         x = self.dropout(x)

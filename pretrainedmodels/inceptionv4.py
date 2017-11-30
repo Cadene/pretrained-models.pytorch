@@ -291,15 +291,20 @@ class InceptionV4(nn.Module):
             Reduction_B(), # Mixed_7a
             Inception_C(),
             Inception_C(),
-            Inception_C(),
-            nn.AvgPool2d(8, count_include_pad=False)
+            Inception_C()
         )
+        self.avgpool = nn.AvgPool2d(8, count_include_pad=False)
         self.classif = nn.Linear(1536, num_classes)
 
-    def forward(self, x):
-        x = self.features(x)
+    def classifier(self, features):
+        x = self.avgpool(features)
         x = x.view(x.size(0), -1)
         x = self.classif(x) 
+        return x
+
+    def forward(self, input):
+        x = self.features(input)
+        x = self.classifier(x)
         return x
 
 

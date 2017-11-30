@@ -300,8 +300,8 @@ class InceptionResNetV2(nn.Module):
         self.avgpool_1a = nn.AvgPool2d(8, count_include_pad=False)
         self.classif = nn.Linear(1536, num_classes)
 
-    def forward(self, x):
-        x = self.conv2d_1a(x)
+    def features(self, input):
+        x = self.conv2d_1a(input)
         x = self.conv2d_2a(x)
         x = self.conv2d_2b(x)
         x = self.maxpool_3a(x)
@@ -316,9 +316,17 @@ class InceptionResNetV2(nn.Module):
         x = self.repeat_2(x)
         x = self.block8(x)
         x = self.conv2d_7b(x)
-        x = self.avgpool_1a(x)
+        return x
+
+    def classifier(self, features):
+        x = self.avgpool_1a(features)
         x = x.view(x.size(0), -1)
         x = self.classif(x) 
+        return x
+
+    def forward(self, input):
+        x = self.features(input)
+        x = self.classifier(x)
         return x
 
 def inceptionresnetv2(num_classes=1001, pretrained='imagenet'):

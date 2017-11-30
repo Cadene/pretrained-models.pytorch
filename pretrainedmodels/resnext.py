@@ -43,11 +43,15 @@ class ResNeXt101_32x4d(nn.Module):
         self.avgpool = nn.AvgPool2d((7, 7), (1, 1))
         self.fc = nn.Linear(2048, nb_classes)
 
-    def forward(self, input):
-        x = self.features(input)
-        x = self.avgpool(x)
+    def classifier(self, features):
+        x = self.avgpool(features)
         x = x.view(x.size(0), -1)
         x = self.fc(x)
+        return x
+
+    def forward(self, input):
+        x = self.features(input)
+        x = self.classifier(x)
         return x
 
 
@@ -59,11 +63,15 @@ class ResNeXt101_64x4d(nn.Module):
         self.avgpool = nn.AvgPool2d((7, 7), (1, 1))
         self.fc = nn.Linear(2048, nb_classes)
 
-    def forward(self, input):
-        x = self.features(input)
-        x = self.avgpool(x)
+    def classifier(self, features):
+        x = self.avgpool(features)
         x = x.view(x.size(0), -1)
         x = self.fc(x)
+        return x
+
+    def forward(self, input):
+        x = self.features(input)
+        x = self.classifier(x)
         return x
 
 

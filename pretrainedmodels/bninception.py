@@ -479,17 +479,17 @@ class BNInception(nn.Module):
         inception_5b_pool_proj_bn_out = self.inception_5b_pool_proj_bn(inception_5b_pool_proj_out)
         inception_5b_relu_pool_proj_out = self.inception_5b_relu_pool_proj(inception_5b_pool_proj_bn_out)
         inception_5b_output_out = torch.cat([inception_5b_1x1_bn_out,inception_5b_3x3_bn_out,inception_5b_double_3x3_2_bn_out,inception_5b_pool_proj_bn_out], 1)
-        global_pool_out = self.global_pool(inception_5b_output_out)
-        return global_pool_out
+        return inception_5b_output_out
 
-    def classif(self, features):
-        fc_out = self.fc(features.view(features.size(0), -1))
-        return fc_out
+    def classifier(self, features):
+        x = self.global_pool(features)
+        x = self.fc(x.view(x.size(0), -1))
+        return x
 
     def forward(self, input):
-        features_out = self.features(input)
-        classif_out = self.classif(features_out)
-        return classif_out
+        x = self.features(input)
+        x = self.classifier(x)
+        return x
 
 def bninception(num_classes=1000, pretrained='imagenet'):
     r"""BNInception model architecture from <https://arxiv.org/pdf/1502.03167.pdf>`_ paper.

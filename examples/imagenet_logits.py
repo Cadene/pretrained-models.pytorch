@@ -10,14 +10,16 @@ import pretrainedmodels
 
 model_names = sorted(name for name in pretrainedmodels.__dict__
     if not name.startswith("__")
+    and name.islower()
     and callable(pretrainedmodels.__dict__[name]))
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
-parser.add_argument('--arch', '-a', metavar='ARCH', default='fbresnet152',
+parser.add_argument('--arch', '-a', metavar='ARCH', default='nasnetalarge',
                     choices=model_names,
                     help='model architecture: ' +
                         ' | '.join(model_names) +
-                        ' (default: fbresnet152)')
+                        ' (default: nasnetalarge)')
+parser.add_argument('--path_img', default='data/cat.jpg')
 args = parser.parse_args()
 
 # Load Model
@@ -26,8 +28,7 @@ model = pretrainedmodels.__dict__[args.arch](num_classes=1000,
 model.eval()
 
 # Load One Input Image
-path_img = 'data/cat.jpg'
-with open(path_img, 'rb') as f:
+with open(args.path_img, 'rb') as f:
     with Image.open(f) as img:
         input_data = img.convert(model.input_space)
 
@@ -65,4 +66,4 @@ class_id = argmax[0]
 class_key = class_id_to_key[class_id]
 classname = key_to_classname[class_key]
 
-print(path_img, 'is a', classname) 
+print("'{}' is a '{}'".format(args.path_img, classname))

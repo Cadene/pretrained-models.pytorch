@@ -12,18 +12,13 @@ import torch.utils.data
 import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
-#import torchvision.models as models
-
 import sys
 sys.path.append('.')
 import pretrainedmodels as models
 
-# models.__dict__['fbresnet152'] = pretrainedmodels.__dict__['fbresnet152']
-# models.__dict__['resnext101_32x4d'] = pretrainedmodels.__dict__['resnext101_32x4d']
-# models.__dict__['resnext101_64x4d'] = pretrainedmodels.__dict__['resnext101_64x4d']
-
 model_names = sorted(name for name in models.__dict__
     if not name.startswith("__")
+    and name.islower()
     and callable(models.__dict__[name]))
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
@@ -58,30 +53,6 @@ parser.add_argument('--pretrained', default='imagenet', help='use pre-trained mo
 
 best_prec1 = 0
 
-
-class ToSpaceBGR(object):
-
-    def __init__(self, is_bgr):
-        self.is_bgr = is_bgr
-
-    def __call__(self, tensor):
-        if self.is_bgr:
-            new_tensor = tensor.clone()
-            new_tensor[0] = tensor[2]
-            new_tensor[2] = tensor[0]
-            tensor = new_tensor
-        return tensor
-
-class ToRange255(object):
-
-    def __init__(self, is_255):
-        self.is_255 = is_255
-
-    def __call__(self, tensor):
-        if self.is_255:
-            tensor.mul_(255)
-        return tensor
-
 def main():
     global args, best_prec1
     args = parser.parse_args()
@@ -93,11 +64,6 @@ def main():
         model = models.__dict__[args.arch](num_classes=1000, pretrained=args.pretrained)
     else:
         model = models.__dict__[args.arch]()
-
-    # if args.arch.startswith('alexnet') or args.arch.startswith('vgg'):
-    #     model.features = torch.nn.DataParallel(model.features)
-    #     model.cuda()
-    # else:
 
     # optionally resume from a checkpoint
     if args.resume:
@@ -115,7 +81,7 @@ def main():
     cudnn.benchmark = True
 
     # Data loading code
-    traindir = os.path.join(args.data, 'train')
+    #traindir = os.path.join(args.data, 'train')
     valdir = os.path.join(args.data, 'val')
     normalize = transforms.Normalize(mean=model.mean,
                                      std=model.std)
@@ -139,8 +105,8 @@ def main():
             transforms.Scale(int(round(max(model.input_size)*1.050))),
             transforms.CenterCrop(max(model.input_size)),
             transforms.ToTensor(),
-            ToSpaceBGR(model.input_space=='BGR'),
-            ToRange255(max(model.input_range)==255),
+            pretrainedmodels.utils.ToSpaceBGR(model.input_space=='BGR'),
+            pretrainedmodels.utils.ToRange255(max(model.input_range)==255),
             normalize,
         ])),
         batch_size=args.batch_size, shuffle=False,
