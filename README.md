@@ -109,23 +109,18 @@ model.eval()
 
 ```python
 import torch
-import torchvision.transforms as transforms
-from PIL import Image
+import pretrainedmodels.utils as utils
+
+load_img = utils.LoadImage()
+
+# transformations depending on the model
+# rescale, center crop, normalize, and others (ex: ToBGR, ToRange255)
+tf_img = utils.TransformImage(model) 
 
 path_img = 'data/cat.jpg'
-with open(path_img, 'rb') as f:
-    with Image.open(f) as img:
-        input_img = img.convert(model.input_space)
 
-tf = transforms.Compose([
-    transforms.Scale(int(round(max(model.input_size)*1.143))),
-    transforms.CenterCrop(max(model.input_size)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=model.mean,
-                         std=model.std)
-])
-
-input_tensor = tf(input_img)             # 3x400x225 -> 3x299x299 size may differ
+input_img = load_img(path_img)
+input_tensor = tf_img(input_img)         # 3x400x225 -> 3x299x299 size may differ
 input_tensor = input_tensor.unsqueeze(0) # 3x299x299 -> 1x3x299x299
 input = torch.autograd.Variable(input_tensor,
     requires_grad=False)
