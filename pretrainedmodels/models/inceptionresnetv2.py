@@ -9,7 +9,7 @@ __all__ = ['InceptionResNetV2', 'inceptionresnetv2']
 pretrained_settings = {
     'inceptionresnetv2': {
         'imagenet': {
-            'url': 'http://webia.lip6.fr/~cadene/Downloads/inceptionresnetv2-d579a627.pth',
+            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/inceptionresnetv2-520b38e4.pth',
             'input_space': 'RGB',
             'input_size': [3, 299, 299],
             'input_range': [0, 1],
@@ -18,7 +18,7 @@ pretrained_settings = {
             'num_classes': 1000
         },
         'imagenet+background': {
-            'url': 'http://webia.lip6.fr/~cadene/Downloads/inceptionresnetv2-d579a627.pth',
+            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/inceptionresnetv2-520b38e4.pth',
             'input_space': 'RGB',
             'input_size': [3, 299, 299],
             'input_range': [0, 1],
@@ -298,7 +298,7 @@ class InceptionResNetV2(nn.Module):
         self.block8 = Block8(noReLU=True)
         self.conv2d_7b = BasicConv2d(2080, 1536, kernel_size=1, stride=1)
         self.avgpool_1a = nn.AvgPool2d(8, count_include_pad=False)
-        self.classif = nn.Linear(1536, num_classes)
+        self.last_linear = nn.Linear(1536, num_classes)
 
     def features(self, input):
         x = self.conv2d_1a(input)
@@ -318,15 +318,15 @@ class InceptionResNetV2(nn.Module):
         x = self.conv2d_7b(x)
         return x
 
-    def classifier(self, features):
+    def logits(self, features):
         x = self.avgpool_1a(features)
         x = x.view(x.size(0), -1)
-        x = self.classif(x) 
+        x = self.last_linear(x) 
         return x
 
     def forward(self, input):
         x = self.features(input)
-        x = self.classifier(x)
+        x = self.logits(x)
         return x
 
 def inceptionresnetv2(num_classes=1001, pretrained='imagenet'):
@@ -343,10 +343,10 @@ def inceptionresnetv2(num_classes=1001, pretrained='imagenet'):
         model.load_state_dict(model_zoo.load_url(settings['url']))
         
         if pretrained == 'imagenet':
-            new_classif = nn.Linear(1536, 1000)
-            new_classif.weight.data = model.classif.weight.data[1:]
-            new_classif.bias.data = model.classif.bias.data[1:]
-            model.classif = new_classif
+            new_last_linear = nn.Linear(1536, 1000)
+            new_last_linear.weight.data = model.last_linear.weight.data[1:]
+            new_last_linear.bias.data = model.last_linear.bias.data[1:]
+            model.last_linear = new_last_linear
         
         model.input_space = settings['input_space']
         model.input_size = settings['input_size']

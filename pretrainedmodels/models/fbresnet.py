@@ -4,13 +4,13 @@ import torch.utils.model_zoo as model_zoo
 
 
 __all__ = ['FBResNet',
-           'fbresnet18', 'fbresnet34', 'fbresnet50', 'fbresnet101',
+           #'fbresnet18', 'fbresnet34', 'fbresnet50', 'fbresnet101',
            'fbresnet152']
 
 pretrained_settings = {
     'fbresnet152': {
         'imagenet': {
-            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/resnet152-c11d722e.pth',
+            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/fbresnet152-2e20f6b4.pth',
             'input_space': 'RGB',
             'input_size': [3, 224, 224],
             'input_range': [0, 1],
@@ -119,7 +119,7 @@ class FBResNet(nn.Module):
         self.layer3 = self._make_layer(block, 256, layers[2], stride=2)
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2)
         self.avgpool = nn.AvgPool2d(7)
-        self.fc = nn.Linear(512 * block.expansion, num_classes)
+        self.last_linear = nn.Linear(512 * block.expansion, num_classes)
 
         for m in self.modules():
             if isinstance(m, nn.Conv2d):
@@ -148,6 +148,7 @@ class FBResNet(nn.Module):
 
     def features(self, input):
         x = self.conv1(input)
+        self.conv1_input = x.clone()
         x = self.bn1(x)
         x = self.relu(x)
         x = self.maxpool(x)
@@ -158,16 +159,17 @@ class FBResNet(nn.Module):
         x = self.layer4(x)
         return x
 
-    def classifier(self, features):
+    def logits(self, features):
         x = self.avgpool(features)
         x = x.view(x.size(0), -1)
-        x = self.fc(x)
+        x = self.last_linear(x)
         return x
 
     def forward(self, input):
         x = self.features(input)
-        x = self.classifier(x)
+        x = self.logits(x)
         return x
+
 
 def fbresnet18(num_classes=1000):
     """Constructs a ResNet-18 model.

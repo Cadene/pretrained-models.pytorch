@@ -14,12 +14,13 @@ import torchvision.datasets as datasets
 
 import sys
 sys.path.append('.')
-import pretrainedmodels as models
+import pretrainedmodels
+import pretrainedmodels.utils
 
-model_names = sorted(name for name in models.__dict__
+model_names = sorted(name for name in pretrainedmodels.__dict__
     if not name.startswith("__")
     and name.islower()
-    and callable(models.__dict__[name]))
+    and callable(pretrainedmodels.__dict__[name]))
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 parser.add_argument('data', metavar='DIR',
@@ -61,9 +62,10 @@ def main():
     print("=> creating model '{}'".format(args.arch))
     if args.pretrained.lower() not in ['false', 'none', 'not', 'no', '0']:
         print("=> using pre-trained parameters '{}'".format(args.pretrained))
-        model = models.__dict__[args.arch](num_classes=1000, pretrained=args.pretrained)
+        model = pretrainedmodels.__dict__[args.arch](num_classes=1000,
+                                                     pretrained=args.pretrained)
     else:
-        model = models.__dict__[args.arch]()
+        model = pretrainedmodels.__dict__[args.arch]()
 
     # optionally resume from a checkpoint
     if args.resume:
@@ -83,8 +85,6 @@ def main():
     # Data loading code
     #traindir = os.path.join(args.data, 'train')
     valdir = os.path.join(args.data, 'val')
-    normalize = transforms.Normalize(mean=model.mean,
-                                     std=model.std)
 
     # train_loader = torch.utils.data.DataLoader(
     #     datasets.ImageFolder(traindir, transforms.Compose([
@@ -101,14 +101,7 @@ def main():
         model.input_size))
 
     val_loader = torch.utils.data.DataLoader(
-        datasets.ImageFolder(valdir, transforms.Compose([
-            transforms.Scale(int(round(max(model.input_size)*1.050))),
-            transforms.CenterCrop(max(model.input_size)),
-            transforms.ToTensor(),
-            pretrainedmodels.utils.ToSpaceBGR(model.input_space=='BGR'),
-            pretrainedmodels.utils.ToRange255(max(model.input_range)==255),
-            normalize,
-        ])),
+        datasets.ImageFolder(valdir, pretrainedmodels.utils.TransformImage(model)),
         batch_size=args.batch_size, shuffle=False,
         num_workers=args.workers, pin_memory=True)
 
@@ -188,8 +181,8 @@ def train(train_loader, model, criterion, optimizer, epoch):
                   'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
                   'Data {data_time.val:.3f} ({data_time.avg:.3f})\t'
                   'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
-                  'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'
-                  'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
+                  'Acc@1 {top1.val:.3f} ({top1.avg:.3f})\t'
+                  'Acc@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
                    epoch, i, len(train_loader), batch_time=batch_time,
                    data_time=data_time, loss=losses, top1=top1, top5=top5))
 
@@ -227,12 +220,12 @@ def validate(val_loader, model, criterion):
             print('Test: [{0}/{1}]\t'
                   'Time {batch_time.val:.3f} ({batch_time.avg:.3f})\t'
                   'Loss {loss.val:.4f} ({loss.avg:.4f})\t'
-                  'Prec@1 {top1.val:.3f} ({top1.avg:.3f})\t'
-                  'Prec@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
+                  'Acc@1 {top1.val:.3f} ({top1.avg:.3f})\t'
+                  'Acc@5 {top5.val:.3f} ({top5.avg:.3f})'.format(
                    i, len(val_loader), batch_time=batch_time, loss=losses,
                    top1=top1, top5=top5))
 
-    print(' * Prec@1 {top1.avg:.3f} Prec@5 {top5.avg:.3f}'
+    print(' * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}'
           .format(top1=top1, top5=top5))
 
     return top1.avg

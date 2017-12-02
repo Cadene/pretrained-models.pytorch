@@ -9,7 +9,7 @@ __all__ = ['InceptionV4', 'inceptionv4']
 pretrained_settings = {
     'inceptionv4': {
         'imagenet': {
-            'url': 'http://webia.lip6.fr/~cadene/Downloads/inceptionv4-97ef9c30.pth',
+            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/inceptionv4-8e4777a0.pth',
             'input_space': 'RGB',
             'input_size': [3, 299, 299],
             'input_range': [0, 1],
@@ -18,7 +18,7 @@ pretrained_settings = {
             'num_classes': 1000
         },
         'imagenet+background': {
-            'url': 'http://webia.lip6.fr/~cadene/Downloads/inceptionv4-97ef9c30.pth',
+            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/inceptionv4-8e4777a0.pth',
             'input_space': 'RGB',
             'input_size': [3, 299, 299],
             'input_range': [0, 1],
@@ -293,18 +293,18 @@ class InceptionV4(nn.Module):
             Inception_C(),
             Inception_C()
         )
-        self.avgpool = nn.AvgPool2d(8, count_include_pad=False)
-        self.classif = nn.Linear(1536, num_classes)
+        self.avg_pool = nn.AvgPool2d(8, count_include_pad=False)
+        self.last_linear = nn.Linear(1536, num_classes)
 
-    def classifier(self, features):
-        x = self.avgpool(features)
+    def logits(self, features):
+        x = self.avg_pool(features)
         x = x.view(x.size(0), -1)
-        x = self.classif(x) 
+        x = self.last_linear(x) 
         return x
 
     def forward(self, input):
         x = self.features(input)
-        x = self.classifier(x)
+        x = self.logits(x)
         return x
 
 
@@ -319,10 +319,10 @@ def inceptionv4(num_classes=1001, pretrained='imagenet'):
         model.load_state_dict(model_zoo.load_url(settings['url']))
         
         if pretrained == 'imagenet':
-            new_classif = nn.Linear(1536, 1000)
-            new_classif.weight.data = model.classif.weight.data[1:]
-            new_classif.bias.data = model.classif.bias.data[1:]
-            model.classif = new_classif
+            new_last_linear = nn.Linear(1536, 1000)
+            new_last_linear.weight.data = model.last_linear.weight.data[1:]
+            new_last_linear.bias.data = model.last_linear.bias.data[1:]
+            model.last_linear = new_last_linear
         
         model.input_space = settings['input_space']
         model.input_size = settings['input_size']

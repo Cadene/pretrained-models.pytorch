@@ -1,5 +1,19 @@
 import torchvision.models as models
 import torch.utils.model_zoo as model_zoo
+import torch.nn.functional as F
+
+#################################################################
+# You can find the definitions of those models here:
+# https://github.com/pytorch/vision/blob/master/torchvision/models
+#
+# To fit the API, we usually added/redefined some methods and
+# renamed some attributs (see below for each models).
+#
+# However, you usually do not need to see the original model
+# definition from torchvision. Just use `print(model)` to see
+# the modules and see bellow the `model.features` and
+# `model.classifier` definitions.
+#################################################################
 
 __all__ = [
     'alexnet',
@@ -88,17 +102,84 @@ def load_pretrained(model, num_classes, settings):
     model.std = settings['std']
     return model
 
+#################################################################
+# AlexNet
+
+def modify_alexnet(model):
+    # Modify attributs
+    model._features = model.features
+    del model.features
+    model.dropout0 = model.classifier[0]
+    model.linear0 = model.classifier[1]
+    model.relu0 = model.classifier[2]
+    model.dropout1 = model.classifier[3]
+    model.linear1 = model.classifier[4]
+    model.relu1 = model.classifier[5]
+    model.last_linear = model.classifier[6]
+    del model.classifier
+
+    def features(self, input):
+        x = self._features(input)
+        x = x.view(x.size(0), 256 * 6 * 6)
+        x = self.dropout0(x) 
+        x = self.linear0(x)
+        x = self.relu0(x)
+        x = self.dropout1(x)
+        x = self.linear1(x)
+        return x
+
+    def logits(self, features):
+        x = self.relu1(features)
+        x = self.last_linear(x)
+        return x
+
+    def forward(self, input):
+        x = self.features(input)
+        x = self.logits(x)
+        return x
+        
+    # Modify methods
+    setattr(model.__class__, 'features', features)
+    setattr(model.__class__, 'logits', logits)
+    setattr(model.__class__, 'forward', forward)
+    return model
 
 def alexnet(num_classes=1000, pretrained='imagenet'):
     r"""AlexNet model architecture from the
     `"One weird trick..." <https://arxiv.org/abs/1404.5997>`_ paper.
     """
+    # https://github.com/pytorch/vision/blob/master/torchvision/models/alexnet.py
     model = models.alexnet(pretrained=False)
     if pretrained is not None:
         settings = pretrained_settings['alexnet'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_alexnet(model)
     return model
 
+###############################################################
+# DenseNets
+
+def modify_densenets(model):
+    # Modify attributs
+    model.last_linear = model.classifier
+    del model.classifier
+
+    def logits(self, features):
+        x = F.relu(features, inplace=True)
+        x = F.avg_pool2d(x, kernel_size=7, stride=1)
+        x = x.view(x.size(0), -1)
+        x = self.last_linear(x)
+        return x
+
+    def forward(self, input):
+        x = self.features(input)
+        x = self.logits(x)
+        return x
+
+    # Modify methods
+    setattr(model.__class__, 'logits', logits)
+    setattr(model.__class__, 'forward', forward)
+    return model
 
 def densenet121(num_classes=1000, pretrained='imagenet'):
     r"""Densenet-121 model from
@@ -108,8 +189,8 @@ def densenet121(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['densenet121'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_densenets(model)
     return model
-
 
 def densenet169(num_classes=1000, pretrained='imagenet'):
     r"""Densenet-169 model from
@@ -119,8 +200,8 @@ def densenet169(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['densenet169'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_densenets(model)
     return model
-
 
 def densenet201(num_classes=1000, pretrained='imagenet'):
     r"""Densenet-201 model from
@@ -130,8 +211,8 @@ def densenet201(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['densenet201'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_densenets(model)
     return model
-
 
 def densenet161(num_classes=1000, pretrained='imagenet'):
     r"""Densenet-161 model from
@@ -141,8 +222,11 @@ def densenet161(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['densenet161'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_densenets(model)
     return model
 
+###############################################################
+# InceptionV3
 
 def inceptionv3(num_classes=1000, pretrained='imagenet'):
     r"""Inception v3 model architecture from
@@ -152,8 +236,93 @@ def inceptionv3(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['inceptionv3'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+
+    # Modify attributs
+    model.last_linear = model.fc
+    del model.fc
+
+    def features(self, input):
+        # 299 x 299 x 3
+        x = self.Conv2d_1a_3x3(input) # 149 x 149 x 32
+        x = self.Conv2d_2a_3x3(x) # 147 x 147 x 32
+        x = self.Conv2d_2b_3x3(x) # 147 x 147 x 64
+        x = F.max_pool2d(x, kernel_size=3, stride=2) # 73 x 73 x 64
+        x = self.Conv2d_3b_1x1(x) # 73 x 73 x 80
+        x = self.Conv2d_4a_3x3(x) # 71 x 71 x 192
+        x = F.max_pool2d(x, kernel_size=3, stride=2) # 35 x 35 x 192
+        x = self.Mixed_5b(x) # 35 x 35 x 256
+        x = self.Mixed_5c(x) # 35 x 35 x 288
+        x = self.Mixed_5d(x) # 35 x 35 x 288
+        x = self.Mixed_6a(x) # 17 x 17 x 768
+        x = self.Mixed_6b(x) # 17 x 17 x 768
+        x = self.Mixed_6c(x) # 17 x 17 x 768
+        x = self.Mixed_6d(x) # 17 x 17 x 768
+        x = self.Mixed_6e(x) # 17 x 17 x 768
+        if self.training and self.aux_logits:
+            self._out_aux = self.AuxLogits(x) # 17 x 17 x 768
+        x = self.Mixed_7a(x) # 8 x 8 x 1280
+        x = self.Mixed_7b(x) # 8 x 8 x 2048
+        x = self.Mixed_7c(x) # 8 x 8 x 2048
+        return x
+
+    def logits(self, features):
+        x = F.avg_pool2d(features, kernel_size=8) # 1 x 1 x 2048
+        x = F.dropout(x, training=self.training) # 1 x 1 x 2048
+        x = x.view(x.size(0), -1) # 2048
+        x = self.last_linear(x) # 1000 (num_classes)
+        if self.training and self.aux_logits:
+            aux = self._out_aux
+            self._out_aux = None
+            return x, aux
+        return x
+
+    def forward(self, input):
+        x = self.features(input)
+        x = self.logits(x)
+        return x
+        
+    # Modify methods
+    setattr(model.__class__, 'features', features)
+    setattr(model.__class__, 'logits', logits)
+    setattr(model.__class__, 'forward', forward)  
     return model
 
+###############################################################
+# ResNets
+
+def modify_resnets(model):
+    # Modify attributs
+    model.last_linear = model.fc
+    model.fc = None
+
+    def features(self, input):
+        x = self.conv1(input)
+        x = self.bn1(x)
+        x = self.relu(x)
+        x = self.maxpool(x)
+
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x = self.layer3(x)
+        x = self.layer4(x)
+        return x
+
+    def logits(self, features):
+        x = self.avgpool(features)
+        x = x.view(x.size(0), -1)
+        x = self.last_linear(x)
+        return x
+
+    def forward(self, input):
+        x = self.features(input)
+        x = self.logits(x)
+        return x
+
+    # Modify methods
+    setattr(model.__class__, 'features', features)
+    setattr(model.__class__, 'logits', logits)
+    setattr(model.__class__, 'forward', forward)  
+    return model
 
 def resnet18(num_classes=1000, pretrained='imagenet'):
     """Constructs a ResNet-18 model.
@@ -162,6 +331,7 @@ def resnet18(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['resnet18'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_resnets(model)
     return model
 
 def resnet34(num_classes=1000, pretrained='imagenet'):
@@ -171,6 +341,7 @@ def resnet34(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['resnet34'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_resnets(model)
     return model
 
 def resnet50(num_classes=1000, pretrained='imagenet'):
@@ -180,6 +351,7 @@ def resnet50(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['resnet50'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_resnets(model)
     return model
 
 def resnet101(num_classes=1000, pretrained='imagenet'):
@@ -189,6 +361,7 @@ def resnet101(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['resnet101'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_resnets(model)
     return model
 
 def resnet152(num_classes=1000, pretrained='imagenet'):
@@ -198,8 +371,38 @@ def resnet152(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['resnet152'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_resnets(model)
     return model
 
+###############################################################
+# SqueezeNets
+
+def modify_squeezenets(model):
+    # /!\ Beware squeezenets do not have any last_linear module
+
+    # Modify attributs
+    model.dropout = model.classifier[0]
+    model.last_conv = model.classifier[1]
+    model.relu = model.classifier[2]
+    model.avgpool = model.classifier[3]
+    del model.classifier
+
+    def logits(self, features):
+        x = self.dropout(features)
+        x = self.last_conv(x)
+        x = self.relu(x)
+        x = self.avgpool(x)
+        return x
+
+    def forward(self, input):
+        x = self.features(input)
+        x = self.logits(x)
+        return x
+        
+    # Modify methods
+    setattr(model.__class__, 'logits', logits)
+    setattr(model.__class__, 'forward', forward)  
+    return model
 
 def squeezenet1_0(num_classes=1000, pretrained='imagenet'):
     r"""SqueezeNet model architecture from the `"SqueezeNet: AlexNet-level
@@ -210,6 +413,7 @@ def squeezenet1_0(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['squeezenet1_0'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_squeezenets(model)
     return model
 
 def squeezenet1_1(num_classes=1000, pretrained='imagenet'):
@@ -222,8 +426,50 @@ def squeezenet1_1(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['squeezenet1_1'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_squeezenets(model)
     return model
 
+###############################################################
+# VGGs
+
+def modify_vggs(model):
+    # Modify attributs
+    model._features = model.features
+    del model.features
+    model.linear0 = model.classifier[0]
+    model.relu0 = model.classifier[1]
+    model.dropout0 = model.classifier[2]
+    model.linear1 = model.classifier[3]
+    model.relu1 = model.classifier[4]
+    model.dropout1 = model.classifier[5]
+    model.last_linear = model.classifier[6]
+    del model.classifier
+
+    def make_features(self, input):
+        x = self._features(input)
+        x = x.view(x.size(0), -1)
+        x = self.linear0(x)
+        x = self.relu0(x)
+        x = self.dropout0(x) 
+        x = self.linear1(x)
+        return x
+
+    def logits(self, features):
+        x = self.relu1(features)
+        x = self.dropout1(x)
+        x = self.last_linear(x)
+        return x
+
+    def forward(self, input):
+        x = self.make_features(input)
+        x = self.logits(x)
+        return x
+        
+    # Modify methods
+    setattr(model.__class__, 'make_features', make_features)
+    setattr(model.__class__, 'logits', logits)
+    setattr(model.__class__, 'forward', forward)  
+    return model
 
 def vgg11(num_classes=1000, pretrained='imagenet'):
     """VGG 11-layer model (configuration "A")
@@ -232,8 +478,8 @@ def vgg11(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['vgg11'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_vggs(model)
     return model
-
 
 def vgg11_bn(num_classes=1000, pretrained='imagenet'):
     """VGG 11-layer model (configuration "A") with batch normalization
@@ -242,8 +488,8 @@ def vgg11_bn(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['vgg11_bn'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_vggs(model)
     return model
-
 
 def vgg13(num_classes=1000, pretrained='imagenet'):
     """VGG 13-layer model (configuration "B")
@@ -252,8 +498,8 @@ def vgg13(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['vgg13'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_vggs(model)
     return model
-
 
 def vgg13_bn(num_classes=1000, pretrained='imagenet'):
     """VGG 13-layer model (configuration "B") with batch normalization
@@ -262,8 +508,8 @@ def vgg13_bn(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['vgg13_bn'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_vggs(model)
     return model
-
 
 def vgg16(num_classes=1000, pretrained='imagenet'):
     """VGG 16-layer model (configuration "D")
@@ -272,8 +518,8 @@ def vgg16(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['vgg16'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_vggs(model)
     return model
-
 
 def vgg16_bn(num_classes=1000, pretrained='imagenet'):
     """VGG 16-layer model (configuration "D") with batch normalization
@@ -282,8 +528,8 @@ def vgg16_bn(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['vgg16_bn'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_vggs(model)
     return model
-
 
 def vgg19(num_classes=1000, pretrained='imagenet'):
     """VGG 19-layer model (configuration "E")
@@ -292,8 +538,8 @@ def vgg19(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['vgg19'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_vggs(model)
     return model
-
 
 def vgg19_bn(num_classes=1000, pretrained='imagenet'):
     """VGG 19-layer model (configuration 'E') with batch normalization
@@ -302,4 +548,5 @@ def vgg19_bn(num_classes=1000, pretrained='imagenet'):
     if pretrained is not None:
         settings = pretrained_settings['vgg19_bn'][pretrained]
         model = load_pretrained(model, num_classes, settings)
+    model = modify_vggs(model)
     return model

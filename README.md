@@ -7,7 +7,7 @@ The goal of this repo is:
 
 News:
 
-- 30/11/2017: improve API (model.features(input), model.classifier(features), model.forward(input))
+- 30/11/2017: improve API (`model.features(input)`, `model.logits(features)`, `model.forward(input)`, `model.last_linear`)
 - 16/11/2017: nasnet-a-large pretrained model ported by T. Durand and R. Cadene
 - 22/07/2017: torchvision pretrained models
 - 22/07/2017: momentum in inceptionv4 and inceptionresnetv2 to 0.1
@@ -61,7 +61,7 @@ News:
         - [model.mean](https://github.com/Cadene/pretrained-models.pytorch#modelmean)
         - [model.std](https://github.com/Cadene/pretrained-models.pytorch#modelstd)
         - [model.features](https://github.com/Cadene/pretrained-models.pytorch#modelfeatures)
-        - [model.classifier](https://github.com/Cadene/pretrained-models.pytorch#modelclassifier)
+        - [model.logits](https://github.com/Cadene/pretrained-models.pytorch#modellogits)
         - [model.forward](https://github.com/Cadene/pretrained-models.pytorch#modelforward)
 - [Reproducing porting](https://github.com/Cadene/pretrained-models.pytorch#reproducing)
     - [ResNet*](https://github.com/Cadene/pretrained-models.pytorch#hand-porting-of-resnet152)
@@ -103,6 +103,8 @@ model = pretrainedmodels.__dict__[model_name](num_classes=1000, pretrained='imag
 model.eval()
 ```
 
+**Note**: By default, models will be downloaded to your `$HOME/.torch` folder. You can modify this behavior using the `$TORCH_MODEL_ZOO` variable as follow: `export TORCH_MODEL_ZOO="/local/pretrainedmodels`
+
 - To load an image and do a complete forward pass:
 
 ```python
@@ -128,14 +130,14 @@ input_tensor = input_tensor.unsqueeze(0) # 3x299x299 -> 1x3x299x299
 input = torch.autograd.Variable(input_tensor,
     requires_grad=False)
 
-output_classifier = model(input) # 1x1000
+output_logits = model(input) # 1x1000
 ```
 
 - To extract features (beware this API is not available for all networks):
 
 ```python
 output_features = model.features(input) # 1x14x14x2048 size may differ
-output_classifier = model.classifier(output_features) # 1x1000
+output_logits = model.logits(output_features) # 1x1000
 ```
 
 ## Few use cases
@@ -150,8 +152,8 @@ $ python examples/imagenet_logits.py -h
 ```
 
 ```
-$ python examples/imagenet_logits.py -a resnetalarge --path_img data/cat.png
-> 'data/cat.png' is 'TODO' 
+$ python examples/imagenet_logits.py -a nasnetalarge --path_img data/cat.png
+> 'nasnetalarge': data/cat.png' is a 'tiger cat' 
 ```
 
 ### Compute imagenet evaluation metrics
@@ -159,8 +161,8 @@ $ python examples/imagenet_logits.py -a resnetalarge --path_img data/cat.png
 - See [examples/imagenet_eval.py](https://github.com/Cadene/pretrained-models.pytorch/blob/master/examples/imagenet_eval.py) to evaluate pretrained models on imagenet valset. 
 
 ```
-$ python examples/imagenet_eval.py /yourdir/imagenet_2012/images -a resnetalarge -b 20 -e
-> ... accuracty top1, ... accuracy top5
+$ python examples/imagenet_eval.py /local/common-data/imagenet_2012/images -a nasnetalarge -b 20 -e
+> * Acc@1 92.693, Acc@5 96.13
 ```
 
 
@@ -359,8 +361,7 @@ output = model.features(input_448)
 # print(output.size())             # (1,2048,7,7)
 ```
 
-
-#### `model.classifier`
+#### `model.logits`
 
 /!\ work in progress (may not be available)
 
@@ -370,17 +371,16 @@ Example when the model is loaded using `fbresnet152`:
 
 ```python
 output = model.features(input_224) 
-output = output.view(1,-1)
-print(output.size())               # (1,2048)
-output = model.classifier(output)
+print(output.size())               # (1,2048, 1, 1)
+output = model.logits(output)
 print(output.size())               # (1,1000)
 ```
 
 #### `model.forward`
 
-Method used to call `model.features` and `model.classifier`. It can be overwritten as desired.
+Method used to call `model.features` and `model.logits`. It can be overwritten as desired.
 
-**Important note**: A good practice is to use `model.__call__` as your function of choice to forward an input to your model. See the example bellow.
+**Note**: A good practice is to use `model.__call__` as your function of choice to forward an input to your model. See the example bellow.
 
 ```python
 # Without model.__call__
@@ -392,6 +392,34 @@ output = model(input_224)
 print(output.size())      # (1,1000)
 ```
 
+#### `model.last_linear`
+
+Attribut of type `nn.Linear`. This module is the last one to be called during the forward pass.
+
+- Can be replaced by an adapted `nn.Linear` for fine tuning.
+- Can be replaced by `pretrained.utils.Identity` for features extraction. 
+
+Example when the model is loaded using `fbresnet152`:
+
+```python
+print(input_224.size())            # (1,3,224,224)
+output = model.features(input_224) 
+print(output.size())               # (1,2048,1,1)
+output = model.logits(output)
+print(output.size())               # (1,1000)
+
+# fine tuning
+dim_feats = model.last_linear.in_features # =2048
+nb_classes = 4
+model.last_linear = nn.Linear(dim_feats, nb_classes)
+output = model(input_224)
+print(output.size())               # (1,4)
+
+# features extraction
+model.last_linear = pretrained.utils.Identity()
+output = model(input_224)
+print(output.size())               # (1,2048)
+```
 
 ## Reproducing
 
