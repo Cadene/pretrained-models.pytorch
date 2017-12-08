@@ -9,7 +9,7 @@ __all__ = ['vggm']
 pretrained_settings = {
     'vggm': {
         'imagenet': {
-            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/vggm-786f2434.pth',
+            'url': 'http://data.lip6.fr/cadene/pretrainedmodels/vggm-786f2434.pth',
             'input_space': 'BGR',
             'input_size': [3, 221, 221],
             'input_range': [0, 255],

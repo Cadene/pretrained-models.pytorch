@@ -11,7 +11,7 @@ __all__ = ['ResNeXt101_32x4d', 'resnext101_32x4d',
 pretrained_settings = {
     'resnext101_32x4d': {
         'imagenet': {
-            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/resnext101_32x4d-29e315fa.pth',
+            'url': 'http://data.lip6.fr/cadene/pretrainedmodels/resnext101_32x4d-29e315fa.pth',
             'input_space': 'RGB',
             'input_size': [3, 224, 224],
             'input_range': [0, 1],
@@ -22,7 +22,7 @@ pretrained_settings = {
     },
     'resnext101_64x4d': {
         'imagenet': {
-            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/resnext101_64x4d-e77a0586.pth',
+            'url': 'http://data.lip6.fr/cadene/pretrainedmodels/resnext101_64x4d-e77a0586.pth',
             'input_space': 'RGB',
             'input_size': [3, 224, 224],
             'input_range': [0, 1],

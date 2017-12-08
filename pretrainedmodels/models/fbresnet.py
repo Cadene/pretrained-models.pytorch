@@ -10,7 +10,7 @@ __all__ = ['FBResNet',
 pretrained_settings = {
     'fbresnet152': {
         'imagenet': {
-            'url': 'http://webia.lip6.fr/~cadene/Downloads/pretrained-models.pytorch/fbresnet152-2e20f6b4.pth',
+            'url': 'http://data.lip6.fr/cadene/pretrainedmodels/fbresnet152-2e20f6b4.pth',
             'input_space': 'RGB',
             'input_size': [3, 224, 224],
             'input_range': [0, 1],
