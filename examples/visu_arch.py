@@ -3,79 +3,59 @@ import os
 import torch # http://pytorch.org/about/
 from torch.autograd import Variable
 from torch.utils import model_zoo
-
-import torchvision # https://github.com/pytorch/vision
-import torchvision.models as models
 import torchvision.transforms as transforms
 
-from lib.voc import Voc2007Classification
-from lib.util import load_imagenet_classes
+import sys
+sys.path.append('.')
+import pretrainedmodels as models
 
-model_urls = {
-    # Alexnet
-    # Paper: https://papers.nips.cc/paper/4824-imagenet-classification-with-deep-convolutional-neural-networks.pdf
-    # https://github.com/pytorch/vision/blob/master/torchvision/models/alexnet.py
-    'alexnet': 'https://download.pytorch.org/models/alexnet-owt-4df8aa71.pth',
-    # VGG
-    # Paper: https://arxiv.org/abs/1409.1556
-    # https://github.com/pytorch/vision/blob/master/torchvision/models/vgg.py
-    'vgg16': 'https://download.pytorch.org/models/vgg16-397923af.pth',
-    # VGG BatchNorm
-    # Paper: https://arxiv.org/abs/1502.03167
-    # https://github.com/pytorch/vision/blob/master/torchvision/models/vgg.py
-    'vgg16_bn': 'https://download.pytorch.org/models/vgg16_bn-6c64b313.pth',
-    # Inception
-    # Paper: https://arxiv.org/abs/1602.07261
-    # https://github.com/pytorch/vision/blob/master/torchvision/models/inception.py
-    'inception_v3': 'https://download.pytorch.org/models/inception_v3_google-1a9a5a14.pth',
-    # Resnet
-    # Paper: https://arxiv.org/abs/1512.03385
-    # https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py
-    'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
-    'resnet50': 'https://download.pytorch.org/models/resnet50-19c8e357.pth',
-    'resnet152': 'https://download.pytorch.org/models/resnet152-b121ed2d.pth'
-}
+from lib.utils import load_imagenet_classes
 
-if __name__ == '__main__':
+model_names = sorted(name for name in pretrainedmodels.__dict__
+    if not name.startswith("__")
+    and name.islower()
+    and callable(pretrainedmodels.__dict__[name]))
 
-    model_name = 'alexnet'
+parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
+parser.add_argument('--arch', '-a', metavar='ARCH', default='nasnetalarge',
+                    choices=model_names,
+                    help='model architecture: ' +
+                        ' | '.join(model_names) +
+                        ' (default: nasnetalarge)',
+                    nargs='+')
+parser.add_argument('--path_img', default='data/cat.jpg')
+args = parser.parse_args()
 
-    dir_datasets = '/home/sasl/shared/EI-SE5-CS/datasets' # '/tmp/torch/datasets'
-    dir_models = '/home/sasl/shared/EI-SE5-CS/models' # '/tmp/torch/models'
-    dir_outputs = '/tmp/outputs/' + model_name
+def main():
+    global args
+    args = parser.parse_args()
 
-    print('Create network')
-    model = models.__dict__[model_name]() # https://stackoverflow.com/questions/19907442/python-explain-dict-attribute
+    print('\n\nCreate network')
+    model = models.__dict__[args.arch](num_classes=1000, pretrained=args.pretrained)
     model.eval() # http://pytorch.org/docs/master/nn.html?highlight=eval#torch.nn.Module.eval
-    print('')
 
     ##########################################################################
-
-    print('Display modules')
+    print('\n\nDisplay modules')
     print(model)
-    print('')
 
     ##########################################################################
-
-    print('Display parameters')
+    print('\n\nDisplay parameters')
     state_dict = model.state_dict() # http://pytorch.org/docs/master/_modules/torch/nn/modules/module.html#Module.state_dict
     for key, value in state_dict.items():
         print(key, value.size())
-    print('')
-
-    print('Display features.0.weight')
-    print(state_dict['features.0.weight'])
-    print('')
 
     ##########################################################################
-
-    print('Display inputs/outputs')
+    print('\n\nDisplay inputs/outputs')
 
     def print_info(self, input, output):
-        print('Inside '+ self.__class__.__name__+ ' forward')
+        print('Inside ' + self.__class__.__name__ + ' forward')
         print('input size', input[0].size())
         print('output size', output.data.size())
         print('')
+
+    
+
+    # TODO
 
     handles = []
     for m in model.features:
@@ -90,11 +70,8 @@ if __name__ == '__main__':
     for h in handles:
         h.remove() # to remove the hooks
 
-    print('')
-
     ##########################################################################
-
-    print('Load dataset Voc2007')
+    print('\n\nLoad dataset Voc2007')
 
     train_data = Voc2007Classification(dir_datasets, 'train') # or val, test, trainval
 
@@ -118,12 +95,7 @@ if __name__ == '__main__':
             print('image {} has object of class {}'.format(img_name, train_data.classes[class_id]))
 
     ##########################################################################
-
-    print('Load pretrained model on Imagenet')
-    model.load_state_dict(model_zoo.load_url(model_urls[model_name],
-                                   model_dir=dir_models))
-
-    print('Display predictions')
+    print('\n\nDisplay predictions')
 
     tf = transforms.Compose([
         transforms.Scale(224), # rescale an RGB image to size 224^ (not a square)
@@ -224,3 +196,6 @@ if __name__ == '__main__':
 
     print('')
 
+
+if __name__ == '__main__':
+    main()
