@@ -626,7 +626,7 @@ def nasnetalarge(num_classes=1001, pretrained='imagenet'):
 
 if __name__ == "__main__":
 
-    model = NasNetALarge()
+    model = NASNetALarge()
 
     input = Variable(torch.randn(2,3,331,331))
     output = model(input)
