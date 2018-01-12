@@ -7,6 +7,7 @@ The goal of this repo is:
 
 News:
 
+- 12/01/2018: `python setup.py install`
 - 08/12/2017: update data url (/!\ `git pull` is needed)
 - 30/11/2017: improve API (`model.features(input)`, `model.logits(features)`, `model.forward(input)`, `model.last_linear`)
 - 16/11/2017: nasnet-a-large pretrained model ported by T. Durand and R. Cadene
@@ -74,6 +75,8 @@ News:
 1. [python3 with anaconda](https://www.continuum.io/downloads)
 2. [pytorch with/out CUDA](http://pytorch.org)
 3. `git clone https://github.com/Cadene/pretrained-models.pytorch.git`
+4. `cd pretrained-models.pytorch`
+5. `python setup.py install`
 
 
 ## Quick examples
@@ -81,8 +84,6 @@ News:
 - To import `pretrainedmodels`:
 
 ```python
-import sys
-sys.path.append('yourdir/pretrained-models.pytorch') # if needed
 import pretrainedmodels
 ```
 
