@@ -1,7 +1,34 @@
-from .fbresnet import *
-from .resnext import *
-from .inceptionv4 import *
-from .inceptionresnetv2 import *
-from .bninception import *
-from .torchvision_models import *
-from .nasnet import *
+from .fbresnet import fbresnet152
+
+from .bninception import bninception
+
+from .resnext import resnext101_32x4d
+from .resnext import resnext101_64x4d
+
+from .inceptionv4 import inceptionv4
+
+from .inceptionresnetv2 import inceptionresnetv2
+
+from .nasnet import nasnetalarge
+
+from .torchvision_models import alexnet
+from .torchvision_models import densenet121
+from .torchvision_models import densenet169
+from .torchvision_models import densenet201
+from .torchvision_models import densenet161
+from .torchvision_models import resnet18
+from .torchvision_models import resnet34
+from .torchvision_models import resnet50
+from .torchvision_models import resnet101
+from .torchvision_models import resnet152
+from .torchvision_models import inceptionv3
+from .torchvision_models import squeezenet1_0
+from .torchvision_models import squeezenet1_1
+from .torchvision_models import vgg11
+from .torchvision_models import vgg11_bn
+from .torchvision_models import vgg13
+from .torchvision_models import vgg13_bn
+from .torchvision_models import vgg16
+from .torchvision_models import vgg16_bn
+from .torchvision_models import vgg19_bn
+from .torchvision_models import vgg19

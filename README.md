@@ -7,6 +7,7 @@ The goal of this repo is:
 
 News:
 
+- 13/01/2018: `pip install pretrainedmodels`, `pretrainedmodels.model_names`, `pretrainedmodels.pretrained_settings`
 - 12/01/2018: `python setup.py install`
 - 08/12/2017: update data url (/!\ `git pull` is needed)
 - 30/11/2017: improve API (`model.features(input)`, `model.logits(features)`, `model.forward(input)`, `model.last_linear`)
@@ -74,6 +75,13 @@ News:
 
 1. [python3 with anaconda](https://www.continuum.io/downloads)
 2. [pytorch with/out CUDA](http://pytorch.org)
+
+### Install from pip
+
+3. `pip install pretrainedmodels`
+
+### Install from repo
+
 3. `git clone https://github.com/Cadene/pretrained-models.pytorch.git`
 4. `cd pretrained-models.pytorch`
 5. `python setup.py install`
@@ -90,11 +98,15 @@ import pretrainedmodels
 - To print the available pretrained models:
 
 ```python
-model_names = sorted(name for name in pretrainedmodels.__dict__
-    if not name.startswith("__")
-    and name.islower()
-    and callable(pretrainedmodels.__dict__[name]))
-print(model_names)
+print(pretrainedmodels.model_names)
+> ['fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d', 'inceptionv4', 'inceptionresnetv2', 'alexnet', 'densenet121', 'densenet169', 'densenet201', 'densenet161', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'inceptionv3', 'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19_bn', 'vgg19', 'nasnetalarge']
+```
+
+- To print the available pretrained settings for a chosen model:
+
+```python
+print(pretrainedmodels.pretrained_settings['nasnetalarge'])
+> {'imagenet': {'url': 'http://data.lip6.fr/cadene/pretrainedmodels/nasnetalarge-a1897284.pth', 'input_space': 'RGB', 'input_size': [3, 331, 331], 'input_range': [0, 1], 'mean': [0.5, 0.5, 0.5], 'std': [0.5, 0.5, 0.5], 'num_classes': 1000}, 'imagenet+background': {'url': 'http://data.lip6.fr/cadene/pretrainedmodels/nasnetalarge-a1897284.pth', 'input_space': 'RGB', 'input_size': [3, 331, 331], 'input_range': [0, 1], 'mean': [0.5, 0.5, 0.5], 'std': [0.5, 0.5, 0.5], 'num_classes': 1001}}
 ```
 
 - To load a pretrained models from imagenet:
