@@ -308,7 +308,7 @@ class InceptionV4(nn.Module):
         return x
 
 
-def inceptionv4(num_classes=1001, pretrained='imagenet'):
+def inceptionv4(num_classes=1000, pretrained='imagenet'):
     if pretrained:
         settings = pretrained_settings['inceptionv4'][pretrained]
         assert num_classes == settings['num_classes'], \
