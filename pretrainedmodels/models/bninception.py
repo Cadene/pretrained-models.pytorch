@@ -247,7 +247,7 @@ class BNInception(nn.Module):
         self.inception_5b_pool_proj_bn = nn.BatchNorm2d(128, eps=1e-05, momentum=0.9, affine=True)
         self.inception_5b_relu_pool_proj = nn.ReLU (inplace)
         self.global_pool = nn.AvgPool2d (7, stride=1, padding=0, ceil_mode=True, count_include_pad=True)
-        self.last_linear = nn.Linear (1024, 1000)
+        self.last_linear = nn.Linear (1024, num_classes)
 
     def features(self, input):
         conv1_7x7_s2_out = self.conv1_7x7_s2(input)
