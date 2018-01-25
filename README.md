@@ -286,7 +286,7 @@ Source: [ResNeXt repo of FaceBook](https://github.com/facebookresearch/ResNeXt)
 
 #### DualPathNetworks
 
-Source: [MXNET repo](https://github.com/cypw/DPNs)
+Source: [MXNET repo of Chen Yunpeng](https://github.com/cypw/DPNs)
 
 The porting has been made possible by [Ross Wightman](http://rwightman.com) in his [PyTorch repo](https://github.com/rwightman/pytorch-dpn-pretrained).
 
