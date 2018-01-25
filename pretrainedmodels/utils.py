@@ -1,7 +1,9 @@
+import math
 import torch
 import torch.nn as nn
 import torchvision.transforms as transforms
 from PIL import Image
+from munch import munchify
 
 class ToSpaceBGR(object):
 
@@ -30,22 +32,42 @@ class ToRange255(object):
 
 class TransformImage(object):
 
-    def __init__(self, model, scale=1.050):
-        self.input_size = model.input_size
-        self.input_space = model.input_space
-        self.input_range = model.input_range
-        self.mean = model.mean
-        self.std = model.std
-        self.scale = scale
-        self.tf = transforms.Compose([
-            transforms.Scale(int(round(max(self.input_size)*self.scale))),
-            transforms.CenterCrop(max(self.input_size)),
-            transforms.ToTensor(),
-            ToSpaceBGR(self.input_space=='BGR'),
-            ToRange255(max(self.input_range)==255),
-            transforms.Normalize(mean=self.mean, std=self.std)
-        ])
+    def __init__(self, opts, scale=0.875, random_crop=False, random_hflip=False, random_vflip=False):
+        if type(opts) == dict:
+            opts = munchify(opts)
+        self.input_size = opts.input_size
+        self.input_space = opts.input_space
+        self.input_range = opts.input_range
+        self.mean = opts.mean
+        self.std = opts.std
 
+        # https://github.com/tensorflow/models/blob/master/research/inception/inception/image_processing.py#L294
+        self.scale = scale
+        self.random_crop = random_crop
+        self.random_hflip = random_hflip
+        self.random_vflip = random_vflip
+
+        tfs = []
+        tfs.append(transforms.Resize(int(math.floor(max(self.input_size)/self.scale))))
+
+        if random_crop:
+            tfs.append(transforms.RandomCrop(max(self.input_size)))
+        else:
+            tfs.append(transforms.CenterCrop(max(self.input_size)))
+
+        if random_hflip:
+            tfs.append(transforms.RandomHorizontalFlip())
+
+        if random_vflip:
+            tfs.append(transforms.RandomVerticalFlip())
+
+        tfs.append(transforms.ToTensor())
+        tfs.append(ToSpaceBGR(self.input_space=='BGR'))
+        tfs.append(ToRange255(max(self.input_range)==255))
+        tfs.append(transforms.Normalize(mean=self.mean, std=self.std))
+
+        self.tf = transforms.Compose(tfs)
+            
     def __call__(self, img):
         tensor = self.tf(img)
         return tensor
@@ -65,7 +87,7 @@ class LoadImage(object):
 
 class LoadTransformImage(object):
 
-    def __init__(self, model, scale=1.050):
+    def __init__(self, model, scale=0.875):
         self.load = LoadImage()
         self.tf = TransformImage(model, scale=scale)
 

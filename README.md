@@ -7,6 +7,7 @@ The goal of this repo is:
 
 News:
 
+- 25/01/2018: DualPathNetworks thanks to [Ross Wightman repo](https://github.com/rwightman/pytorch-dpn-pretrained), Xception thanks to [T Standley](https://github.com/tstandley/Xception-PyTorch), improved TransformImage API
 - 13/01/2018: `pip install pretrainedmodels`, `pretrainedmodels.model_names`, `pretrainedmodels.pretrained_settings`
 - 12/01/2018: `python setup.py install`
 - 08/12/2017: update data url (/!\ `git pull` is needed)
@@ -35,7 +36,12 @@ News:
         - [DenseNet161](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [DenseNet169](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [DenseNet201](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
-        - [FBResNet152](https://github.com/Cadene/pretrained-models.pytorch#facebook-resnet)
+        - [DenseNet201](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [DualPathNet68](https://github.com/Cadene/pretrained-models.pytorch#dual-path-networks)
+        - [DualPathNet92](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks)
+        - [DualPathNet98](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks)
+        - [DualPathNet107](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks)
+        - [DualPathNet113](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks)
         - [InceptionResNetV2](https://github.com/Cadene/pretrained-models.pytorch#inception)
         - [InceptionV3](https://github.com/Cadene/pretrained-models.pytorch#inception)
         - [InceptionV4](https://github.com/Cadene/pretrained-models.pytorch#inception)
@@ -57,6 +63,7 @@ News:
         - [VGG13_BN](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [VGG16_BN](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [VGG19_BN](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [Xception](https://github.com/Cadene/pretrained-models.pytorch#xception)
     - [Model API](https://github.com/Cadene/pretrained-models.pytorch#model-api)
         - [model.input_size](https://github.com/Cadene/pretrained-models.pytorch#modelinput_size)
         - [model.input_space](https://github.com/Cadene/pretrained-models.pytorch#modelinput_space)
@@ -179,6 +186,8 @@ $ python examples/imagenet_eval.py /local/common-data/imagenet_2012/images -a na
 
 ### Accuracy on validation set (single model)
 
+Results were obtained using (center cropped) images of the same size than during the training process.
+
 Model | Version | Acc@1 | Acc@5
 --- | --- | --- | ---
 NASNet-A-Large | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 82.693 | 96.163
@@ -187,19 +196,27 @@ InceptionResNetV2 | [Tensorflow](https://github.com/tensorflow/models/tree/maste
 InceptionV4 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.2 | 95.3
 [InceptionResNetV2](https://github.com/Cadene/pretrained-models.pytorch#inception) | Our porting | 80.170 | 95.234
 [InceptionV4](https://github.com/Cadene/pretrained-models.pytorch#inception) | Our porting | 80.062 | 94.926
+[DualPathNet107_5k](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks) | Our porting | 79.746 | 94.684
 ResNeXt101_64x4d | [Torch7](https://github.com/facebookresearch/ResNeXt) | 79.6 | 94.7
+[DualPathNet131](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks) | Our porting | 79.432 | 94.574
+[DualPathNet92_5k](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks) | Our porting | 79.400 | 94.620
+[DualPathNet98](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks) | Our porting | 79.224 | 94.488
+[Xception](https://github.com/Cadene/pretrained-models.pytorch#xception) | [Keras](https://github.com/keras-team/keras/blob/master/keras/applications/xception.py) | 79.000 | 94.500
 [ResNeXt101_64x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext) | Our porting | 78.956 | 94.252
+[Xception](https://github.com/Cadene/pretrained-models.pytorch#xception) | Our porting | 78.888 | 94.292
 ResNeXt101_32x4d | [Torch7](https://github.com/facebookresearch/ResNeXt) | 78.8 | 94.4
 ResNet152 | [Pytorch](https://github.com/pytorch/vision#models) | 78.428 | 94.110
 [ResNeXt101_32x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext) | Our porting | 78.188 | 93.886
 FBResNet152 | [Torch7](https://github.com/facebook/fb.resnet.torch) | 77.84 | 93.84
 [DenseNet161](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 77.560 | 93.798
+[ResNet101](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 77.438 | 93.672
 [FBResNet152](https://github.com/Cadene/pretrained-models.pytorch#facebook-resnet) | Our porting | 77.386 | 93.594
 [InceptionV3](https://github.com/Cadene/pretrained-models.pytorch#inception) | [Pytorch](https://github.com/pytorch/vision#models) | 77.294 | 93.454
 [DenseNet201](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 77.152 | 93.548
-[ResNet101](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 77.438 | 93.672
+[DualPathNet68b_5k](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks) | Our porting | 77.034 | 93.590
 [DenseNet169](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 76.026 | 92.992
 [ResNet50](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 76.002 | 92.980
+[DualPathNet68](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks) | Our porting | 75.868 | 92.774
 [DenseNet121](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 74.646 | 92.136
 [VGG19_BN](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 74.266 | 92.066
 [ResNet34](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 73.554 | 91.456
@@ -267,7 +284,33 @@ Source: [ResNeXt repo of FaceBook](https://github.com/facebookresearch/ResNeXt)
 - `resnext101_32x4d(num_classes=1000, pretrained='imagenet')`
 - `resnext101_62x4d(num_classes=1000, pretrained='imagenet')`
 
+#### DualPathNet
+
+Source: [MXNET repo](https://github.com/cypw/DPNs)
+
+The porting has been made possible by [Ross Wightman](http://rwightman.com) in his [PyTorch repo](https://github.com/rwightman/pytorch-dpn-pretrained).
+
+As you can see [here](https://github.com/rwightman/pytorch-dpn-pretrained) DualPathNet allows you to try different scales. The default one in this repo is 0.875 meaning that the original input size is 256 before croping to 224.
+
+- `dpn68(num_classes=1000, pretrained='imagenet')`
+- `dpn98(num_classes=1000, pretrained='imagenet')`
+- `dpn131(num_classes=1000, pretrained='imagenet')`
+- `dpn68b(num_classes=1000, pretrained='imagenet+5k')`
+- `dpn92(num_classes=1000, pretrained='imagenet+5k')`
+- `dpn107(num_classes=1000, pretrained='imagenet+5k')`
+
+`'imagenet+5k'` means that the network has been pretrained on imagenet5k before being finetuned on imagenet1k.
+
+#### Xception
+
+Source: [Keras repo](https://github.com/keras-team/keras/blob/master/keras/applications/xception.py)
+
+The porting has been made possible by [T Standley](https://github.com/tstandley/Xception-PyTorch).
+
+- `xception(num_classes=1000, pretrained='imagenet')`
+
 #### TorchVision
+
 Source: [Pytorch/Vision repo](https://github.com/pytorch/vision/tree/master/torchvision)
 
 (`inceptionv3` included in [Inception*](https://github.com/Cadene/pretrained-models.pytorch#inception))

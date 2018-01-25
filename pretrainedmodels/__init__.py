@@ -35,3 +35,10 @@ from .models.torchvision_models import vgg16
 from .models.torchvision_models import vgg16_bn
 from .models.torchvision_models import vgg19_bn
 from .models.torchvision_models import vgg19
+from .models.dpn import dpn68
+from .models.dpn import dpn68b
+from .models.dpn import dpn92
+from .models.dpn import dpn98
+from .models.dpn import dpn131
+from .models.dpn import dpn107
+from .models.xception import xception

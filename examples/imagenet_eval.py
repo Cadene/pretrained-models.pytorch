@@ -96,12 +96,21 @@ def main():
     #     batch_size=args.batch_size, shuffle=True,
     #     num_workers=args.workers, pin_memory=True)
 
+    
+
+    if 'scale' in pretrainedmodels.pretrained_settings[args.arch][args.pretrained]:
+        scale = pretrainedmodels.pretrained_settings[args.arch][args.pretrained]['scale']
+    else:
+        scale = 0.875
+
     print('Images transformed from size {} to {}'.format(
-        int(round(max(model.input_size)*1.050)),
+        int(round(max(model.input_size)/scale)),
         model.input_size))
 
+    val_tf = pretrainedmodels.utils.TransformImage(model, scale=scale)
+
     val_loader = torch.utils.data.DataLoader(
-        datasets.ImageFolder(valdir, pretrainedmodels.utils.TransformImage(model)),
+        datasets.ImageFolder(valdir, val_tf),
         batch_size=args.batch_size, shuffle=False,
         num_workers=args.workers, pin_memory=True)
 

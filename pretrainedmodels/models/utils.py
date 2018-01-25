@@ -5,6 +5,8 @@ from .inceptionv4 import pretrained_settings as inceptionv4_settings
 from .inceptionresnetv2 import pretrained_settings as inceptionresnetv2_settings
 from .torchvision_models import pretrained_settings as torchvision_models_settings
 from .nasnet import pretrained_settings as nasnet_settings
+from .dpn import pretrained_settings as dpn_settings
+from .xception import pretrained_settings as xception_settings
 
 all_settings = [
     fbresnet_settings,
@@ -13,7 +15,9 @@ all_settings = [
     inceptionv4_settings,
     inceptionresnetv2_settings,
     torchvision_models_settings,
-    nasnet_settings
+    nasnet_settings,
+    dpn_settings,
+    xception_settings
 ]
 
 model_names = []
