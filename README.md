@@ -7,7 +7,7 @@ The goal of this repo is:
 
 News:
 
-- 25/01/2018: DualPathNetworks thanks to [Ross Wightman repo](https://github.com/rwightman/pytorch-dpn-pretrained), Xception thanks to [T Standley](https://github.com/tstandley/Xception-PyTorch), improved TransformImage API
+- 25/01/2018: DualPathNetworks thanks to [Ross Wightman](https://github.com/rwightman/pytorch-dpn-pretrained), Xception thanks to [T Standley](https://github.com/tstandley/Xception-PyTorch), improved TransformImage API
 - 13/01/2018: `pip install pretrainedmodels`, `pretrainedmodels.model_names`, `pretrainedmodels.pretrained_settings`
 - 12/01/2018: `python setup.py install`
 - 08/12/2017: update data url (/!\ `git pull` is needed)
