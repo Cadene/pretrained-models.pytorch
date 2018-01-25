@@ -37,7 +37,7 @@ News:
         - [DenseNet169](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [DenseNet201](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [DenseNet201](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
-        - [DualPathNet68](https://github.com/Cadene/pretrained-models.pytorch#dual-path-networks)
+        - [DualPathNet68](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks)
         - [DualPathNet92](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks)
         - [DualPathNet98](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks)
         - [DualPathNet107](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks)
@@ -284,13 +284,13 @@ Source: [ResNeXt repo of FaceBook](https://github.com/facebookresearch/ResNeXt)
 - `resnext101_32x4d(num_classes=1000, pretrained='imagenet')`
 - `resnext101_62x4d(num_classes=1000, pretrained='imagenet')`
 
-#### DualPathNet
+#### DualPathNetworks
 
 Source: [MXNET repo](https://github.com/cypw/DPNs)
 
 The porting has been made possible by [Ross Wightman](http://rwightman.com) in his [PyTorch repo](https://github.com/rwightman/pytorch-dpn-pretrained).
 
-As you can see [here](https://github.com/rwightman/pytorch-dpn-pretrained) DualPathNet allows you to try different scales. The default one in this repo is 0.875 meaning that the original input size is 256 before croping to 224.
+As you can see [here](https://github.com/rwightman/pytorch-dpn-pretrained) DualPathNetworks allows you to try different scales. The default one in this repo is 0.875 meaning that the original input size is 256 before croping to 224.
 
 - `dpn68(num_classes=1000, pretrained='imagenet')`
 - `dpn98(num_classes=1000, pretrained='imagenet')`
