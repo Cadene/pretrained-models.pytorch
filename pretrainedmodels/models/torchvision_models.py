@@ -447,7 +447,7 @@ def modify_vggs(model):
     model.last_linear = model.classifier[6]
     del model.classifier
 
-    def make_features(self, input):
+    def features(self, input):
         x = self._features(input)
         x = x.view(x.size(0), -1)
         x = self.linear0(x)
@@ -463,12 +463,12 @@ def modify_vggs(model):
         return x
 
     def forward(self, input):
-        x = self.make_features(input)
+        x = self.features(input)
         x = self.logits(x)
         return x
         
     # Modify methods
-    setattr(model.__class__, 'make_features', make_features)
+    setattr(model.__class__, 'features', features)
     setattr(model.__class__, 'logits', logits)
     setattr(model.__class__, 'forward', forward)  
     return model
