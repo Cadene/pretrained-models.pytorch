@@ -61,6 +61,7 @@ class TransformImage(object):
         if random_vflip:
             tfs.append(transforms.RandomVerticalFlip())
 
+        # tfs.append(transforms.Resize((224, 224)))
         tfs.append(transforms.ToTensor())
         tfs.append(ToSpaceBGR(self.input_space=='BGR'))
         tfs.append(ToRange255(max(self.input_range)==255))

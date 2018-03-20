@@ -6,7 +6,7 @@ The goal of this repo is:
 - to access pretrained ConvNets with a unique interface/API inspired by torchvision.
 
 News:
-
+- 21/03/2018: NASNet Mobile
 - 25/01/2018: DualPathNetworks thanks to [Ross Wightman](https://github.com/rwightman/pytorch-dpn-pretrained), Xception thanks to [T Standley](https://github.com/tstandley/Xception-PyTorch), improved TransformImage API
 - 13/01/2018: `pip install pretrainedmodels`, `pretrainedmodels.model_names`, `pretrainedmodels.pretrained_settings`
 - 12/01/2018: `python setup.py install`
@@ -17,6 +17,13 @@ News:
 - 22/07/2017: momentum in inceptionv4 and inceptionresnetv2 to 0.1
 - 17/07/2017: model.input_range attribut
 - 17/07/2017: BNInception pretrained on Imagenet
+
+Thank to a great help, support and motivation from Anastasiia (https://github.com/DagnyT), the result are:
+Model | Version | Acc@1 | Acc@5
+--- | --- | --- | ---
+NASNet-A-Mobile | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 74.0 | 91.6
+[NASNet-A-Mobile](https://github.com/veronikayurchuk/pretrained-models.pytorch/blob/master/pretrainedmodels/models/nasnet_mobile.py) | My porting | 74.08 | 91.74
+
 
 ## Summary
 

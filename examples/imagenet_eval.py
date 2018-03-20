@@ -23,9 +23,9 @@ model_names = sorted(name for name in pretrainedmodels.__dict__
     and callable(pretrainedmodels.__dict__[name]))
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
-parser.add_argument('data', metavar='DIR',
+parser.add_argument('--data', metavar='DIR', default='/mnt/from_dev-nh3/disk/imagenet/',
                     help='path to dataset')
-parser.add_argument('--arch', '-a', metavar='ARCH', default='fbresnet152',
+parser.add_argument('--arch', '-a', metavar='ARCH', default='nasnetamobile',
                     choices=model_names,
                     help='model architecture: ' +
                         ' | '.join(model_names) +
@@ -36,7 +36,7 @@ parser.add_argument('--epochs', default=90, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
-parser.add_argument('-b', '--batch-size', default=256, type=int,
+parser.add_argument('-b', '--batch-size', default=1256, type=int,
                     metavar='N', help='mini-batch size (default: 256)')
 parser.add_argument('--lr', '--learning-rate', default=0.1, type=float,
                     metavar='LR', help='initial learning rate')
@@ -48,11 +48,12 @@ parser.add_argument('--print-freq', '-p', default=10, type=int,
                     metavar='N', help='print frequency (default: 10)')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
-parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
-                    help='evaluate model on validation set')
+parser.add_argument('-e', '--evaluate', dest='evaluate', default=True,
+                    action='store_true', help='evaluate model on validation set')
 parser.add_argument('--pretrained', default='imagenet', help='use pre-trained model')
 
 best_prec1 = 0
+
 
 def main():
     global args, best_prec1
@@ -98,10 +99,11 @@ def main():
 
     
 
-    if 'scale' in pretrainedmodels.pretrained_settings[args.arch][args.pretrained]:
-        scale = pretrainedmodels.pretrained_settings[args.arch][args.pretrained]['scale']
-    else:
-        scale = 0.875
+    # if 'scale' in pretrainedmodels.pretrained_settings[args.arch][args.pretrained]:
+    #     scale = pretrainedmodels.pretrained_settings[args.arch][args.pretrained]['scale']
+    # else:
+    #     scale = 0.875
+    scale = 0.875
 
     print('Images transformed from size {} to {}'.format(
         int(round(max(model.input_size)/scale)),
@@ -207,7 +209,8 @@ def validate(val_loader, model, criterion):
 
     end = time.time()
     for i, (input, target) in enumerate(val_loader):
-        target = target.cuda(async=True)
+        target = target.cuda()
+        input = input.cuda()
         input_var = torch.autograd.Variable(input, volatile=True)
         target_var = torch.autograd.Variable(target, volatile=True)
 
@@ -237,7 +240,7 @@ def validate(val_loader, model, criterion):
     print(' * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}'
           .format(top1=top1, top5=top5))
 
-    return top1.avg
+    return top1.avg, top5.avg
 
 
 def save_checkpoint(state, is_best, filename='checkpoint.pth.tar'):
@@ -288,4 +291,4 @@ def accuracy(output, target, topk=(1,)):
 
 
 if __name__ == '__main__':
-    main()
+     main()
