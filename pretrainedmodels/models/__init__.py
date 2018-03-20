@@ -10,7 +10,7 @@ from .inceptionv4 import inceptionv4
 from .inceptionresnetv2 import inceptionresnetv2
 
 from .nasnet import nasnetalarge
-
+from .nasnet_mobile import nasnetamobile
 from .torchvision_models import alexnet
 from .torchvision_models import densenet121
 from .torchvision_models import densenet169
