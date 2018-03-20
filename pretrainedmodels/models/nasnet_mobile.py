@@ -652,23 +652,6 @@ def nasnetamobile(num_classes=1001, pretrained='imagenet'):
     return model
 
 
-    #     if pretrained == 'imagenet':
-    #         new_last_linear = nn.Linear(model.last_linear.in_features, 1000)
-    #         new_last_linear.weight.data = model.last_linear.weight.data[1:]
-    #         new_last_linear.bias.data = model.last_linear.bias.data[1:]
-    #         model.last_linear = new_last_linear
-    #
-    #     model.input_space = settings['input_space']
-    #     model.input_size = settings['input_size']
-    #     model.input_range = settings['input_range']
-    #
-    #     model.mean = settings['mean']
-    #     model.std = settings['std']
-    # else:
-    #     model = NASNetALarge(num_classes=num_classes)
-    # return model
-
-
 if __name__ == "__main__":
 
     model = NASNetAMobile()
