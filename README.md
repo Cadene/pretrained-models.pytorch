@@ -6,7 +6,7 @@ The goal of this repo is:
 - to access pretrained ConvNets with a unique interface/API inspired by torchvision.
 
 News:
-
+- 21/03/2018: NASNet Mobile
 - 25/01/2018: DualPathNetworks thanks to [Ross Wightman](https://github.com/rwightman/pytorch-dpn-pretrained), Xception thanks to [T Standley](https://github.com/tstandley/Xception-PyTorch), improved TransformImage API
 - 13/01/2018: `pip install pretrainedmodels`, `pretrainedmodels.model_names`, `pretrainedmodels.pretrained_settings`
 - 12/01/2018: `python setup.py install`
@@ -17,6 +17,7 @@ News:
 - 22/07/2017: momentum in inceptionv4 and inceptionresnetv2 to 0.1
 - 17/07/2017: model.input_range attribut
 - 17/07/2017: BNInception pretrained on Imagenet
+
 
 ## Summary
 
@@ -190,6 +191,8 @@ Results were obtained using (center cropped) images of the same size than during
 
 Model | Version | Acc@1 | Acc@5
 --- | --- | --- | ---
+NASNet-A-Mobile | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 74.0 | 91.6
+[NASNet-A-Mobile](https://github.com/veronikayurchuk/pretrained-models.pytorch/blob/master/pretrainedmodels/models/nasnet_mobile.py) | Our porting | 74.08 | 91.74
 NASNet-A-Large | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 82.693 | 96.163
 [NASNet-A-Large](https://github.com/Cadene/pretrained-models.pytorch#nasnet) | Our porting | 82.566 | 96.086
 InceptionResNetV2 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.4 | 95.3

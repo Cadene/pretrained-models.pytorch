@@ -14,6 +14,7 @@ from .models.resnext import resnext101_64x4d
 from .models.inceptionv4 import inceptionv4
 from .models.inceptionresnetv2 import inceptionresnetv2
 from .models.nasnet import nasnetalarge
+from .models.nasnet_mobile import nasnetamobile
 from .models.torchvision_models import alexnet
 from .models.torchvision_models import densenet121
 from .models.torchvision_models import densenet169
