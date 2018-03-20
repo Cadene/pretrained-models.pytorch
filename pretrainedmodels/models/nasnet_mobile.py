@@ -1,5 +1,6 @@
 """
 NASNet Mobile
+Thanks to Anastasiia (https://github.com/DagnyT) for the great help, support and motivation!
 
 ------------------------------------------------------------------------------------
       Architecture       | Top-1 Acc | Top-5 Acc |  Multiply-Adds |  Params (M)

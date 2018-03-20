@@ -23,7 +23,7 @@ model_names = sorted(name for name in pretrainedmodels.__dict__
     and callable(pretrainedmodels.__dict__[name]))
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
-parser.add_argument('--data', metavar='DIR', default='/mnt/from_dev-nh3/disk/imagenet/',
+parser.add_argument('--data', metavar='DIR', default="path_to_imagenet",
                     help='path to dataset')
 parser.add_argument('--arch', '-a', metavar='ARCH', default='nasnetamobile',
                     choices=model_names,
