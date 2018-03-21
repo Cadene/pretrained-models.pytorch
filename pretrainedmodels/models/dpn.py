@@ -371,18 +371,21 @@ class DPN(nn.Module):
         # Using 1x1 conv for the FC layer to allow the extra pooling scheme
         self.classifier = nn.Conv2d(in_chs, num_classes, kernel_size=1, bias=True)
 
-    def forward(self, x):
-        x = self.features(x)
+    def logits(self, features):
         if not self.training and self.test_time_pool:
-            x = F.avg_pool2d(x, kernel_size=7, stride=1)
+            x = F.avg_pool2d(features, kernel_size=7, stride=1)
             out = self.classifier(x)
             # The extra test time pool should be pooling an img_size//32 - 6 size patch
             out = adaptive_avgmax_pool2d(out, pool_type='avgmax')
         else:
-            x = adaptive_avgmax_pool2d(x, pool_type='avg')
+            x = adaptive_avgmax_pool2d(features, pool_type='avg')
             out = self.classifier(x)
         return out.view(out.size(0), -1)
 
+    def forward(self, input):
+        x = self.features(input)
+        x = self.logits(x)
+        return x
 
 """ PyTorch selectable adaptive pooling
 Adaptive pooling with the ability to select the type of pooling from:

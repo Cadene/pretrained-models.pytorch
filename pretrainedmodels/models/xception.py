@@ -167,8 +167,8 @@ class Xception(nn.Module):
         #         m.bias.data.zero_()
         # #-----------------------------
 
-    def forward(self, x):
-        x = self.conv1(x)
+    def features(self, input):
+        x = self.conv1(input)
         x = self.bn1(x)
         x = self.relu(x)
         
@@ -195,12 +195,19 @@ class Xception(nn.Module):
         
         x = self.conv4(x)
         x = self.bn4(x)
-        x = self.relu(x)
+        return x
+
+    def logits(self, features):
+        x = self.relu(features)
 
         x = F.adaptive_avg_pool2d(x, (1, 1))
         x = x.view(x.size(0), -1)
         x = self.fc(x)
+        return x
 
+    def forward(self, input):
+        x = self.features(input)
+        x = self.logits(x)
         return x
 
 
@@ -219,4 +226,8 @@ def xception(num_classes=1000, pretrained='imagenet'):
         model.input_range = settings['input_range']
         model.mean = settings['mean']
         model.std = settings['std']
+
+    # TODO: ugly
+    model.last_linear = model.fc
+    del model.fc
     return model
