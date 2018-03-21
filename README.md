@@ -6,7 +6,7 @@ The goal of this repo is:
 - to access pretrained ConvNets with a unique interface/API inspired by torchvision.
 
 News:
-- 21/03/2018: NASNet Mobile
+- 21/03/2018: NASNet Mobile thanks to [Veronika Yurchuk](https://github.com/veronikayurchuk)
 - 25/01/2018: DualPathNetworks thanks to [Ross Wightman](https://github.com/rwightman/pytorch-dpn-pretrained), Xception thanks to [T Standley](https://github.com/tstandley/Xception-PyTorch), improved TransformImage API
 - 13/01/2018: `pip install pretrainedmodels`, `pretrainedmodels.model_names`, `pretrainedmodels.pretrained_settings`
 - 12/01/2018: `python setup.py install`
@@ -46,6 +46,7 @@ News:
         - [InceptionV3](https://github.com/Cadene/pretrained-models.pytorch#inception)
         - [InceptionV4](https://github.com/Cadene/pretrained-models.pytorch#inception)
         - [NASNet-A-Large](https://github.com/Cadene/pretrained-models.pytorch#nasnet)
+        - [NASNet-A-Mobile](https://github.com/Cadene/pretrained-models.pytorch#nasnet)
         - [ResNeXt101_32x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext)
         - [ResNeXt101_64x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext)
         - [ResNet101](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
@@ -106,7 +107,7 @@ import pretrainedmodels
 
 ```python
 print(pretrainedmodels.model_names)
-> ['fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d', 'inceptionv4', 'inceptionresnetv2', 'alexnet', 'densenet121', 'densenet169', 'densenet201', 'densenet161', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'inceptionv3', 'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19_bn', 'vgg19', 'nasnetalarge']
+> ['fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d', 'inceptionv4', 'inceptionresnetv2', 'alexnet', 'densenet121', 'densenet169', 'densenet201', 'densenet161', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'inceptionv3', 'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19_bn', 'vgg19', 'nasnetalarge', 'nasnetamobile']
 ```
 
 - To print the available pretrained settings for a chosen model:
@@ -190,8 +191,6 @@ Results were obtained using (center cropped) images of the same size than during
 
 Model | Version | Acc@1 | Acc@5
 --- | --- | --- | ---
-NASNet-A-Mobile | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 74.0 | 91.6
-[NASNet-A-Mobile](https://github.com/veronikayurchuk/pretrained-models.pytorch/blob/master/pretrainedmodels/models/nasnet_mobile.py) | Our porting | 74.08 | 91.74
 NASNet-A-Large | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 82.693 | 96.163
 [NASNet-A-Large](https://github.com/Cadene/pretrained-models.pytorch#nasnet) | Our porting | 82.566 | 96.086
 InceptionResNetV2 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.4 | 95.3
@@ -221,6 +220,8 @@ FBResNet152 | [Torch7](https://github.com/facebook/fb.resnet.torch) | 77.84 | 93
 [DualPathNet68](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks) | Our porting | 75.868 | 92.774
 [DenseNet121](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 74.646 | 92.136
 [VGG19_BN](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 74.266 | 92.066
+NASNet-A-Mobile | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 74.0 | 91.6
+[NASNet-A-Mobile](https://github.com/veronikayurchuk/pretrained-models.pytorch/blob/master/pretrainedmodels/models/nasnet_mobile.py) | Our porting | 74.080 | 91.740
 [ResNet34](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 73.554 | 91.456
 [BNInception](https://github.com/Cadene/pretrained-models.pytorch#bninception) | Our porting | 73.522 | 91.560
 [VGG16_BN](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 73.518 | 91.608
@@ -254,6 +255,7 @@ Source: [TensorFlow Slim repo](https://github.com/tensorflow/models/tree/master/
 
 - `nasnetalarge(num_classes=1000, pretrained='imagenet')`
 - `nasnetalarge(num_classes=1001, pretrained='imagenet+background')`
+- `nasnetamobile(num_classes=1000, pretrained='imagenet')`
 
 #### FaceBook ResNet*
 
