@@ -6,7 +6,7 @@ The goal of this repo is:
 - to access pretrained ConvNets with a unique interface/API inspired by torchvision.
 
 News:
-- 21/03/2018: NASNet Mobile thanks to [Veronika Yurchuk](https://github.com/veronikayurchuk)
+- 21/03/2018: NASNet Mobile thanks to [Veronika Yurchuk](https://github.com/veronikayurchuk) and [Anastasiia](https://github.com/DagnyT)
 - 25/01/2018: DualPathNetworks thanks to [Ross Wightman](https://github.com/rwightman/pytorch-dpn-pretrained), Xception thanks to [T Standley](https://github.com/tstandley/Xception-PyTorch), improved TransformImage API
 - 13/01/2018: `pip install pretrainedmodels`, `pretrainedmodels.model_names`, `pretrainedmodels.pretrained_settings`
 - 12/01/2018: `python setup.py install`
