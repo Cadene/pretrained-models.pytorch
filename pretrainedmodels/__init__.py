@@ -8,6 +8,7 @@ from .models.utils import model_names
 # to support pretrainedmodels.__dict__['nasnetalarge']
 # but depreciated
 from .models.fbresnet import fbresnet152
+from .models.cafferesnet import cafferesnet101
 from .models.bninception import bninception
 from .models.resnext import resnext101_32x4d
 from .models.resnext import resnext101_64x4d

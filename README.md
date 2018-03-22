@@ -6,6 +6,7 @@ The goal of this repo is:
 - to access pretrained ConvNets with a unique interface/API inspired by torchvision.
 
 News:
+- 22/03/2018: CaffeResNet101 (good for localization with FasterRCNN)
 - 21/03/2018: NASNet Mobile thanks to [Veronika Yurchuk](https://github.com/veronikayurchuk) and [Anastasiia](https://github.com/DagnyT)
 - 25/01/2018: DualPathNetworks thanks to [Ross Wightman](https://github.com/rwightman/pytorch-dpn-pretrained), Xception thanks to [T Standley](https://github.com/tstandley/Xception-PyTorch), improved TransformImage API
 - 13/01/2018: `pip install pretrainedmodels`, `pretrainedmodels.model_names`, `pretrainedmodels.pretrained_settings`
@@ -32,6 +33,7 @@ News:
     - [Available models](https://github.com/Cadene/pretrained-models.pytorch#available-models)
         - [AlexNet](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [BNInception](https://github.com/Cadene/pretrained-models.pytorch#bninception)
+        - [CaffeResNet101](https://github.com/Cadene/pretrained-models.pytorch#caffe-resnet)
         - [DenseNet121](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [DenseNet161](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [DenseNet169](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
@@ -42,6 +44,7 @@ News:
         - [DualPathNet98](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks)
         - [DualPathNet107](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks)
         - [DualPathNet113](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks)
+        - [FBResNet152](https://github.com/Cadene/pretrained-models.pytorch#facebook-resnet)
         - [InceptionResNetV2](https://github.com/Cadene/pretrained-models.pytorch#inception)
         - [InceptionV3](https://github.com/Cadene/pretrained-models.pytorch#inception)
         - [InceptionV4](https://github.com/Cadene/pretrained-models.pytorch#inception)
@@ -107,7 +110,7 @@ import pretrainedmodels
 
 ```python
 print(pretrainedmodels.model_names)
-> ['fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d', 'inceptionv4', 'inceptionresnetv2', 'alexnet', 'densenet121', 'densenet169', 'densenet201', 'densenet161', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'inceptionv3', 'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19_bn', 'vgg19', 'nasnetalarge', 'nasnetamobile']
+> ['fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d', 'inceptionv4', 'inceptionresnetv2', 'alexnet', 'densenet121', 'densenet169', 'densenet201', 'densenet161', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'inceptionv3', 'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19_bn', 'vgg19', 'nasnetalarge', 'nasnetamobile', 'cafferesnet101']
 ```
 
 - To print the available pretrained settings for a chosen model:
@@ -215,6 +218,8 @@ FBResNet152 | [Torch7](https://github.com/facebook/fb.resnet.torch) | 77.84 | 93
 [InceptionV3](https://github.com/Cadene/pretrained-models.pytorch#inception) | [Pytorch](https://github.com/pytorch/vision#models) | 77.294 | 93.454
 [DenseNet201](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 77.152 | 93.548
 [DualPathNet68b_5k](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks) | Our porting | 77.034 | 93.590
+[CaffeResnet101](https://github.com/Cadene/pretrained-models.pytorch#caffe-resnet) | [Caffe](https://github.com/KaimingHe/deep-residual-networks) | 76.400 | 92.900
+[CaffeResnet101](https://github.com/Cadene/pretrained-models.pytorch#caffe-resnet) | Our porting | 76.200 | 92.766
 [DenseNet169](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 76.026 | 92.992
 [ResNet50](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 76.002 | 92.980
 [DualPathNet68](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks) | Our porting | 75.868 | 92.774
@@ -264,6 +269,13 @@ Source: [Torch7 repo of FaceBook](https://github.com/facebook/fb.resnet.torch)
 There are a bit different from the ResNet* of torchvision. ResNet152 is currently the only one available.
 
 - `fbresnet152(num_classes=1000, pretrained='imagenet')`
+
+#### Caffe ResNet*
+
+Source: [Caffe repo of KaimingHe](https://github.com/KaimingHe/deep-residual-networks)
+
+- `cafferesnet101(num_classes=1000, pretrained='imagenet')`
+
 
 #### Inception*
 

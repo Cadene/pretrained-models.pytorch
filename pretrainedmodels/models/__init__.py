@@ -1,5 +1,7 @@
 from .fbresnet import fbresnet152
 
+from .cafferesnet import cafferesnet101
+
 from .bninception import bninception
 
 from .resnext import resnext101_32x4d
