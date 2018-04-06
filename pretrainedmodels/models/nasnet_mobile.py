@@ -607,7 +607,6 @@ class NASNetAMobile(nn.Module):
         x = x.view(x.size(0), -1)
         x = self.dropout(x)
         x = self.last_linear(x)
-        x = nn.Softmax(1)(x)
         return x
 
     def forward(self, input):
