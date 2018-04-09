@@ -45,3 +45,5 @@ from .dpn import dpn131
 from .dpn import dpn107
 
 from .xception import xception
+
+from .senet import senet154

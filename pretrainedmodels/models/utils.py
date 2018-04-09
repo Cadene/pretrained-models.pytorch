@@ -8,6 +8,7 @@ from .nasnet_mobile import pretrained_settings as nasnet_settings
 from .nasnet import pretrained_settings as nasnet_settings
 from .dpn import pretrained_settings as dpn_settings
 from .xception import pretrained_settings as xception_settings
+from .senet import pretrained_settings as senet_settings
 
 all_settings = [
     fbresnet_settings,
@@ -18,7 +19,8 @@ all_settings = [
     torchvision_models_settings,
     nasnet_settings,
     dpn_settings,
-    xception_settings
+    xception_settings,
+    senet_settings
 ]
 
 model_names = []

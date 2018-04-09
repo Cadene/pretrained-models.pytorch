@@ -57,6 +57,7 @@ News:
         - [ResNet18](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [ResNet34](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [ResNet50](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
+        - [SENet154](https://github.com/Cadene/pretrained-models.pytorch#senet)
         - [SqueezeNet1_0](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [SqueezeNet1_1](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [VGG11](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
@@ -110,7 +111,7 @@ import pretrainedmodels
 
 ```python
 print(pretrainedmodels.model_names)
-> ['fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d', 'inceptionv4', 'inceptionresnetv2', 'alexnet', 'densenet121', 'densenet169', 'densenet201', 'densenet161', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'inceptionv3', 'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19_bn', 'vgg19', 'nasnetalarge', 'nasnetamobile', 'cafferesnet101']
+> ['fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d', 'inceptionv4', 'inceptionresnetv2', 'alexnet', 'densenet121', 'densenet169', 'densenet201', 'densenet161', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'inceptionv3', 'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19_bn', 'vgg19', 'nasnetalarge', 'nasnetamobile', 'cafferesnet101', 'senet154']
 ```
 
 - To print the available pretrained settings for a chosen model:
@@ -196,6 +197,8 @@ Model | Version | Acc@1 | Acc@5
 --- | --- | --- | ---
 NASNet-A-Large | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 82.693 | 96.163
 [NASNet-A-Large](https://github.com/Cadene/pretrained-models.pytorch#nasnet) | Our porting | 82.566 | 96.086
+SENet154 | [Caffe](https://github.com/hujie-frank/SENet) | 81.32 | 95.53
+[SENet154](https://github.com/Cadene/pretrained-models.pytorch#senet) | Our porting | 81.304 | 95.498
 InceptionResNetV2 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.4 | 95.3
 InceptionV4 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.2 | 95.3
 [InceptionResNetV2](https://github.com/Cadene/pretrained-models.pytorch#inception) | Our porting | 80.170 | 95.234
@@ -324,6 +327,14 @@ Source: [Keras repo](https://github.com/keras-team/keras/blob/master/keras/appli
 The porting has been made possible by [T Standley](https://github.com/tstandley/Xception-PyTorch).
 
 - `xception(num_classes=1000, pretrained='imagenet')`
+
+
+#### SENet*
+
+Source: [Caffe repo of Jie Hu](https://github.com/hujie-frank/SENet)
+
+- `senet154(num_classes=1000, pretrained='imagenet')`
+
 
 #### TorchVision
 

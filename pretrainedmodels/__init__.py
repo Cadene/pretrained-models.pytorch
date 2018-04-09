@@ -44,3 +44,4 @@ from .models.dpn import dpn98
 from .models.dpn import dpn131
 from .models.dpn import dpn107
 from .models.xception import xception
+from .models.senet import senet154
