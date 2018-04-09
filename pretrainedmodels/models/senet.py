@@ -13,7 +13,7 @@ __all__ = ['SENet', 'senet154']
 pretrained_settings = {
     'senet154': {
         'imagenet': {
-            'url': 'http://data.lip6.fr/cadene/pretrainedmodels/senet154-7c8a90cb.pth',
+            'url': 'http://data.lip6.fr/cadene/pretrainedmodels/senet154-c7b49a05.pth',
             'input_space': 'RGB',
             'input_size': [3, 224, 224],
             'input_range': [0, 1],
