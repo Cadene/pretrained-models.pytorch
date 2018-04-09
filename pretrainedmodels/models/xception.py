@@ -33,7 +33,7 @@ __all__ = ['xception']
 pretrained_settings = {
     'xception': {
         'imagenet': {
-            'url': 'http://data.lip6.fr/cadene/pretrainedmodels/xception-b0b7af25.pth',
+            'url': 'http://data.lip6.fr/cadene/pretrainedmodels/xception-b5690688.pth',
             'input_space': 'RGB',
             'input_size': [3, 299, 299],
             'input_range': [0, 1],
