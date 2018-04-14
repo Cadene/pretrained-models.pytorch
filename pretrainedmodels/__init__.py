@@ -45,3 +45,8 @@ from .models.dpn import dpn131
 from .models.dpn import dpn107
 from .models.xception import xception
 from .models.senet import senet154
+from .models.senet import se_resnet50
+from .models.senet import se_resnet101
+from .models.senet import se_resnet152
+from .models.senet import se_resnext50_32x4d
+from .models.senet import se_resnext101_32x4d
