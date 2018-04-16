@@ -59,6 +59,11 @@ News:
         - [ResNet34](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [ResNet50](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [SENet154](https://github.com/Cadene/pretrained-models.pytorch#senet)
+        - [SE-ResNet50](https://github.com/Cadene/pretrained-models.pytorch#senet)
+        - [SE-ResNet101](https://github.com/Cadene/pretrained-models.pytorch#senet)
+        - [SE-ResNet152](https://github.com/Cadene/pretrained-models.pytorch#senet)
+        - [SE-ResNeXt50_32x4d](https://github.com/Cadene/pretrained-models.pytorch#senet)
+        - [SE-ResNeXt101_32x4d](https://github.com/Cadene/pretrained-models.pytorch#senet)
         - [SqueezeNet1_0](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [SqueezeNet1_1](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
         - [VGG11](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
@@ -112,7 +117,7 @@ import pretrainedmodels
 
 ```python
 print(pretrainedmodels.model_names)
-> ['fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d', 'inceptionv4', 'inceptionresnetv2', 'alexnet', 'densenet121', 'densenet169', 'densenet201', 'densenet161', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'inceptionv3', 'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19_bn', 'vgg19', 'nasnetalarge', 'nasnetamobile', 'cafferesnet101', 'senet154']
+> ['fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d', 'inceptionv4', 'inceptionresnetv2', 'alexnet', 'densenet121', 'densenet169', 'densenet201', 'densenet161', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'inceptionv3', 'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19_bn', 'vgg19', 'nasnetalarge', 'nasnetamobile', 'cafferesnet101', 'senet154',  'se_resnet50', 'se_resnet101', 'se_resnet152', 'se_resnext50_32x4d', 'se_resnext101_32x4d']
 ```
 
 - To print the available pretrained settings for a chosen model:
@@ -202,6 +207,8 @@ SENet154 | [Caffe](https://github.com/hujie-frank/SENet) | 81.32 | 95.53
 [SENet154](https://github.com/Cadene/pretrained-models.pytorch#senet) | Our porting | 81.304 | 95.498
 InceptionResNetV2 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.4 | 95.3
 InceptionV4 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.2 | 95.3
+[SE-ResNeXt101_32x4d](https://github.com/Cadene/pretrained-models.pytorch#senet) | Our porting | 80.236 | 95.028
+SE-ResNeXt101_32x4d | [Caffe](https://github.com/hujie-frank/SENet) | 80.19 | 95.04
 [InceptionResNetV2](https://github.com/Cadene/pretrained-models.pytorch#inception) | Our porting | 80.170 | 95.234
 [InceptionV4](https://github.com/Cadene/pretrained-models.pytorch#inception) | Our porting | 80.062 | 94.926
 [DualPathNet107_5k](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks) | Our porting | 79.746 | 94.684
@@ -209,13 +216,21 @@ ResNeXt101_64x4d | [Torch7](https://github.com/facebookresearch/ResNeXt) | 79.6 
 [DualPathNet131](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks) | Our porting | 79.432 | 94.574
 [DualPathNet92_5k](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks) | Our porting | 79.400 | 94.620
 [DualPathNet98](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks) | Our porting | 79.224 | 94.488
+[SE-ResNeXt50_32x4d](https://github.com/Cadene/pretrained-models.pytorch#senet) | Our porting | 79.076 | 94.434
+SE-ResNeXt50_32x4d | [Caffe](https://github.com/hujie-frank/SENet) | 79.03 | 94.46
 [Xception](https://github.com/Cadene/pretrained-models.pytorch#xception) | [Keras](https://github.com/keras-team/keras/blob/master/keras/applications/xception.py) | 79.000 | 94.500
 [ResNeXt101_64x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext) | Our porting | 78.956 | 94.252
 [Xception](https://github.com/Cadene/pretrained-models.pytorch#xception) | Our porting | 78.888 | 94.292
 ResNeXt101_32x4d | [Torch7](https://github.com/facebookresearch/ResNeXt) | 78.8 | 94.4
+SE-ResNet152 | [Caffe](https://github.com/hujie-frank/SENet) | 78.66 | 94.46
+[SE-ResNet152](https://github.com/Cadene/pretrained-models.pytorch#senet) | Our porting | 78.658 | 94.374
 ResNet152 | [Pytorch](https://github.com/pytorch/vision#models) | 78.428 | 94.110
+[SE-ResNet101](https://github.com/Cadene/pretrained-models.pytorch#senet) | Our porting | 78.396 | 94.258
+SE-ResNet101 | [Caffe](https://github.com/hujie-frank/SENet) | 78.25 | 94.28
 [ResNeXt101_32x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext) | Our porting | 78.188 | 93.886
 FBResNet152 | [Torch7](https://github.com/facebook/fb.resnet.torch) | 77.84 | 93.84
+SE-ResNet50 | [Caffe](https://github.com/hujie-frank/SENet) | 77.63 | 93.64
+[SE-ResNet50](https://github.com/Cadene/pretrained-models.pytorch#senet) | Our porting | 77.636 | 93.752
 [DenseNet161](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 77.560 | 93.798
 [ResNet101](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 77.438 | 93.672
 [FBResNet152](https://github.com/Cadene/pretrained-models.pytorch#facebook-resnet) | Our porting | 77.386 | 93.594
@@ -335,6 +350,11 @@ The porting has been made possible by [T Standley](https://github.com/tstandley/
 Source: [Caffe repo of Jie Hu](https://github.com/hujie-frank/SENet)
 
 - `senet154(num_classes=1000, pretrained='imagenet')`
+- `se_resnet50(num_classes=1000, pretrained='imagenet')`
+- `se_resnet101(num_classes=1000, pretrained='imagenet')`
+- `se_resnet152(num_classes=1000, pretrained='imagenet')`
+- `se_resnext50_32x4d(num_classes=1000, pretrained='imagenet')`
+- `se_resnext101_32x4d(num_classes=1000, pretrained='imagenet')`
 
 
 #### TorchVision
