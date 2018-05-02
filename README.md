@@ -202,7 +202,7 @@ Results were obtained using (center cropped) images of the same size than during
 
 Model | Version | Acc@1 | Acc@5
 --- | --- | --- | ---
-NASNet-A-Large | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 82.693 | 96.163
+NASNet-A-Large | [Tensorflow](https://github.com/tensorflow/models/tree/master/research/slim) | 82.693 | 96.163
 [NASNet-A-Large](https://github.com/Cadene/pretrained-models.pytorch#nasnet) | Our porting | 82.566 | 96.086
 SENet154 | [Caffe](https://github.com/hujie-frank/SENet) | 81.32 | 95.53
 [SENet154](https://github.com/Cadene/pretrained-models.pytorch#senet) | Our porting | 81.304 | 95.498
@@ -245,7 +245,7 @@ SE-ResNet50 | [Caffe](https://github.com/hujie-frank/SENet) | 77.63 | 93.64
 [DualPathNet68](https://github.com/Cadene/pretrained-models.pytorch#dualpathnetworks) | Our porting | 75.868 | 92.774
 [DenseNet121](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 74.646 | 92.136
 [VGG19_BN](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 74.266 | 92.066
-NASNet-A-Mobile | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 74.0 | 91.6
+NASNet-A-Mobile | [Tensorflow](https://github.com/tensorflow/models/tree/master/research/slim) | 74.0 | 91.6
 [NASNet-A-Mobile](https://github.com/veronikayurchuk/pretrained-models.pytorch/blob/master/pretrainedmodels/models/nasnet_mobile.py) | Our porting | 74.080 | 91.740
 [ResNet34](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 73.554 | 91.456
 [BNInception](https://github.com/Cadene/pretrained-models.pytorch#bninception) | Our porting | 73.522 | 91.560
@@ -276,7 +276,7 @@ Please see [Compute imagenet validation metrics](https://github.com/Cadene/pretr
 
 #### NASNet*
 
-Source: [TensorFlow Slim repo](https://github.com/tensorflow/models/tree/master/slim)
+Source: [TensorFlow Slim repo](https://github.com/tensorflow/models/tree/master/research/slim)
 
 - `nasnetalarge(num_classes=1000, pretrained='imagenet')`
 - `nasnetalarge(num_classes=1001, pretrained='imagenet+background')`
