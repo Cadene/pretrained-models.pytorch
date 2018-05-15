@@ -9,6 +9,7 @@ from .nasnet import pretrained_settings as nasnet_settings
 from .dpn import pretrained_settings as dpn_settings
 from .xception import pretrained_settings as xception_settings
 from .senet import pretrained_settings as senet_settings
+from .cafferesnet import pretrained_settings as cafferesnet_settings
 from .pnasnet import pretrained_settings as pnasnet_settings
 
 all_settings = [
@@ -23,6 +24,7 @@ all_settings = [
     dpn_settings,
     xception_settings,
     senet_settings,
+    cafferesnet_settings,
     pnasnet_settings
 ]
 
