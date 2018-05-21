@@ -52,6 +52,7 @@ News:
         - [InceptionV4](https://github.com/Cadene/pretrained-models.pytorch#inception)
         - [NASNet-A-Large](https://github.com/Cadene/pretrained-models.pytorch#nasnet)
         - [NASNet-A-Mobile](https://github.com/Cadene/pretrained-models.pytorch#nasnet)
+        - [PolyNet](https://github.com/Cadene/pretrained-models.pytorch#polynet)
         - [ResNeXt101_32x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext)
         - [ResNeXt101_64x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext)
         - [ResNet101](https://github.com/Cadene/pretrained-models.pytorch#torchvision)
@@ -118,7 +119,7 @@ import pretrainedmodels
 
 ```python
 print(pretrainedmodels.model_names)
-> ['fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d', 'inceptionv4', 'inceptionresnetv2', 'alexnet', 'densenet121', 'densenet169', 'densenet201', 'densenet161', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'inceptionv3', 'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19_bn', 'vgg19', 'nasnetalarge', 'nasnetamobile', 'cafferesnet101', 'senet154',  'se_resnet50', 'se_resnet101', 'se_resnet152', 'se_resnext50_32x4d', 'se_resnext101_32x4d']
+> ['fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d', 'inceptionv4', 'inceptionresnetv2', 'alexnet', 'densenet121', 'densenet169', 'densenet201', 'densenet161', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'inceptionv3', 'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19_bn', 'vgg19', 'nasnetalarge', 'nasnetamobile', 'cafferesnet101', 'senet154',  'se_resnet50', 'se_resnet101', 'se_resnet152', 'se_resnext50_32x4d', 'se_resnext101_32x4d', 'cafferesnet101', 'polynet']
 ```
 
 - To print the available pretrained settings for a chosen model:
@@ -206,6 +207,8 @@ NASNet-A-Large | [Tensorflow](https://github.com/tensorflow/models/tree/master/r
 [NASNet-A-Large](https://github.com/Cadene/pretrained-models.pytorch#nasnet) | Our porting | 82.566 | 96.086
 SENet154 | [Caffe](https://github.com/hujie-frank/SENet) | 81.32 | 95.53
 [SENet154](https://github.com/Cadene/pretrained-models.pytorch#senet) | Our porting | 81.304 | 95.498
+PolyNet | [Caffe](https://github.com/CUHK-MMLAB/polynet) | 81.29 | 95.75
+[PolyNet](https://github.com/Cadene/pretrained-models.pytorch#polynet) | Our porting | 81.002 | 95.624
 InceptionResNetV2 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.4 | 95.3
 InceptionV4 | [Tensorflow](https://github.com/tensorflow/models/tree/master/slim) | 80.2 | 95.3
 [SE-ResNeXt101_32x4d](https://github.com/Cadene/pretrained-models.pytorch#senet) | Our porting | 80.236 | 95.028
@@ -261,7 +264,9 @@ NASNet-A-Mobile | [Tensorflow](https://github.com/tensorflow/models/tree/master/
 [SqueezeNet1_0](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 58.108 | 80.428
 [Alexnet](https://github.com/Cadene/pretrained-models.pytorch#torchvision) | [Pytorch](https://github.com/pytorch/vision#models) | 56.432 | 79.194
 
-Note: the Pytorch version of ResNet152 is not a porting of the Torch7 but has been retrained by facebook.
+Notes:
+- the Pytorch version of ResNet152 is not a porting of the Torch7 but has been retrained by facebook.
+- For the PolyNet evaluation each image was resized to 378x378 without preserving the aspect ratio and then the central 331×331 patch from the resulting image was used.
 
 Beware, the accuracy reported here is not always representative of the transferable capacity of the network on other tasks and datasets. You must try them all! :P
     
@@ -356,6 +361,12 @@ Source: [Caffe repo of Jie Hu](https://github.com/hujie-frank/SENet)
 - `se_resnet152(num_classes=1000, pretrained='imagenet')`
 - `se_resnext50_32x4d(num_classes=1000, pretrained='imagenet')`
 - `se_resnext101_32x4d(num_classes=1000, pretrained='imagenet')`
+
+#### PolyNet
+
+Source: [Caffe repo of the CUHK Multimedia Lab](https://github.com/CUHK-MMLAB/polynet)
+
+- `polynet(num_classes=1000, pretrained='imagenet')`
 
 
 #### TorchVision
