@@ -52,7 +52,11 @@ parser.add_argument('--resume', default='', type=str, metavar='PATH',
 parser.add_argument('-e', '--evaluate', dest='evaluate', default=True,
                     action='store_true', help='evaluate model on validation set')
 parser.add_argument('--pretrained', default='imagenet', help='use pre-trained model')
-
+parser.add_argument('--do-not-preserve-aspect-ratio',
+                    dest='preserve_aspect_ratio',
+                    help='do not preserve the aspect ratio when resizing an image',
+                    action='store_false')
+parser.set_defaults(preserve_aspect_ratio=True)
 best_prec1 = 0
 
 
@@ -110,7 +114,11 @@ def main():
         int(round(max(model.input_size) / scale)),
         model.input_size))
 
-    val_tf = pretrainedmodels.utils.TransformImage(model, scale=scale)
+    val_tf = pretrainedmodels.utils.TransformImage(
+        model,
+        scale=scale,
+        preserve_aspect_ratio=args.preserve_aspect_ratio
+    )
 
     val_loader = torch.utils.data.DataLoader(
         datasets.ImageFolder(valdir, val_tf),
