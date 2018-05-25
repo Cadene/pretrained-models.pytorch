@@ -32,7 +32,9 @@ class ToRange255(object):
 
 class TransformImage(object):
 
-    def __init__(self, opts, scale=0.875, random_crop=False, random_hflip=False, random_vflip=False):
+    def __init__(self, opts, scale=0.875, random_crop=False,
+                 random_hflip=False, random_vflip=False,
+                 preserve_aspect_ratio=True):
         if type(opts) == dict:
             opts = munchify(opts)
         self.input_size = opts.input_size
@@ -48,7 +50,12 @@ class TransformImage(object):
         self.random_vflip = random_vflip
 
         tfs = []
-        tfs.append(transforms.Resize(int(math.floor(max(self.input_size)/self.scale))))
+        if preserve_aspect_ratio:
+            tfs.append(transforms.Resize(int(math.floor(max(self.input_size)/self.scale))))
+        else:
+            height = int(self.input_size[1] / self.scale)
+            width = int(self.input_size[2] / self.scale)
+            tfs.append(transforms.Resize((height, width)))
 
         if random_crop:
             tfs.append(transforms.RandomCrop(max(self.input_size)))
