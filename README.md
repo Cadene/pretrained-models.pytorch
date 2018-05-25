@@ -52,6 +52,7 @@ News:
         - [InceptionV4](https://github.com/Cadene/pretrained-models.pytorch#inception)
         - [NASNet-A-Large](https://github.com/Cadene/pretrained-models.pytorch#nasnet)
         - [NASNet-A-Mobile](https://github.com/Cadene/pretrained-models.pytorch#nasnet)
+        - [PNASNet-5-Large](https://github.com/Cadene/pretrained-models.pytorch#pnasnet)
         - [PolyNet](https://github.com/Cadene/pretrained-models.pytorch#polynet)
         - [ResNeXt101_32x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext)
         - [ResNeXt101_64x4d](https://github.com/Cadene/pretrained-models.pytorch#resnext)
@@ -119,7 +120,7 @@ import pretrainedmodels
 
 ```python
 print(pretrainedmodels.model_names)
-> ['fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d', 'inceptionv4', 'inceptionresnetv2', 'alexnet', 'densenet121', 'densenet169', 'densenet201', 'densenet161', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'inceptionv3', 'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19_bn', 'vgg19', 'nasnetalarge', 'nasnetamobile', 'cafferesnet101', 'senet154',  'se_resnet50', 'se_resnet101', 'se_resnet152', 'se_resnext50_32x4d', 'se_resnext101_32x4d', 'cafferesnet101', 'polynet']
+> ['fbresnet152', 'bninception', 'resnext101_32x4d', 'resnext101_64x4d', 'inceptionv4', 'inceptionresnetv2', 'alexnet', 'densenet121', 'densenet169', 'densenet201', 'densenet161', 'resnet18', 'resnet34', 'resnet50', 'resnet101', 'resnet152', 'inceptionv3', 'squeezenet1_0', 'squeezenet1_1', 'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn', 'vgg19_bn', 'vgg19', 'nasnetalarge', 'nasnetamobile', 'cafferesnet101', 'senet154',  'se_resnet50', 'se_resnet101', 'se_resnet152', 'se_resnext50_32x4d', 'se_resnext101_32x4d', 'cafferesnet101', 'polynet', 'pnasnet5large']
 ```
 
 - To print the available pretrained settings for a chosen model:
@@ -203,6 +204,8 @@ Results were obtained using (center cropped) images of the same size than during
 
 Model | Version | Acc@1 | Acc@5
 --- | --- | --- | ---
+PNASNet-5-Large | [Tensorflow](https://github.com/tensorflow/models/tree/master/research/slim) | 82.858 | 96.182
+[PNASNet-5-Large](https://github.com/Cadene/pretrained-models.pytorch#pnasnet) | Our porting | 82.736 | 95.992
 NASNet-A-Large | [Tensorflow](https://github.com/tensorflow/models/tree/master/research/slim) | 82.693 | 96.163
 [NASNet-A-Large](https://github.com/Cadene/pretrained-models.pytorch#nasnet) | Our porting | 82.566 | 96.086
 SENet154 | [Caffe](https://github.com/hujie-frank/SENet) | 81.32 | 95.53
@@ -362,12 +365,18 @@ Source: [Caffe repo of Jie Hu](https://github.com/hujie-frank/SENet)
 - `se_resnext50_32x4d(num_classes=1000, pretrained='imagenet')`
 - `se_resnext101_32x4d(num_classes=1000, pretrained='imagenet')`
 
+#### PNASNet*
+
+Source: [TensorFlow Slim repo](https://github.com/tensorflow/models/tree/master/research/slim)
+
+- `pnasnet5large(num_classes=1000, pretrained='imagenet')`
+- `pnasnet5large(num_classes=1001, pretrained='imagenet+background')`
+
 #### PolyNet
 
 Source: [Caffe repo of the CUHK Multimedia Lab](https://github.com/CUHK-MMLAB/polynet)
 
 - `polynet(num_classes=1000, pretrained='imagenet')`
-
 
 #### TorchVision
 
