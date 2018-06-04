@@ -8,7 +8,7 @@ import torch.utils.model_zoo as model_zoo
 pretrained_settings = {
     'pnasnet5large': {
         'imagenet': {
-            'url': 'http://data.lip6.fr/cadene/pretrainedmodels/pnasnet5large-c2941956.pth',
+            'url': 'http://data.lip6.fr/cadene/pretrainedmodels/pnasnet5large-bf079911.pth',
             'input_space': 'RGB',
             'input_size': [3, 331, 331],
             'input_range': [0, 1],
@@ -17,7 +17,7 @@ pretrained_settings = {
             'num_classes': 1000
         },
         'imagenet+background': {
-            'url': 'http://data.lip6.fr/cadene/pretrainedmodels/pnasnet5large-c2941956.pth',
+            'url': 'http://data.lip6.fr/cadene/pretrainedmodels/pnasnet5large-bf079911.pth',
             'input_space': 'RGB',
             'input_size': [3, 331, 331],
             'input_range': [0, 1],
