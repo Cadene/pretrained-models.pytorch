@@ -3,6 +3,7 @@
 import torchvision.models as models
 import torch.utils.model_zoo as model_zoo
 import torch.nn.functional as F
+import types
 
 #################################################################
 # You can find the definitions of those models here:
@@ -141,9 +142,9 @@ def modify_alexnet(model):
         return x
         
     # Modify methods
-    setattr(model.__class__, 'features', features)
-    setattr(model.__class__, 'logits', logits)
-    setattr(model.__class__, 'forward', forward)
+    model.features = types.MethodType(features, model)
+    model.logits = types.MethodType(logits, model)
+    model.forward = types.MethodType(forward, model)
     return model
 
 def alexnet(num_classes=1000, pretrained='imagenet'):
@@ -179,8 +180,8 @@ def modify_densenets(model):
         return x
 
     # Modify methods
-    setattr(model.__class__, 'logits', logits)
-    setattr(model.__class__, 'forward', forward)
+    model.logits = types.MethodType(logits, model)
+    model.forward = types.MethodType(forward, model)
     return model
 
 def densenet121(num_classes=1000, pretrained='imagenet'):
@@ -284,9 +285,9 @@ def inceptionv3(num_classes=1000, pretrained='imagenet'):
         return x
         
     # Modify methods
-    setattr(model.__class__, 'features', features)
-    setattr(model.__class__, 'logits', logits)
-    setattr(model.__class__, 'forward', forward)  
+    model.features = types.MethodType(features, model)
+    model.logits = types.MethodType(logits, model)
+    model.forward = types.MethodType(forward, model)  
     return model
 
 ###############################################################
@@ -321,9 +322,9 @@ def modify_resnets(model):
         return x
 
     # Modify methods
-    setattr(model.__class__, 'features', features)
-    setattr(model.__class__, 'logits', logits)
-    setattr(model.__class__, 'forward', forward)  
+    model.features = types.MethodType(features, model)
+    model.logits = types.MethodType(logits, model)
+    model.forward = types.MethodType(forward, model)  
     return model
 
 def resnet18(num_classes=1000, pretrained='imagenet'):
@@ -402,8 +403,8 @@ def modify_squeezenets(model):
         return x
         
     # Modify methods
-    setattr(model.__class__, 'logits', logits)
-    setattr(model.__class__, 'forward', forward)  
+    model.logits = types.MethodType(logits, model)
+    model.forward = types.MethodType(forward, model)  
     return model
 
 def squeezenet1_0(num_classes=1000, pretrained='imagenet'):
@@ -468,9 +469,9 @@ def modify_vggs(model):
         return x
         
     # Modify methods
-    setattr(model.__class__, 'features', features)
-    setattr(model.__class__, 'logits', logits)
-    setattr(model.__class__, 'forward', forward)  
+    model.features = types.MethodType(features, model)
+    model.logits = types.MethodType(logits, model)
+    model.forward = types.MethodType(forward, model)
     return model
 
 def vgg11(num_classes=1000, pretrained='imagenet'):
