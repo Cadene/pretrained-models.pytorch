@@ -73,7 +73,7 @@ def wideresnet50(pooling):
         params = hkl.load(path_hkl)
         # convert numpy arrays to torch Variables
         for k,v in sorted(params.items()):
-            print k, v.shape
+            print(k, v.shape)
             params[k] = Variable(torch.from_numpy(v), requires_grad=True)
     else:
         os.system('mkdir -p ' + dir_models)
