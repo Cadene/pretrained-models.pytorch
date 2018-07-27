@@ -7,6 +7,7 @@ many ideas from another PyTorch implementation https://github.com/oyam/pytorch-D
 This implementation is compatible with the pretrained weights
 from cypw's MXNet implementation.
 """
+from __future__ import print_function, division, absolute_import
 import os
 import torch
 import torch.nn as nn

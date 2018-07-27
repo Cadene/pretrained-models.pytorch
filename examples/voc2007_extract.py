@@ -1,3 +1,4 @@
+from __future__ import print_function, division, absolute_import
 import os
 import argparse
 from tqdm import tqdm
@@ -60,9 +61,9 @@ def train_multilabel(features, targets, classes, train_split, test_split, C=1.0,
     train_APs = []
     test_APs = []
     for class_id in range(len(classes)):
-        
+
         classifier = SVC(C=C, kernel='linear') # http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html
-        
+
         if ignore_hard_examples:
             train_masks = (targets[train_split][:,class_id] != 0).view(-1, 1)
             train_features = torch.masked_select(features[train_split], train_masks.expand_as(features[train_split])).view(-1,features[train_split].size(1))
@@ -150,7 +151,7 @@ def main ():
     train_set = pretrainedmodels.datasets.Voc2007Classification(args.dir_datasets, 'train', transform=tf_img)
     val_set = pretrainedmodels.datasets.Voc2007Classification(args.dir_datasets, 'val', transform=tf_img)
     test_set = pretrainedmodels.datasets.Voc2007Classification(args.dir_datasets, 'test', transform=tf_img)
-    
+
     train_loader = torch.utils.data.DataLoader(train_set, batch_size=args.batch_size, shuffle=False, num_workers=2)
     val_loader = torch.utils.data.DataLoader(val_set, batch_size=args.batch_size, shuffle=False, num_workers=2)
     test_loader = torch.utils.data.DataLoader(test_set, batch_size=args.batch_size, shuffle=False, num_workers=2)

@@ -12,7 +12,7 @@ Thanks to Anastasiia (https://github.com/DagnyT) for the great help, support and
  - [Learning Transferable Architectures for Scalable Image Recognition]
     (https://arxiv.org/abs/1707.07012)
 """
-
+from __future__ import print_function, division, absolute_import
 import torch
 import torch.nn as nn
 import torch.nn.functional as F

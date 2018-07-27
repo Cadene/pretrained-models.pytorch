@@ -1,3 +1,4 @@
+from __future__ import print_function, division, absolute_import
 from .fbresnet import pretrained_settings as fbresnet_settings
 from .bninception import pretrained_settings as bninception_settings
 from .resnext import pretrained_settings as resnext_settings

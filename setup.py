@@ -1,3 +1,4 @@
+from __future__ import print_function, division, absolute_import
 """A setuptools based setup module.
 
 See:

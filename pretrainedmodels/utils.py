@@ -1,3 +1,4 @@
+from __future__ import print_function, division, absolute_import
 import math
 import torch
 import torch.nn as nn
@@ -74,7 +75,7 @@ class TransformImage(object):
         tfs.append(transforms.Normalize(mean=self.mean, std=self.std))
 
         self.tf = transforms.Compose(tfs)
-            
+
     def __call__(self, img):
         tensor = self.tf(img)
         return tensor

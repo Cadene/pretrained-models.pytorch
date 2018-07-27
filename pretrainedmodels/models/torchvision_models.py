@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+from __future__ import print_function, division, absolute_import
 import torchvision.models as models
 import torch.utils.model_zoo as model_zoo
 import torch.nn.functional as F
@@ -33,7 +33,7 @@ model_urls = {
     'densenet121': 'https://download.pytorch.org/models/densenet121-241335ed.pth',
     'densenet169': 'https://download.pytorch.org/models/densenet169-6f0f7f60.pth',
     'densenet201': 'https://download.pytorch.org/models/densenet201-4c113574.pth',
-    'densenet161': 'https://download.pytorch.org/models/densenet161-17b70270.pth',   
+    'densenet161': 'https://download.pytorch.org/models/densenet161-17b70270.pth',
     'inceptionv3': 'https://download.pytorch.org/models/inception_v3_google-1a9a5a14.pth',
     'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
     'resnet34': 'https://download.pytorch.org/models/resnet34-333f7ec4.pth',
@@ -124,7 +124,7 @@ def modify_alexnet(model):
     def features(self, input):
         x = self._features(input)
         x = x.view(x.size(0), 256 * 6 * 6)
-        x = self.dropout0(x) 
+        x = self.dropout0(x)
         x = self.linear0(x)
         x = self.relu0(x)
         x = self.dropout1(x)
@@ -140,7 +140,7 @@ def modify_alexnet(model):
         x = self.features(input)
         x = self.logits(x)
         return x
-        
+
     # Modify methods
     model.features = types.MethodType(features, model)
     model.logits = types.MethodType(logits, model)
@@ -283,11 +283,11 @@ def inceptionv3(num_classes=1000, pretrained='imagenet'):
         x = self.features(input)
         x = self.logits(x)
         return x
-        
+
     # Modify methods
     model.features = types.MethodType(features, model)
     model.logits = types.MethodType(logits, model)
-    model.forward = types.MethodType(forward, model)  
+    model.forward = types.MethodType(forward, model)
     return model
 
 ###############################################################
@@ -324,7 +324,7 @@ def modify_resnets(model):
     # Modify methods
     model.features = types.MethodType(features, model)
     model.logits = types.MethodType(logits, model)
-    model.forward = types.MethodType(forward, model)  
+    model.forward = types.MethodType(forward, model)
     return model
 
 def resnet18(num_classes=1000, pretrained='imagenet'):
@@ -401,10 +401,10 @@ def modify_squeezenets(model):
         x = self.features(input)
         x = self.logits(x)
         return x
-        
+
     # Modify methods
     model.logits = types.MethodType(logits, model)
-    model.forward = types.MethodType(forward, model)  
+    model.forward = types.MethodType(forward, model)
     return model
 
 def squeezenet1_0(num_classes=1000, pretrained='imagenet'):
@@ -453,7 +453,7 @@ def modify_vggs(model):
         x = x.view(x.size(0), -1)
         x = self.linear0(x)
         x = self.relu0(x)
-        x = self.dropout0(x) 
+        x = self.dropout0(x)
         x = self.linear1(x)
         return x
 
@@ -467,7 +467,7 @@ def modify_vggs(model):
         x = self.features(input)
         x = self.logits(x)
         return x
-        
+
     # Modify methods
     model.features = types.MethodType(features, model)
     model.logits = types.MethodType(logits, model)
