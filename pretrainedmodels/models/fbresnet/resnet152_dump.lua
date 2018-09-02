@@ -32,7 +32,7 @@ net:evaluate()
 --p, gp = net:getParameters()
 input = torch.ones(1,3,224,224)
 input[{1,1,1,1}] = -1
-input[1] = image.load('data/lena_224.png')
+input[1] = image.load('data/cat_224.png')
 print(input:sum())
 input = input:cuda()
 output=net:forward(input)

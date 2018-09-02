@@ -273,8 +273,8 @@ input_data = torch.ones(1,3,224,224)
 input_data[0][0][0][0] = -1
 from PIL import Image
 import torchvision.transforms as transforms
-input_data[0] = transforms.ToTensor()(Image.open('data/lena_224.png'))
-print('lena sum', input_data.sum())
+input_data[0] = transforms.ToTensor()(Image.open('data/cat_224.png'))
+print('cat sum', input_data.sum())
 input = torch.autograd.Variable(input_data)
 output = net.forward(input)
 
