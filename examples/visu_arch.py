@@ -1,3 +1,4 @@
+from __future__ import print_function, division, absolute_import
 import os
 
 import torch # http://pytorch.org/about/
@@ -80,7 +81,7 @@ if __name__ == '__main__':
     handles = []
     for m in model.features:
         handles.append(m.register_forward_hook(print_info)) # http://pytorch.org/docs/master/_modules/torch/nn/modules/module.html#Module.register_forward_pre_hook
-        
+
     for m in model.classifier:
         handles.append(m.register_forward_hook(print_info))
 

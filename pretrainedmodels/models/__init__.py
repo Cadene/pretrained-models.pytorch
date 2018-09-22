@@ -1,3 +1,4 @@
+from __future__ import print_function, division, absolute_import
 from .fbresnet import fbresnet152
 
 from .cafferesnet import cafferesnet101

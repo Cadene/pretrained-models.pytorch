@@ -1,8 +1,9 @@
+from __future__ import print_function, division, absolute_import
 import csv
 import os
 import os.path
 import tarfile
-from urllib.parse import urlparse
+from six.moves.urllib.parse import urlparse
 
 import numpy as np
 import torch
@@ -212,7 +213,7 @@ def download_voc2007(root):
 
 
 class Voc2007Classification(data.Dataset):
-    
+
     def __init__(self, root, set, transform=None, target_transform=None):
         self.root = root
         self.path_devkit = os.path.join(root, 'VOCdevkit')

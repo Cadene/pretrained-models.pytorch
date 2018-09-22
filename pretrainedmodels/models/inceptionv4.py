@@ -1,3 +1,4 @@
+from __future__ import print_function, division, absolute_import
 import torch
 import torch.nn as nn
 import torch.utils.model_zoo as model_zoo
@@ -144,7 +145,7 @@ class Reduction_A(nn.Module):
             BasicConv2d(192, 224, kernel_size=3, stride=1, padding=1),
             BasicConv2d(224, 256, kernel_size=3, stride=2)
         )
-        
+
         self.branch2 = nn.MaxPool2d(3, stride=2)
 
     def forward(self, x):
@@ -160,7 +161,7 @@ class Inception_B(nn.Module):
     def __init__(self):
         super(Inception_B, self).__init__()
         self.branch0 = BasicConv2d(1024, 384, kernel_size=1, stride=1)
-        
+
         self.branch1 = nn.Sequential(
             BasicConv2d(1024, 192, kernel_size=1, stride=1),
             BasicConv2d(192, 224, kernel_size=(1,7), stride=1, padding=(0,3)),
@@ -222,17 +223,17 @@ class Inception_C(nn.Module):
         super(Inception_C, self).__init__()
 
         self.branch0 = BasicConv2d(1536, 256, kernel_size=1, stride=1)
-        
+
         self.branch1_0 = BasicConv2d(1536, 384, kernel_size=1, stride=1)
         self.branch1_1a = BasicConv2d(384, 256, kernel_size=(1,3), stride=1, padding=(0,1))
         self.branch1_1b = BasicConv2d(384, 256, kernel_size=(3,1), stride=1, padding=(1,0))
-        
+
         self.branch2_0 = BasicConv2d(1536, 384, kernel_size=1, stride=1)
         self.branch2_1 = BasicConv2d(384, 448, kernel_size=(3,1), stride=1, padding=(1,0))
         self.branch2_2 = BasicConv2d(448, 512, kernel_size=(1,3), stride=1, padding=(0,1))
         self.branch2_3a = BasicConv2d(512, 256, kernel_size=(1,3), stride=1, padding=(0,1))
         self.branch2_3b = BasicConv2d(512, 256, kernel_size=(3,1), stride=1, padding=(1,0))
-        
+
         self.branch3 = nn.Sequential(
             nn.AvgPool2d(3, stride=1, padding=1, count_include_pad=False),
             BasicConv2d(1536, 256, kernel_size=1, stride=1)
@@ -240,7 +241,7 @@ class Inception_C(nn.Module):
 
     def forward(self, x):
         x0 = self.branch0(x)
-        
+
         x1_0 = self.branch1_0(x)
         x1_1a = self.branch1_1a(x1_0)
         x1_1b = self.branch1_1b(x1_0)
@@ -299,7 +300,7 @@ class InceptionV4(nn.Module):
     def logits(self, features):
         x = self.avg_pool(features)
         x = x.view(x.size(0), -1)
-        x = self.last_linear(x) 
+        x = self.last_linear(x)
         return x
 
     def forward(self, input):
@@ -317,13 +318,13 @@ def inceptionv4(num_classes=1000, pretrained='imagenet'):
         # both 'imagenet'&'imagenet+background' are loaded from same parameters
         model = InceptionV4(num_classes=1001)
         model.load_state_dict(model_zoo.load_url(settings['url']))
-        
+
         if pretrained == 'imagenet':
             new_last_linear = nn.Linear(1536, 1000)
             new_last_linear.weight.data = model.last_linear.weight.data[1:]
             new_last_linear.bias.data = model.last_linear.bias.data[1:]
             model.last_linear = new_last_linear
-        
+
         model.input_space = settings['input_space']
         model.input_size = settings['input_size']
         model.input_range = settings['input_range']

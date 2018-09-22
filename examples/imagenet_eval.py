@@ -1,3 +1,4 @@
+from __future__ import print_function, division, absolute_import
 import argparse
 import os
 import shutil
@@ -102,7 +103,7 @@ def main():
     #     batch_size=args.batch_size, shuffle=True,
     #     num_workers=args.workers, pin_memory=True)
 
-    
+
 
     # if 'scale' in pretrainedmodels.pretrained_settings[args.arch][args.pretrained]:
     #     scale = pretrainedmodels.pretrained_settings[args.arch][args.pretrained]['scale']

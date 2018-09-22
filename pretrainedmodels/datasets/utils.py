@@ -1,5 +1,6 @@
+from __future__ import print_function, division, absolute_import
 import math
-from urllib.request import urlretrieve
+from six.moves.urllib.request import urlretrieve
 
 import torch
 from PIL import Image
