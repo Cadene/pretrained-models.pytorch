@@ -5,7 +5,10 @@ The goal of this repo is:
 - to help to reproduce research papers results (transfer learning setups for instance),
 - to access pretrained ConvNets with a unique interface/API inspired by torchvision.
 
+<a href="https://travis-ci.org/Cadene/pretrained-models.pytorch"><img src="https://api.travis-ci.org/Cadene/pretrained-models.pytorch.svg?branch=master"/></a>
+
 News:
+- 27/10/2018: Fix compatibility issues, Add tests, Add travis
 - 04/06/2018: [PolyNet](https://github.com/CUHK-MMLAB/polynet) and [PNASNet-5-Large](https://arxiv.org/abs/1712.00559) thanks to [Alex Parinov](https://github.com/creafz)
 - 16/04/2018: [SE-ResNet* and SE-ResNeXt*](https://github.com/hujie-frank/SENet) thanks to [Alex Parinov](https://github.com/creafz)
 - 09/04/2018: [SENet154](https://github.com/hujie-frank/SENet) thanks to [Alex Parinov](https://github.com/creafz)
