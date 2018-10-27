@@ -1,0 +1,102 @@
+language: python
+python:
+  - "3.6"
+  - "2.7"
+
+stages:
+#  - lint_check
+  - test
+#  - docs
+
+install:
+  - sudo apt-get update
+  - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+  # Useful for debugging any issues with conda
+  - conda info -a
+  - conda create -q -n test-environment -c pytorch python=$TRAVIS_PYTHON_VERSION numpy mock pytorch-cpu
+  - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then pip install enum34; fi
+  - source activate test-environment
+  - python setup.py install
+  - pip install --upgrade pytest #codecov pytest-cov
+  # Test contrib dependencies
+  # - pip install scikit-learn
+  # Examples dependencies
+  - pip install -r requirements.txt
+  #visdom torchvision tensorboardX
+  #- pip install gym
+  #- pip install tqdm
+
+script:
+  - python -m pytest -s tests #--cov pretrainedmodels --cov-report term-missing
+
+  # Smoke tests for the examples
+  # Mnist
+  # 1) mnist.py
+  #- python examples/mnist/mnist.py --epochs=1
+  # 2) mnist_with_visdom.py
+  # - python -c "from visdom.server import download_scripts; download_scripts()" # download scripts : https://github.com/facebookresearch/visdom/blob/master/py/server.py#L929
+  # - python -m visdom.server &
+  # - sleep 10
+  # - python examples/mnist/mnist_with_visdom.py --epochs=1
+  # - kill %1
+  # # 3) mnist_with_tensorboardx.py
+  # - python examples/mnist/mnist_with_tensorboardx.py --epochs=1
+
+  # # dcgan.py
+  # - python examples/gan/dcgan.py --dataset fake --dataroot /tmp/fakedata --output-dir /tmp/outputs-dcgan --batch-size 2 --epochs 2  --workers 0
+
+  # # RL
+  # # 1) Actor-Critic
+  # - python examples/reinforcement_learning/actor_critic.py --max-episodes=2
+  # # 1) Reinforce
+  # - python examples/reinforcement_learning/reinforce.py --max-episodes=2
+
+  # #fast-neural-style
+  # #train
+  # - python examples/fast_neural_style/neural_style.py train --epochs 1 --cuda 0 --dataset test --dataroot . --image_size 32 --style_image examples/fast_neural_style/images/style_images/mosaic.jpg --style_size 32
+
+after_success:
+  # Ignore codecov failures as the codecov server is not
+  # very reliable but we don't want travis to report a failure
+  # in the github UI just because the coverage report failed to
+  # be published.
+  - codecov || echo "codecov upload failed"
+
+# jobs:
+#   include:
+#     - stage: lint_check
+#       python: "3.6"
+#       install: pip install flake8
+#       script: flake8
+#       after_success: # Nothing to do
+
+
+#     # GitHub Pages Deployment: https://docs.travis-ci.com/user/deployment/pages/
+#     - stage: docs
+#       python: "3.6"
+#       install:
+#         # Minimal install : ignite and dependencies just to build the docs
+#         - pip install -r docs/requirements.txt
+#         - pip install http://download.pytorch.org/whl/cpu/torch-0.4.1-cp35-cp35m-linux_x86_64.whl
+#         # Add contrib dependencies (otherwise doc is not built)
+#         - pip install scikit-learn scipy
+#         # `pip install .` vs `python setup.py install` : 1st works better to produce _module/ignite with source links
+#         - pip install .
+#       script:
+#         - cd docs && make html
+#         # Create .nojekyll file to serve correctly _static and friends
+#         - touch build/html/.nojekyll
+#       after_success: # Nothing to do
+#       deploy:
+#         provider: pages
+#         skip-cleanup: true
+#         github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+#         keep-history: false
+#         local_dir: docs/build/html
+#         on:
+#           branch: master
