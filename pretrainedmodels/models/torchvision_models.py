@@ -4,6 +4,7 @@ import torchvision.models as models
 import torch.utils.model_zoo as model_zoo
 import torch.nn.functional as F
 import types
+import re
 
 #################################################################
 # You can find the definitions of those models here:
@@ -94,10 +95,27 @@ for model_name in __all__:
 #         'num_classes': 1000
 #     }
 
+def update_state_dict(state_dict):
+    # '.'s are no longer allowed in module names, but pervious _DenseLayer
+    # has keys 'norm.1', 'relu.1', 'conv.1', 'norm.2', 'relu.2', 'conv.2'.
+    # They are also in the checkpoints in model_urls. This pattern is used
+    # to find such keys.
+    pattern = re.compile(
+        r'^(.*denselayer\d+\.(?:norm|relu|conv))\.((?:[12])\.(?:weight|bias|running_mean|running_var))$')
+    for key in list(state_dict.keys()):
+        res = pattern.match(key)
+        if res:
+            new_key = res.group(1) + res.group(2)
+            state_dict[new_key] = state_dict[key]
+            del state_dict[key]
+    return state_dict
+
 def load_pretrained(model, num_classes, settings):
     assert num_classes == settings['num_classes'], \
         "num_classes should be {}, but is {}".format(settings['num_classes'], num_classes)
-    model.load_state_dict(model_zoo.load_url(settings['url']))
+    state_dict = model_zoo.load_url(settings['url'])
+    state_dict = update_state_dict(state_dict)
+    model.load_state_dict(state_dict)
     model.input_space = settings['input_space']
     model.input_size = settings['input_size']
     model.input_range = settings['input_range']
