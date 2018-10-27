@@ -11,7 +11,7 @@ pretrained_settings = {
     'bninception': {
         'imagenet': {
             # Was ported using python2 (may trigger warning)
-            'url': 'http://data.lip6.fr/cadene/pretrainedmodels/bn_inception-239d2248.pth',
+            'url': 'http://data.lip6.fr/cadene/pretrainedmodels/bn_inception-52deb4733.pth',
             # 'url': 'http://yjxiong.me/others/bn_inception-9f5701afb96c8044.pth',
             'input_space': 'BGR',
             'input_size': [3, 224, 224],

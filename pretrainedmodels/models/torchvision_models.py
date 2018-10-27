@@ -31,10 +31,10 @@ __all__ = [
 
 model_urls = {
     'alexnet': 'https://download.pytorch.org/models/alexnet-owt-4df8aa71.pth',
-    'densenet121': 'https://download.pytorch.org/models/densenet121-241335ed.pth',
-    'densenet169': 'https://download.pytorch.org/models/densenet169-6f0f7f60.pth',
-    'densenet201': 'https://download.pytorch.org/models/densenet201-4c113574.pth',
-    'densenet161': 'https://download.pytorch.org/models/densenet161-17b70270.pth',
+    'densenet121': 'https://download.pytorch.org/models/densenet121-fbdb23505.pth',
+    'densenet169': 'https://download.pytorch.org/models/densenet169-f470b90a4.pth',
+    'densenet201': 'https://download.pytorch.org/models/densenet201-5750cbb1e.pth',
+    'densenet161': 'https://download.pytorch.org/models/densenet161-347e6b360.pth',
     'inceptionv3': 'https://download.pytorch.org/models/inception_v3_google-1a9a5a14.pth',
     'resnet18': 'https://download.pytorch.org/models/resnet18-5c106cde.pth',
     'resnet34': 'https://download.pytorch.org/models/resnet34-333f7ec4.pth',
