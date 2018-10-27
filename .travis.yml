@@ -3,9 +3,9 @@ python:
   - "3.6"
   - "2.7"
 
-cache:
-  directories:
-    - $HOME/.torch
+# cache:
+#   directories:
+#     - $HOME/.torch
 
 stages:
 #  - lint_check
