@@ -14,6 +14,9 @@ for model_name in pm.model_names:
 img = utils.LoadImage()('data/cat.jpg')
 
 
+def equal(x,y):
+    return torch.le(torch.dist(x, y), 1e-8)
+
 @pytest.mark.parametrize('model_name, pretrained', pm_args)
 def test_pm_imagenet(model_name, pretrained):
     print('test_pm_imagenet("{}")'.format(model_name))
@@ -44,7 +47,7 @@ def test_pm_imagenet(model_name, pretrained):
 
     out_feats = net.features(x)
     out_logits_2 = net.logits(out_feats)
-    assert torch.equal(out_logits_2, out_logits)
+    assert equal(out_logits, out_logits_2)
 
     if 'dpn' in model_name:
         # Conv2d instead of Linear
