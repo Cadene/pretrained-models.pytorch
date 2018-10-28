@@ -26,6 +26,10 @@ def test_pm_imagenet(model_name, pretrained):
         # nasnetalarge too big for travis
         return
 
+    if 'pnasnet5large' == model_name:
+        # pnasnet5large too big for travis
+        return
+
     tensor = utils.TransformImage(net)(img)
     tensor = tensor.unsqueeze(0)
     x = Variable(tensor, requires_grad=False)
