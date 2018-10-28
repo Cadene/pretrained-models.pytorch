@@ -290,7 +290,7 @@ class Cell(CellBase):
 
 class PNASNet5Large(nn.Module):
     def __init__(self, num_classes=1001):
-        super().__init__()
+        super(PNASNet5Large, self).__init__()
         self.num_classes = num_classes
         self.conv_0 = nn.Sequential(OrderedDict([
             ('conv', nn.Conv2d(3, 96, kernel_size=3, stride=2, bias=False)),
