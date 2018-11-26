@@ -15,7 +15,7 @@ img = utils.LoadImage()('data/cat.jpg')
 
 
 def equal(x,y):
-    return torch.le(torch.dist(x, y), 1e-7)
+    return torch.le(torch.dist(x, y), 1e-6)
 
 @pytest.mark.parametrize('model_name, pretrained', pm_args)
 def test_pm_imagenet(model_name, pretrained):
