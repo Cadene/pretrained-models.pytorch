@@ -484,7 +484,7 @@ class BNInception(nn.Module):
 
     def logits(self, features):
         adaptiveAvgPoolWidth = features.shape[2]
-        x = F.avg_pool2d(x, kernel_size=adaptiveAvgPoolWidth)
+        x = F.avg_pool2d(features, kernel_size=adaptiveAvgPoolWidth)
         x = x.view(x.size(0), -1)
         x = self.last_linear(x)
         return x
