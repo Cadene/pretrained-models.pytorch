@@ -1,6 +1,7 @@
 from __future__ import print_function, division, absolute_import
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.utils.model_zoo as model_zoo
 import os
 import sys
@@ -247,7 +248,6 @@ class BNInception(nn.Module):
         self.inception_5b_pool_proj = nn.Conv2d(1024, 128, kernel_size=(1, 1), stride=(1, 1))
         self.inception_5b_pool_proj_bn = nn.BatchNorm2d(128, affine=True)
         self.inception_5b_relu_pool_proj = nn.ReLU (inplace)
-        self.global_pool = nn.AvgPool2d (7, stride=1, padding=0, ceil_mode=True, count_include_pad=True)
         self.last_linear = nn.Linear (1024, num_classes)
 
     def features(self, input):
@@ -483,7 +483,8 @@ class BNInception(nn.Module):
         return inception_5b_output_out
 
     def logits(self, features):
-        x = self.global_pool(features)
+        adaptiveAvgPoolWidth = features.shape[2]
+        x = F.avg_pool2d(x, kernel_size=adaptiveAvgPoolWidth)
         x = x.view(x.size(0), -1)
         x = self.last_linear(x)
         return x
