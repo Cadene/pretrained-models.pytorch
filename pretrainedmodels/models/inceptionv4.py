@@ -295,7 +295,6 @@ class InceptionV4(nn.Module):
             Inception_C(),
             Inception_C()
         )
-        self.avg_pool = nn.AvgPool2d(8, count_include_pad=False)
         self.last_linear = nn.Linear(1536, num_classes)
 
     def logits(self, features):
