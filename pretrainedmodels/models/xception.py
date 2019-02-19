@@ -70,23 +70,22 @@ class Block(nn.Module):
         else:
             self.skip=None
 
-        self.relu = nn.ReLU(inplace=True)
         rep=[]
 
         filters=in_filters
         if grow_first:
-            rep.append(self.relu)
+            rep.append(nn.ReLU(inplace=True))
             rep.append(SeparableConv2d(in_filters,out_filters,3,stride=1,padding=1,bias=False))
             rep.append(nn.BatchNorm2d(out_filters))
             filters = out_filters
 
         for i in range(reps-1):
-            rep.append(self.relu)
+            rep.append(nn.ReLU(inplace=True))
             rep.append(SeparableConv2d(filters,filters,3,stride=1,padding=1,bias=False))
             rep.append(nn.BatchNorm2d(filters))
 
         if not grow_first:
-            rep.append(self.relu)
+            rep.append(nn.ReLU(inplace=True))
             rep.append(SeparableConv2d(in_filters,out_filters,3,stride=1,padding=1,bias=False))
             rep.append(nn.BatchNorm2d(out_filters))
 
@@ -127,10 +126,11 @@ class Xception(nn.Module):
 
         self.conv1 = nn.Conv2d(3, 32, 3,2, 0, bias=False)
         self.bn1 = nn.BatchNorm2d(32)
-        self.relu = nn.ReLU(inplace=True)
+        self.relu1 = nn.ReLU(inplace=True)
 
         self.conv2 = nn.Conv2d(32,64,3,bias=False)
         self.bn2 = nn.BatchNorm2d(64)
+        self.relu2 = nn.ReLU(inplace=True)
         #do relu here
 
         self.block1=Block(64,128,2,2,start_with_relu=False,grow_first=True)
@@ -151,6 +151,7 @@ class Xception(nn.Module):
 
         self.conv3 = SeparableConv2d(1024,1536,3,1,1)
         self.bn3 = nn.BatchNorm2d(1536)
+        self.relu3 = nn.ReLU(inplace=True)
 
         #do relu here
         self.conv4 = SeparableConv2d(1536,2048,3,1,1)
@@ -171,11 +172,11 @@ class Xception(nn.Module):
     def features(self, input):
         x = self.conv1(input)
         x = self.bn1(x)
-        x = self.relu(x)
+        x = self.relu1(x)
 
         x = self.conv2(x)
         x = self.bn2(x)
-        x = self.relu(x)
+        x = self.relu2(x)
 
         x = self.block1(x)
         x = self.block2(x)
@@ -192,14 +193,14 @@ class Xception(nn.Module):
 
         x = self.conv3(x)
         x = self.bn3(x)
-        x = self.relu(x)
+        x = self.relu3(x)
 
         x = self.conv4(x)
         x = self.bn4(x)
         return x
 
     def logits(self, features):
-        x = self.relu(features)
+        x = nn.ReLU(inplace=True)(features)
 
         x = F.adaptive_avg_pool2d(x, (1, 1))
         x = x.view(x.size(0), -1)
