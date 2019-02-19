@@ -126,9 +126,11 @@ class Xception(nn.Module):
 
         self.conv1 = nn.Conv2d(3, 32, 3,2, 0, bias=False)
         self.bn1 = nn.BatchNorm2d(32)
+        self.relu1 = nn.ReLU(inplace=True)
 
         self.conv2 = nn.Conv2d(32,64,3,bias=False)
         self.bn2 = nn.BatchNorm2d(64)
+        self.relu2 = nn.ReLU(inplace=True)
         #do relu here
 
         self.block1=Block(64,128,2,2,start_with_relu=False,grow_first=True)
@@ -149,6 +151,7 @@ class Xception(nn.Module):
 
         self.conv3 = SeparableConv2d(1024,1536,3,1,1)
         self.bn3 = nn.BatchNorm2d(1536)
+        self.relu3 = nn.ReLU(inplace=True)
 
         #do relu here
         self.conv4 = SeparableConv2d(1536,2048,3,1,1)
@@ -169,11 +172,11 @@ class Xception(nn.Module):
     def features(self, input):
         x = self.conv1(input)
         x = self.bn1(x)
-        x = nn.ReLU(inplace=True)(x)
+        x = self.relu1(x)
 
         x = self.conv2(x)
         x = self.bn2(x)
-        x = nn.ReLU(inplace=True)(x)
+        x = self.relu2(x)
 
         x = self.block1(x)
         x = self.block2(x)
@@ -190,7 +193,7 @@ class Xception(nn.Module):
 
         x = self.conv3(x)
         x = self.bn3(x)
-        x = nn.ReLU(inplace=True)(x)
+        x = self.relu3(x)
 
         x = self.conv4(x)
         x = self.bn4(x)
