@@ -520,7 +520,7 @@ class ReductionCell1(nn.Module):
 class NASNetAMobile(nn.Module):
     """NASNetAMobile (4 @ 1056) """
 
-    def __init__(self, num_classes=1001, stem_filters=32, penultimate_filters=1056, filters_multiplier=2):
+    def __init__(self, num_classes=1000, stem_filters=32, penultimate_filters=1056, filters_multiplier=2):
         super(NASNetAMobile, self).__init__()
         self.num_classes = num_classes
         self.stem_filters = stem_filters
@@ -615,7 +615,7 @@ class NASNetAMobile(nn.Module):
         return x
 
 
-def nasnetamobile(num_classes=1001, pretrained='imagenet'):
+def nasnetamobile(num_classes=1000, pretrained='imagenet'):
     r"""NASNetALarge model architecture from the
     `"NASNet" <https://arxiv.org/abs/1707.07012>`_ paper.
     """
