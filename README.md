@@ -186,8 +186,8 @@ $ python examples/imagenet_logits.py -h
 ```
 
 ```
-$ python examples/imagenet_logits.py -a nasnetalarge --path_img data/cat.png
-> 'nasnetalarge': data/cat.png' is a 'tiger cat' 
+$ python examples/imagenet_logits.py -a nasnetalarge --path_img data/cat.jpg
+> 'nasnetalarge': data/cat.jpg' is a 'tiger cat' 
 ```
 
 ### Compute imagenet evaluation metrics
