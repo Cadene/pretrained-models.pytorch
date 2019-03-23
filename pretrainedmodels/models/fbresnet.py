@@ -1,5 +1,6 @@
 from __future__ import print_function, division, absolute_import
 import torch.nn as nn
+import torch.nn.functional as F
 import math
 import torch.utils.model_zoo as model_zoo
 
@@ -119,7 +120,6 @@ class FBResNet(nn.Module):
         self.layer2 = self._make_layer(block, 128, layers[1], stride=2)
         self.layer3 = self._make_layer(block, 256, layers[2], stride=2)
         self.layer4 = self._make_layer(block, 512, layers[3], stride=2)
-        self.avgpool = nn.AvgPool2d(7)
         self.last_linear = nn.Linear(512 * block.expansion, num_classes)
 
         for m in self.modules():
@@ -161,7 +161,8 @@ class FBResNet(nn.Module):
         return x
 
     def logits(self, features):
-        x = self.avgpool(features)
+        adaptiveAvgPoolWidth = features.shape[2]
+        x = F.avg_pool2d(features, kernel_size=adaptiveAvgPoolWidth)
         x = x.view(x.size(0), -1)
         x = self.last_linear(x)
         return x
