@@ -1,6 +1,7 @@
 from __future__ import print_function, division, absolute_import
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 import torch.utils.model_zoo as model_zoo
 import os
 import sys
@@ -294,11 +295,12 @@ class InceptionV4(nn.Module):
             Inception_C(),
             Inception_C()
         )
-        self.avg_pool = nn.AvgPool2d(8, count_include_pad=False)
         self.last_linear = nn.Linear(1536, num_classes)
 
     def logits(self, features):
-        x = self.avg_pool(features)
+        #Allows image of any size to be processed
+        adaptiveAvgPoolWidth = features.shape[2]
+        x = F.avg_pool2d(features, kernel_size=adaptiveAvgPoolWidth)
         x = x.view(x.size(0), -1)
         x = self.last_linear(x)
         return x
