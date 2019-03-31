@@ -11,6 +11,7 @@ from .models.utils import model_names
 from .models.fbresnet import fbresnet152
 from .models.cafferesnet import cafferesnet101
 from .models.bninception import bninception
+from .models.resnext import resnext50_32x4d
 from .models.resnext import resnext101_32x4d
 from .models.resnext import resnext101_64x4d
 from .models.inceptionv4 import inceptionv4

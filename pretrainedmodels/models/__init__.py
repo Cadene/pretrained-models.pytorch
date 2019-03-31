@@ -5,6 +5,7 @@ from .cafferesnet import cafferesnet101
 
 from .bninception import bninception
 
+from .resnext import resnext50_32x4d
 from .resnext import resnext101_32x4d
 from .resnext import resnext101_64x4d
 
