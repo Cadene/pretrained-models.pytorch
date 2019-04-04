@@ -170,7 +170,7 @@ def alexnet(num_classes=1000, pretrained='imagenet'):
     `"One weird trick..." <https://arxiv.org/abs/1404.5997>`_ paper.
     """
     # https://github.com/pytorch/vision/blob/master/torchvision/models/alexnet.py
-    model = models.alexnet(pretrained=False)
+    model = models.alexnet(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['alexnet'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -206,7 +206,7 @@ def densenet121(num_classes=1000, pretrained='imagenet'):
     r"""Densenet-121 model from
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`
     """
-    model = models.densenet121(pretrained=False)
+    model = models.densenet121(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['densenet121'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -217,7 +217,7 @@ def densenet169(num_classes=1000, pretrained='imagenet'):
     r"""Densenet-169 model from
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`
     """
-    model = models.densenet169(pretrained=False)
+    model = models.densenet169(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['densenet169'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -228,7 +228,7 @@ def densenet201(num_classes=1000, pretrained='imagenet'):
     r"""Densenet-201 model from
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`
     """
-    model = models.densenet201(pretrained=False)
+    model = models.densenet201(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['densenet201'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -239,7 +239,7 @@ def densenet161(num_classes=1000, pretrained='imagenet'):
     r"""Densenet-161 model from
     `"Densely Connected Convolutional Networks" <https://arxiv.org/pdf/1608.06993.pdf>`
     """
-    model = models.densenet161(pretrained=False)
+    model = models.densenet161(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['densenet161'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -253,7 +253,7 @@ def inceptionv3(num_classes=1000, pretrained='imagenet'):
     r"""Inception v3 model architecture from
     `"Rethinking the Inception Architecture for Computer Vision" <http://arxiv.org/abs/1512.00567>`_.
     """
-    model = models.inception_v3(pretrained=False)
+    model = models.inception_v3(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['inceptionv3'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -348,7 +348,7 @@ def modify_resnets(model):
 def resnet18(num_classes=1000, pretrained='imagenet'):
     """Constructs a ResNet-18 model.
     """
-    model = models.resnet18(pretrained=False)
+    model = models.resnet18(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['resnet18'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -358,7 +358,7 @@ def resnet18(num_classes=1000, pretrained='imagenet'):
 def resnet34(num_classes=1000, pretrained='imagenet'):
     """Constructs a ResNet-34 model.
     """
-    model = models.resnet34(pretrained=False)
+    model = models.resnet34(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['resnet34'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -368,7 +368,7 @@ def resnet34(num_classes=1000, pretrained='imagenet'):
 def resnet50(num_classes=1000, pretrained='imagenet'):
     """Constructs a ResNet-50 model.
     """
-    model = models.resnet50(pretrained=False)
+    model = models.resnet50(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['resnet50'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -378,7 +378,7 @@ def resnet50(num_classes=1000, pretrained='imagenet'):
 def resnet101(num_classes=1000, pretrained='imagenet'):
     """Constructs a ResNet-101 model.
     """
-    model = models.resnet101(pretrained=False)
+    model = models.resnet101(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['resnet101'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -388,7 +388,7 @@ def resnet101(num_classes=1000, pretrained='imagenet'):
 def resnet152(num_classes=1000, pretrained='imagenet'):
     """Constructs a ResNet-152 model.
     """
-    model = models.resnet152(pretrained=False)
+    model = models.resnet152(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['resnet152'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -430,7 +430,7 @@ def squeezenet1_0(num_classes=1000, pretrained='imagenet'):
     accuracy with 50x fewer parameters and <0.5MB model size"
     <https://arxiv.org/abs/1602.07360>`_ paper.
     """
-    model = models.squeezenet1_0(pretrained=False)
+    model = models.squeezenet1_0(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['squeezenet1_0'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -443,7 +443,7 @@ def squeezenet1_1(num_classes=1000, pretrained='imagenet'):
     SqueezeNet 1.1 has 2.4x less computation and slightly fewer parameters
     than SqueezeNet 1.0, without sacrificing accuracy.
     """
-    model = models.squeezenet1_1(pretrained=False)
+    model = models.squeezenet1_1(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['squeezenet1_1'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -495,7 +495,7 @@ def modify_vggs(model):
 def vgg11(num_classes=1000, pretrained='imagenet'):
     """VGG 11-layer model (configuration "A")
     """
-    model = models.vgg11(pretrained=False)
+    model = models.vgg11(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['vgg11'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -505,7 +505,7 @@ def vgg11(num_classes=1000, pretrained='imagenet'):
 def vgg11_bn(num_classes=1000, pretrained='imagenet'):
     """VGG 11-layer model (configuration "A") with batch normalization
     """
-    model = models.vgg11_bn(pretrained=False)
+    model = models.vgg11_bn(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['vgg11_bn'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -515,7 +515,7 @@ def vgg11_bn(num_classes=1000, pretrained='imagenet'):
 def vgg13(num_classes=1000, pretrained='imagenet'):
     """VGG 13-layer model (configuration "B")
     """
-    model = models.vgg13(pretrained=False)
+    model = models.vgg13(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['vgg13'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -525,7 +525,7 @@ def vgg13(num_classes=1000, pretrained='imagenet'):
 def vgg13_bn(num_classes=1000, pretrained='imagenet'):
     """VGG 13-layer model (configuration "B") with batch normalization
     """
-    model = models.vgg13_bn(pretrained=False)
+    model = models.vgg13_bn(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['vgg13_bn'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -535,7 +535,7 @@ def vgg13_bn(num_classes=1000, pretrained='imagenet'):
 def vgg16(num_classes=1000, pretrained='imagenet'):
     """VGG 16-layer model (configuration "D")
     """
-    model = models.vgg16(pretrained=False)
+    model = models.vgg16(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['vgg16'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -545,7 +545,7 @@ def vgg16(num_classes=1000, pretrained='imagenet'):
 def vgg16_bn(num_classes=1000, pretrained='imagenet'):
     """VGG 16-layer model (configuration "D") with batch normalization
     """
-    model = models.vgg16_bn(pretrained=False)
+    model = models.vgg16_bn(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['vgg16_bn'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -555,7 +555,7 @@ def vgg16_bn(num_classes=1000, pretrained='imagenet'):
 def vgg19(num_classes=1000, pretrained='imagenet'):
     """VGG 19-layer model (configuration "E")
     """
-    model = models.vgg19(pretrained=False)
+    model = models.vgg19(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['vgg19'][pretrained]
         model = load_pretrained(model, num_classes, settings)
@@ -565,7 +565,7 @@ def vgg19(num_classes=1000, pretrained='imagenet'):
 def vgg19_bn(num_classes=1000, pretrained='imagenet'):
     """VGG 19-layer model (configuration 'E') with batch normalization
     """
-    model = models.vgg19_bn(pretrained=False)
+    model = models.vgg19_bn(pretrained=False, num_classes=num_classes)
     if pretrained is not None:
         settings = pretrained_settings['vgg19_bn'][pretrained]
         model = load_pretrained(model, num_classes, settings)
