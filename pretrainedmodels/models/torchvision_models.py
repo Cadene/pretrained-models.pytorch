@@ -244,7 +244,7 @@ class InceptionV3(nn.Module):
     def __init__(self, model):
         super(InceptionV3, self).__init__()
         self.Conv2d_1a_3x3 = model.Conv2d_1a_3x3
-        self.Conv2d_2a_3x3 - model.Conv2d_2a_3x3
+        self.Conv2d_2a_3x3 = model.Conv2d_2a_3x3
         self.Conv2d_2b_3x3 = model.Conv2d_2b_3x3
         self.Conv2d_3b_1x1 = model.Conv2d_3b_1x1
         self.Conv2d_4a_3x3 = model.Conv2d_4a_3x3
