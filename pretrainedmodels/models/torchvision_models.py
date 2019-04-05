@@ -139,6 +139,12 @@ class AlexNet(nn.Module):
         self.relu1 = model.classifier[5]
         self.last_linear = model.classifier[6]
 
+        self.input_space = model.input_space
+        self.input_size = model.input_size
+        self.input_range = model.input_range
+        self.mean = model.mean
+        self.std = model.std
+
     def features(self, input):
         x = self._features(input)
         x = x.view(x.size(0), 256 * 6 * 6)
@@ -179,6 +185,12 @@ class DenseNet(nn.Module):
         super(DenseNet, self).__init__()
         self.features = model.features
         self.last_linear = model.classifier
+
+        self.input_space = model.input_space
+        self.input_size = model.input_size
+        self.input_range = model.input_range
+        self.mean = model.mean
+        self.std = model.std
 
     def logits(self, features):
         x = F.relu(features, inplace=True)
@@ -264,6 +276,12 @@ class InceptionV3(nn.Module):
         self.Mixed_7c = model.Mixed_7c
         self.last_linear = model.fc
 
+        self.input_space = model.input_space
+        self.input_size = model.input_size
+        self.input_range = model.input_range
+        self.mean = model.mean
+        self.std = model.std
+
     def features(self, input):
         # 299 x 299 x 3
         x = self.Conv2d_1a_3x3(input) # 149 x 149 x 32
@@ -331,6 +349,12 @@ class ResNet(nn.Module):
         self.layer4 = model.layer4
         self.avgpool = model.avgpool
         self.last_linear = model.fc
+
+        self.input_space = model.input_space
+        self.input_size = model.input_size
+        self.input_range = model.input_range
+        self.mean = model.mean
+        self.std = model.std
 
     def features(self, input):
         x = self.conv1(input)
@@ -417,6 +441,12 @@ class SqueezeNet(nn.Module):
         self.relu = model.classifier[2]
         self.avgpool = model.classifier[3]
 
+        self.input_space = model.input_space
+        self.input_size = model.input_size
+        self.input_range = model.input_range
+        self.mean = model.mean
+        self.std = model.std
+
     def logits(self, features):
         x = self.dropout(features)
         x = self.last_conv(x)
@@ -469,6 +499,12 @@ class VGG(nn.Module):
         self.relu1 = model.classifier[4]
         self.dropout1 = model.classifier[5]
         self.last_linear = model.classifier[6]
+
+        self.input_space = model.input_space
+        self.input_size = model.input_size
+        self.input_range = model.input_range
+        self.mean = model.mean
+        self.std = model.std
 
     def features(self, input):
         x = self._features(input)
