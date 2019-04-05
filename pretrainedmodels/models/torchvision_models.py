@@ -139,11 +139,11 @@ class AlexNet(nn.Module):
         self.relu1 = model.classifier[5]
         self.last_linear = model.classifier[6]
 
-        self.input_space = model.input_space
-        self.input_size = model.input_size
-        self.input_range = model.input_range
-        self.mean = model.mean
-        self.std = model.std
+        self.input_space = getattr(model, 'input_space', 'RGB')
+        self.input_size = getattr(model, 'input_size', [3, 224, 224])
+        self.input_range = getattr(model, 'input_range', [0, 1])
+        self.mean = getattr(model, 'mean', [0.485, 0.456, 0.406])
+        self.std = getattr(model, 'std', [0.229, 0.224, 0.225])
 
     def features(self, input):
         x = self._features(input)
@@ -186,11 +186,11 @@ class DenseNet(nn.Module):
         self.features = model.features
         self.last_linear = model.classifier
 
-        self.input_space = model.input_space
-        self.input_size = model.input_size
-        self.input_range = model.input_range
-        self.mean = model.mean
-        self.std = model.std
+        self.input_space = getattr(model, 'input_space', 'RGB')
+        self.input_size = getattr(model, 'input_size', [3, 224, 224])
+        self.input_range = getattr(model, 'input_range', [0, 1])
+        self.mean = getattr(model, 'mean', [0.485, 0.456, 0.406])
+        self.std = getattr(model, 'std', [0.229, 0.224, 0.225])
 
     def logits(self, features):
         x = F.relu(features, inplace=True)
@@ -276,11 +276,11 @@ class InceptionV3(nn.Module):
         self.Mixed_7c = model.Mixed_7c
         self.last_linear = model.fc
 
-        self.input_space = model.input_space
-        self.input_size = model.input_size
-        self.input_range = model.input_range
-        self.mean = model.mean
-        self.std = model.std
+        self.input_space = getattr(model, 'input_space', 'RGB')
+        self.input_size = getattr(model, 'input_size', [3, 299, 299])
+        self.input_range = getattr(model, 'input_range', [0, 1])
+        self.mean = getattr(model, 'mean', [0.5, 0.5, 0.5])
+        self.std = getattr(model, 'std', [0.5, 0.5, 0.5])
 
     def features(self, input):
         # 299 x 299 x 3
@@ -350,11 +350,11 @@ class ResNet(nn.Module):
         self.avgpool = model.avgpool
         self.last_linear = model.fc
 
-        self.input_space = model.input_space
-        self.input_size = model.input_size
-        self.input_range = model.input_range
-        self.mean = model.mean
-        self.std = model.std
+        self.input_space = getattr(model, 'input_space', 'RGB')
+        self.input_size = getattr(model, 'input_size', [3, 224, 224])
+        self.input_range = getattr(model, 'input_range', [0, 1])
+        self.mean = getattr(model, 'mean', [0.485, 0.456, 0.406])
+        self.std = getattr(model, 'std', [0.229, 0.224, 0.225])
 
     def features(self, input):
         x = self.conv1(input)
@@ -441,11 +441,11 @@ class SqueezeNet(nn.Module):
         self.relu = model.classifier[2]
         self.avgpool = model.classifier[3]
 
-        self.input_space = model.input_space
-        self.input_size = model.input_size
-        self.input_range = model.input_range
-        self.mean = model.mean
-        self.std = model.std
+        self.input_space = getattr(model, 'input_space', 'RGB')
+        self.input_size = getattr(model, 'input_size', [3, 224, 224])
+        self.input_range = getattr(model, 'input_range', [0, 1])
+        self.mean = getattr(model, 'mean', [0.485, 0.456, 0.406])
+        self.std = getattr(model, 'std', [0.229, 0.224, 0.225])
 
     def logits(self, features):
         x = self.dropout(features)
@@ -500,11 +500,11 @@ class VGG(nn.Module):
         self.dropout1 = model.classifier[5]
         self.last_linear = model.classifier[6]
 
-        self.input_space = model.input_space
-        self.input_size = model.input_size
-        self.input_range = model.input_range
-        self.mean = model.mean
-        self.std = model.std
+        self.input_space = getattr(model, 'input_space', 'RGB')
+        self.input_size = getattr(model, 'input_size', [3, 224, 224])
+        self.input_range = getattr(model, 'input_range', [0, 1])
+        self.mean = getattr(model, 'mean', [0.485, 0.456, 0.406])
+        self.std = getattr(model, 'std', [0.229, 0.224, 0.225])
 
     def features(self, input):
         x = self._features(input)
