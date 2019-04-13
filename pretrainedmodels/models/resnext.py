@@ -14,7 +14,7 @@ __all__ = ['ResNeXt50_32x4d', 'resnext50_32x4d',
 pretrained_settings = {
     'resnext50_32x4d': {
         'imagenet': {
-            'url': 'file:/data/resnext50_32x4d-dc76b0bd094076dae.pth', # TODO (barrh): upload model,
+            'url': 'https://github.com/barrh/pretrained-models.pytorch/releases/download/v0.7.4.1/resnext50_32x4d-b86d1c04b9.pt',
             'input_space': 'RGB',
             'input_size': [3, 224, 224],
             'input_range': [0, 1],
