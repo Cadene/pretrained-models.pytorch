@@ -1,4 +1,52 @@
 from __future__ import print_function, division, absolute_import
+
+__all__ = ['fbresnet152',
+ 'cafferesnet101',
+ 'bninception',
+ 'resnext101_32x4d',
+ 'resnext101_64x4d',
+ 'inceptionv4',
+ 'inceptionresnetv2',
+ 'nasnetalarge',
+ 'nasnetamobile',
+ 'alexnet',
+ 'densenet121',
+ 'densenet169',
+ 'densenet201',
+ 'densenet161',
+ 'resnet18',
+ 'resnet34',
+ 'resnet50',
+ 'resnet101',
+ 'resnet152',
+ 'inceptionv3',
+ 'squeezenet1_0',
+ 'squeezenet1_1',
+ 'vgg11',
+ 'vgg11_bn',
+ 'vgg13',
+ 'vgg13_bn',
+ 'vgg16',
+ 'vgg16_bn',
+ 'vgg19_bn',
+ 'vgg19',
+ 'dpn68',
+ 'dpn68b',
+ 'dpn92',
+ 'dpn98',
+ 'dpn131',
+ 'dpn107',
+ 'xception',
+ 'senet154',
+ 'se_resnet50',
+ 'se_resnet101',
+ 'se_resnet152',
+ 'se_resnext50_32x4d',
+ 'se_resnext101_32x4d',
+ 'pnasnet5large',
+ 'polynet'
+]
+
 from .fbresnet import fbresnet152
 
 from .cafferesnet import cafferesnet101
@@ -56,3 +104,4 @@ from .senet import se_resnext101_32x4d
 
 from .pnasnet import pnasnet5large
 from .polynet import polynet
+
