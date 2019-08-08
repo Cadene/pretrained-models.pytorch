@@ -450,7 +450,7 @@ Example:
 
 #### `model.mean`
 
-Attribut of type `list` composed of 3 numbers which are used to normalize the input image (substract "color-channel-wise").
+Attribut of type `list` composed of 3 numbers which are used to normalize the input image (subtract "color-channel-wise").
 
 Example:
 
@@ -566,4 +566,4 @@ https://github.com/Cadene/tensorflow-model-zoo.torch
 
 ## Acknowledgement
 
-Thanks to the deep learning community and especially to the contributers of the pytorch ecosystem.
+Thanks to the deep learning community and especially to the contributors of the pytorch ecosystem.
