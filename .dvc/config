@@ -1,0 +1,4 @@
+['remote "gsremote"']
+url = gs://vkoriukina_bucket
+[core]
+remote = gsremote
