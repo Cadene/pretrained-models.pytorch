@@ -1,0 +1,8 @@
+md5: bd2e991749dff4031aa99d6f0ea31df4
+wdir: ..
+outs:
+- md5: fba0d677f435b376b1d3ff777cc0f8fd
+  path: model_weights/rpn_r50_c4_1x-eb38972b.pth
+  cache: true
+  metric: false
+  persist: false
