@@ -9,7 +9,7 @@ from torch.autograd import Variable
 __all__ = ['wideresnet50']
 
 model_urls = {
-    'wideresnet152': 'https://s3.amazonaws.com/pytorch/h5models/wide-resnet-50-2-export.hkl'
+    'wideresnet50': 'https://s3.amazonaws.com/pytorch/h5models/wide-resnet-50-2-export.hkl'
 }
 
 def define_model(params):
