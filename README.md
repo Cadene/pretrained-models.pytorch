@@ -142,7 +142,7 @@ model = pretrainedmodels.__dict__[model_name](num_classes=1000, pretrained='imag
 model.eval()
 ```
 
-**Note**: By default, models will be downloaded to your `$HOME/.torch` folder. You can modify this behavior using the `$TORCH_MODEL_ZOO` variable as follow: `export TORCH_MODEL_ZOO="/local/pretrainedmodels`
+**Note**: By default, models will be downloaded to your `$HOME/.torch` folder. You can modify this behavior using the `$TORCH_HOME` variable as follow: `export TORCH_HOME="/local/pretrainedmodels"`
 
 - To load an image and do a complete forward pass:
 
