@@ -196,7 +196,7 @@ $ python examples/imagenet_logits.py -a nasnetalarge --path_img data/cat.jpg
 
 ```
 $ python examples/imagenet_eval.py /local/common-data/imagenet_2012/images -a nasnetalarge -b 20 -e
-> * Acc@1 92.693, Acc@5 96.13
+> * Acc@1 82.693, Acc@5 96.13
 ```
 
 
