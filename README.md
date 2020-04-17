@@ -22,7 +22,7 @@ News:
 - 16/11/2017: nasnet-a-large pretrained model ported by T. Durand and R. Cadene
 - 22/07/2017: torchvision pretrained models
 - 22/07/2017: momentum in inceptionv4 and inceptionresnetv2 to 0.1
-- 17/07/2017: model.input_range attribut
+- 17/07/2017: model.input_range attribute
 - 17/07/2017: BNInception pretrained on Imagenet
 
 ## Summary
@@ -418,7 +418,7 @@ Once a pretrained model has been loaded, you can use it that way.
 
 #### `model.input_size`
 
-Attribut of type `list` composed of 3 numbers:
+Attribute of type `list` composed of 3 numbers:
 
 - number of color channels,
 - height of the input image,
@@ -432,12 +432,12 @@ Example:
 
 #### `model.input_space`
 
-Attribut of type `str` representating the color space of the image. Can be `RGB` or `BGR`.
+Attribute of type `str` representating the color space of the image. Can be `RGB` or `BGR`.
 
 
 #### `model.input_range`
 
-Attribut of type `list` composed of 2 numbers:
+Attribute of type `list` composed of 2 numbers:
 
 - min pixel value,
 - max pixel value.
@@ -450,7 +450,7 @@ Example:
 
 #### `model.mean`
 
-Attribut of type `list` composed of 3 numbers which are used to normalize the input image (substract "color-channel-wise").
+Attribute of type `list` composed of 3 numbers which are used to normalize the input image (substract "color-channel-wise").
 
 Example:
 
@@ -460,7 +460,7 @@ Example:
 
 #### `model.std`
 
-Attribut of type `list` composed of 3 numbers which are used to normalize the input image (divide "color-channel-wise").
+Attribute of type `list` composed of 3 numbers which are used to normalize the input image (divide "color-channel-wise").
 
 Example:
 
@@ -519,7 +519,7 @@ print(output.size())      # (1,1000)
 
 #### `model.last_linear`
 
-Attribut of type `nn.Linear`. This module is the last one to be called during the forward pass.
+Attribute of type `nn.Linear`. This module is the last one to be called during the forward pass.
 
 - Can be replaced by an adapted `nn.Linear` for fine tuning.
 - Can be replaced by `pretrained.utils.Identity` for features extraction. 
