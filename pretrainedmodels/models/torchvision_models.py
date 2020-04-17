@@ -314,7 +314,7 @@ def inceptionv3(num_classes=1000, pretrained='imagenet'):
 def modify_resnets(model):
     # Modify attributs
     model.last_linear = model.fc
-    model.fc = None
+    del model.fc
 
     def features(self, input):
         x = self.conv1(input)
