@@ -253,7 +253,7 @@ def inceptionv3(num_classes=1000, pretrained='imagenet'):
     r"""Inception v3 model architecture from
     `"Rethinking the Inception Architecture for Computer Vision" <http://arxiv.org/abs/1512.00567>`_.
     """
-    model = models.inception_v3(pretrained=False)
+    model = models.inception_v3(num_classes=num_classes,pretrained=False)
     if pretrained is not None:
         settings = pretrained_settings['inceptionv3'][pretrained]
         model = load_pretrained(model, num_classes, settings)
