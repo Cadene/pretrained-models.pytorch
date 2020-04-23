@@ -7,7 +7,7 @@ from .models.utils import pretrained_settings
 from .models.utils import model_names
 
 # to support pretrainedmodels.__dict__['nasnetalarge']
-# but depreciated
+# but deprecated
 from .models.fbresnet import fbresnet152
 from .models.cafferesnet import cafferesnet101
 from .models.bninception import bninception
