@@ -1,4 +1,4 @@
-dependencies = ['torch', 'torchvision', 'munch', 'tqdm', 'scipy']
+dependencies = ['torch', 'torchvision', 'munch', 'tqdm']
 
 from pretrainedmodels.models.fbresnet import fbresnet152
 from pretrainedmodels.models.cafferesnet import cafferesnet101
