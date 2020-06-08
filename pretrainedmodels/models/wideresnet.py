@@ -35,7 +35,7 @@ def define_model(params):
         return o
 
     # determine network size by parameters
-    blocks = [sum([re.match('group%d.block\d+.conv0.weight'%j, k) is not None
+    blocks = [sum([re.match(r'group%d.block\d+.conv0.weight'%j, k) is not None
                    for k in params.keys()]) for j in range(4)]
 
     def f(input, params, pooling_classif=True):
