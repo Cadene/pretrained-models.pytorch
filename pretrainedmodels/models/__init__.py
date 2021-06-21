@@ -56,3 +56,6 @@ from .senet import se_resnext101_32x4d
 
 from .pnasnet import pnasnet5large
 from .polynet import polynet
+
+### BROUGHT IN MODEL FROM OTHER SOURCES
+from .mobilenetv2 import MobileNetV2
