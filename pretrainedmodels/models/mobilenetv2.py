@@ -11,7 +11,6 @@ pretrained_settings = {
             'mean': [0.485, 0.456, 0.406],
             'std': [0.229, 0.224, 0.225],
             'num_classes': 1000
-            # 'scale': 0.8975 # The resize parameter of the validation transform should be 333, and make sure to center crop at 299x299
         }
     }
 }

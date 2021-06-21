@@ -58,4 +58,4 @@ from .pnasnet import pnasnet5large
 from .polynet import polynet
 
 ### BROUGHT IN MODEL FROM OTHER SOURCES
-from .mobilenetv2 import MobileNetV2
+from .mobilenetv2 import mobilenet_v2

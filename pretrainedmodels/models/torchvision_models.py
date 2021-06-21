@@ -26,7 +26,7 @@ __all__ = [
     'inceptionv3',
     'squeezenet1_0', 'squeezenet1_1',
     'vgg11', 'vgg11_bn', 'vgg13', 'vgg13_bn', 'vgg16', 'vgg16_bn',
-    'vgg19_bn', 'vgg19'
+    'vgg19_bn', 'vgg19', 'mobilenetv2'
 ]
 
 model_urls = {
@@ -51,6 +51,7 @@ model_urls = {
     'vgg13_bn': 'https://download.pytorch.org/models/vgg13_bn-abd245e5.pth',
     'vgg16_bn': 'https://download.pytorch.org/models/vgg16_bn-6c64b313.pth',
     'vgg19_bn': 'https://download.pytorch.org/models/vgg19_bn-c79401a0.pth',
+    'mobilenetv2': 'https://www.dropbox.com/s/47tyzpofuuyyv1b/mobilenetv2_1.0-f2a8633.pth.tar?dl=1'
     # 'vgg16_caffe': 'https://s3-us-west-2.amazonaws.com/jcjohns-models/vgg16-00b39a1b.pth',
     # 'vgg19_caffe': 'https://s3-us-west-2.amazonaws.com/jcjohns-models/vgg19-d01eb7cb.pth'
 }
@@ -574,15 +575,18 @@ def vgg19_bn(num_classes=1000, pretrained='imagenet'):
 
 
 ### CUSTOM CLASSES
-def mobilenet_v2(pretrained=True):
-    model = MobileNetV2(width_mult=1)
-
-    if pretrained:
-        try:
-            from torch.hub import load_state_dict_from_url
-        except ImportError:
-            from torch.utils.model_zoo import load_url as load_state_dict_from_url
-        state_dict = load_state_dict_from_url(
-            'https://www.dropbox.com/s/47tyzpofuuyyv1b/mobilenetv2_1.0-f2a8633.pth.tar?dl=1', progress=True)
-        model.load_state_dict(state_dict)
+def mobilenetv2(num_classes=1000, pretrained=True):
+    model = models.MobileNetV2(width_mult=1)
+    
+    if pretrained is not None:
+        settings = pretrained_settings['mobilenetv2'][pretrained]
+        model = load_pretrained(model, num_classes, settings)
+    # if pretrained:
+    #     try:
+    #         from torch.hub import load_state_dict_from_url
+    #     except ImportError:
+    #         from torch.utils.model_zoo import load_url as load_state_dict_from_url
+    #     state_dict = load_state_dict_from_url(
+    #         'https://www.dropbox.com/s/47tyzpofuuyyv1b/mobilenetv2_1.0-f2a8633.pth.tar?dl=1', progress=True)
+    #     model.load_state_dict(state_dict)
     return model
