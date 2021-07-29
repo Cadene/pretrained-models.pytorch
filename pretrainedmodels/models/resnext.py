@@ -39,7 +39,7 @@ class ResNeXt101_32x4d(nn.Module):
     def __init__(self, num_classes=1000):
         super(ResNeXt101_32x4d, self).__init__()
         self.num_classes = num_classes
-        self.features = resnext101_32x4d_features
+        self.features = resnext101_32x4d_features()
         self.avg_pool = nn.AvgPool2d((7, 7), (1, 1))
         self.last_linear = nn.Linear(2048, num_classes)
 
@@ -60,7 +60,7 @@ class ResNeXt101_64x4d(nn.Module):
     def __init__(self, num_classes=1000):
         super(ResNeXt101_64x4d, self).__init__()
         self.num_classes = num_classes
-        self.features = resnext101_64x4d_features
+        self.features = resnext101_64x4d_features()
         self.avg_pool = nn.AvgPool2d((7, 7), (1, 1))
         self.last_linear = nn.Linear(2048, num_classes)
 

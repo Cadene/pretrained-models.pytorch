@@ -42,7 +42,7 @@ def identity(x): return x
 
 def add(x, y): return x + y
 
-resnext101_32x4d_features = nn.Sequential( # Sequential,
+resnext101_32x4d_features = lambda: nn.Sequential( # Sequential,
     nn.Conv2d(3,64,(7, 7),(2, 2),(3, 3),1,1,bias=False),
     nn.BatchNorm2d(64),
     nn.ReLU(),
